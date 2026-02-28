@@ -152,6 +152,7 @@ export interface GameState {
     isPremium: boolean;
     soundEnabled: boolean;
     pennyMuted: boolean;
+    dailyBonus: number;
 }
 
 // --- Penny Messages ---

@@ -28,6 +28,7 @@ interface GameStore extends GameState {
         difficulty: Difficulty,
         dailyBonus?: number,
     ) => void;
+    restartCurrentGame: () => void;
     resetGame: () => void;
 
     // --- Turn Flow ---
@@ -72,6 +73,7 @@ const initialState: GameState = {
     isPremium: false,
     soundEnabled: true,
     pennyMuted: false,
+    dailyBonus: 0,
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -92,8 +94,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...initialState,
             players,
             difficulty,
+            dailyBonus: dailyBonus ?? 0,
             turnPhase: 'idle',
         });
+    },
+
+    restartCurrentGame: () => {
+        const state = get();
+        const human = state.players.find(p => p.isHuman);
+        if (!human) return;
+
+        const bots = state.players.filter(p => !p.isHuman).map(b => ({
+            name: b.name,
+            avatar: b.avatar,
+            personality: b.personality as BotPersonality,
+        }));
+
+        get().initGame(human.name, human.avatar, bots, state.difficulty, state.dailyBonus);
     },
 
     resetGame: () => set(initialState),

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useGameStore } from './gameStore';
 
 // ============================================
 // Tutorial Steps — "Penny Teaches You" 🐷
@@ -136,6 +137,12 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     completeTutorial: () => {
         localStorage.setItem(STORAGE_KEY, 'true');
         set({ isActive: false, isCompleted: true });
+
+        // Restart the game automatically so the user starts fresh after the tutorial
+        const restartGame = useGameStore.getState().restartCurrentGame;
+        if (restartGame) {
+            restartGame();
+        }
     },
 
     signalEvent: (event) => {
