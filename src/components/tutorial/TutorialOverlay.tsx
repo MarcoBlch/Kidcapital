@@ -23,11 +23,11 @@ export default function TutorialOverlay() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="fixed inset-0 z-[100] flex items-center justify-center"
+                className={`fixed inset-0 z-[100] flex items-center justify-center ${!isWaitingForTap ? 'pointer-events-none' : ''}`}
                 onClick={isWaitingForTap ? nextStep : undefined}
             >
                 {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-black/60 pointer-events-none" />
 
                 {/* Tutorial card */}
                 <motion.div
@@ -35,7 +35,7 @@ export default function TutorialOverlay() {
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.9, y: -20 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    className="relative z-10 mx-6 max-w-sm w-full"
+                    className="relative z-[101] mx-6 max-w-sm w-full pointer-events-auto"
                     onClick={e => e.stopPropagation()}
                 >
                     <div className="bg-gradient-to-br from-[#1e2a4a] to-[#162040] rounded-3xl border border-amber-400/20 shadow-[0_0_40px_rgba(245,158,11,0.15)] overflow-hidden">
@@ -45,10 +45,10 @@ export default function TutorialOverlay() {
                                 <div
                                     key={i}
                                     className={`h-1 rounded-full transition-all duration-300 ${i === currentStepIndex
-                                            ? 'w-5 bg-amber-400'
-                                            : i < currentStepIndex
-                                                ? 'w-2 bg-amber-400/40'
-                                                : 'w-2 bg-white/10'
+                                        ? 'w-5 bg-amber-400'
+                                        : i < currentStepIndex
+                                            ? 'w-2 bg-amber-400/40'
+                                            : 'w-2 bg-white/10'
                                         }`}
                                 />
                             ))}
