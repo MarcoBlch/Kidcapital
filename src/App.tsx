@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useUIStore } from './store/uiStore';
 import { useSupabaseStore } from './store/supabaseStore';
+import { initRevenueCat } from './lib/revenuecat';
 import SplashScreen from './screens/SplashScreen';
 import SetupScreen from './screens/SetupScreen';
 import GameScreen from './screens/GameScreen';
@@ -12,9 +13,10 @@ function App() {
   const currentScreen = useUIStore((s) => s.currentScreen);
   const initializeSession = useSupabaseStore(s => s.initializeSession);
 
-  // Sign in anonymously on app startup
+  // Sign in anonymously on app startup and initialize payments
   useEffect(() => {
     initializeSession();
+    initRevenueCat();
   }, [initializeSession]);
 
   return (
