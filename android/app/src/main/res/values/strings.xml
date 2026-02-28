@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">KidCapital</string>
+    <string name="title_activity_main">KidCapital</string>
+    <string name="package_name">io.marcobelchior.kidcapital</string>
+    <string name="custom_url_scheme">io.marcobelchior.kidcapital</string>
+</resources>
