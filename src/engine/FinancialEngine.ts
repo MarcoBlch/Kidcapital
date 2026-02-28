@@ -215,6 +215,7 @@ export function createDefaultPlayer(
     dailyBonus: number = 0,
 ): Player {
     const isEasy = difficulty === '8-10';
+    const isHard = difficulty === '15-18';
 
     return {
         id,
@@ -222,10 +223,10 @@ export function createDefaultPlayer(
         avatar,
         isHuman,
         personality,
-        cash: (isEasy ? 150 : 100) + dailyBonus,
+        cash: (isEasy ? 150 : isHard ? 75 : 100) + dailyBonus,
         savings: 0,
-        salary: isEasy ? 40 : 35,
-        baseExpenses: isEasy ? 20 : 30,
+        salary: isEasy ? 40 : isHard ? 30 : 35,
+        baseExpenses: isEasy ? 20 : isHard ? 40 : 30,
         debt: 0,
         loanPayment: 0,
         assets: [],

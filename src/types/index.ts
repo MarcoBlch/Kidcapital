@@ -130,7 +130,7 @@ export type TurnPhase =
 
 // --- Difficulty ---
 
-export type Difficulty = '8-10' | '11-14';
+export type Difficulty = '8-10' | '11-14' | '15-18';
 
 export interface DifficultyConfig {
     cash: number;

@@ -13,6 +13,7 @@ export type ModalType =
     | 'bank'
     | 'portfolio'
     | 'leaderboard'
+    | 'paywall'
     | null;
 
 interface CoinAnim {
@@ -21,6 +22,10 @@ interface CoinAnim {
 }
 
 interface UIStore {
+    // Premium Lock
+    isPremium: boolean;
+    setPremium: (status: boolean) => void;
+
     // Screen
     currentScreen: Screen;
     setScreen: (screen: Screen) => void;
@@ -73,6 +78,10 @@ const SPACE_TYPE_TO_COLOR: Record<string, string> = {
 let coinIdCounter = 0;
 
 export const useUIStore = create<UIStore>((set) => ({
+    // Premium Lock
+    isPremium: false,
+    setPremium: (status) => set({ isPremium: status }),
+
     // Screen
     currentScreen: 'splash',
     setScreen: (screen) => set({ currentScreen: screen }),

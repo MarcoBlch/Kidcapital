@@ -8,10 +8,12 @@ import { PLAYER_AVATARS, MAX_NAME_LENGTH } from '../utils/constants';
 import type { BotPersonality, Difficulty } from '../types';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
 import LeaderboardModal from '../components/modals/LeaderboardModal';
+import PaywallModal from '../components/modals/PaywallModal';
 
 export default function SetupScreen() {
     const setScreen = useUIStore(s => s.setScreen);
     const showModal = useUIStore(s => s.showModal);
+    const isPremium = useUIStore(s => s.isPremium);
     const initGame = useGameStore(s => s.initGame);
 
     const savedName = localStorage.getItem('kidcapital_player_name') || '';
@@ -63,6 +65,19 @@ export default function SetupScreen() {
                     }}
                 />
             )}
+
+            {/* Premium Upsell Button */}
+            {!isPremium && (
+                <div className="max-w-md mx-auto mb-4 flex justify-center">
+                    <button
+                        onClick={() => showModal('paywall' as any)}
+                        className="bg-gradient-to-r from-amber-400 to-amber-600 text-amber-950 font-bold px-4 py-1.5 rounded-full text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] animate-pulse"
+                    >
+                        Get KidCapital+ 👑
+                    </button>
+                </div>
+            )}
+
             <div className="max-w-md mx-auto relative">
                 <button
                     onClick={() => showModal('leaderboard' as any)}
@@ -82,23 +97,33 @@ export default function SetupScreen() {
                     <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
                         Choose your avatar
                     </label>
-                    <div className="grid grid-cols-6 gap-2">
-                        {PLAYER_AVATARS.map(a => (
-                            <button
-                                key={a}
-                                onClick={() => setAvatar(a)}
-                                className={`
-                  w-12 h-12 rounded-2xl flex items-center justify-center text-2xl
-                  transition-all cursor-pointer border-2
-                  ${avatar === a
-                                        ? 'bg-amber-400/15 border-amber-400/60 scale-110 shadow-[0_0_12px_rgba(245,158,11,0.3)]'
-                                        : 'bg-white/5 border-white/10 hover:border-white/20'
-                                    }
-                `}
-                            >
-                                {a}
-                            </button>
-                        ))}
+                    <div className="grid grid-cols-5 gap-2">
+                        {PLAYER_AVATARS.map((a, index) => {
+                            const isLocked = !isPremium && index > 3;
+                            return (
+                                <button
+                                    key={a}
+                                    onClick={() => isLocked ? showModal('paywall' as any) : setAvatar(a)}
+                                    className={`
+                                        relative w-12 h-12 rounded-2xl flex items-center justify-center text-2xl
+                                        transition-all cursor-pointer border-2 mx-auto
+                                        ${avatar === a
+                                            ? 'bg-amber-400/15 border-amber-400/60 scale-110 shadow-[0_0_12px_rgba(245,158,11,0.3)]'
+                                            : isLocked
+                                                ? 'bg-black/20 border-white/5 opacity-50 grayscale'
+                                                : 'bg-white/5 border-white/10 hover:border-white/20'
+                                        }
+                                    `}
+                                >
+                                    {a}
+                                    {isLocked && (
+                                        <div className="absolute -bottom-1 -right-1 bg-slate-800 text-[10px] w-5 h-5 flex items-center justify-center rounded-full border border-white/20">
+                                            🔒
+                                        </div>
+                                    )}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -142,8 +167,17 @@ export default function SetupScreen() {
                             onClick={() => setDifficulty('11-14')}
                             className={`flex-1 py-3 rounded-xl font-bold transition-all border-2 cursor-pointer ${difficulty === '11-14' ? 'bg-amber-400/15 border-amber-400/50 text-amber-300' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
                         >
-                            11-14 Years
+                            <div className="text-sm">11-14 Years</div>
                             <div className="text-[10px] font-normal opacity-70 mt-0.5">Standard</div>
+                        </button>
+
+                        <button
+                            onClick={() => !isPremium ? showModal('paywall' as any) : setDifficulty('15-18' as Difficulty)}
+                            className={`relative flex-1 py-3 rounded-xl font-bold transition-all border-2 cursor-pointer ${difficulty === '15-18' ? 'bg-amber-400/15 border-amber-400/50 text-amber-300' : !isPremium ? 'bg-black/20 border-white/5 opacity-60' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
+                        >
+                            <div className="text-sm">15-18 Years</div>
+                            <div className="text-[10px] font-normal opacity-70 mt-0.5 text-rose-300">Hard Mode</div>
+                            {!isPremium && <div className="absolute top-1 right-1 text-[10px]">🔒</div>}
                         </button>
                     </div>
                 </div>
@@ -154,21 +188,27 @@ export default function SetupScreen() {
                         Opponents ({botCount})
                     </label>
                     <div className="flex gap-2 mb-3">
-                        {[1, 2, 3].map(n => (
-                            <button
-                                key={n}
-                                onClick={() => setBotCount(n)}
-                                className={`
-                  flex-1 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer border-2
-                  ${botCount === n
-                                        ? 'bg-amber-400/15 text-amber-300 border-amber-400/50'
-                                        : 'bg-white/5 text-white/40 border-white/10 hover:border-white/20'
-                                    }
-                `}
-                            >
-                                {n} Bot{n > 1 ? 's' : ''}
-                            </button>
-                        ))}
+                        {[1, 2, 3].map(n => {
+                            const isLocked = !isPremium && n > 1;
+                            return (
+                                <button
+                                    key={n}
+                                    onClick={() => isLocked ? showModal('paywall' as any) : setBotCount(n)}
+                                    className={`
+                                        relative flex-1 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer border-2
+                                        ${botCount === n
+                                            ? 'bg-amber-400/15 text-amber-300 border-amber-400/50'
+                                            : isLocked
+                                                ? 'bg-black/20 border-white/5 text-white/20'
+                                                : 'bg-white/5 text-white/40 border-white/10 hover:border-white/20'
+                                        }
+                                    `}
+                                >
+                                    {n} Bot{n > 1 ? 's' : ''}
+                                    {isLocked && <div className="absolute top-1.5 right-2 text-[10px]">🔒</div>}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Bot previews */}
@@ -207,6 +247,7 @@ export default function SetupScreen() {
             </div>
 
             <LeaderboardModal />
+            <PaywallModal />
         </motion.div>
     );
 }
