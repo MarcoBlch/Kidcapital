@@ -18,7 +18,7 @@ export async function initRevenueCat() {
             }
 
             // Initial check to see if user already has premium
-            const customerInfo = await Purchases.getCustomerInfo();
+            const { customerInfo } = await Purchases.getCustomerInfo();
             if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
                 useUIStore.getState().setPremium(true);
             }
@@ -65,7 +65,7 @@ export async function restorePurchasesPkg(): Promise<boolean> {
     }
 
     try {
-        const customerInfo = await Purchases.restorePurchases();
+        const { customerInfo } = await Purchases.restorePurchases();
         if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
             useUIStore.getState().setPremium(true);
             return true;
