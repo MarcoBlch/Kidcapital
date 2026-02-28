@@ -3,12 +3,10 @@ import { useGameStore } from '../store/gameStore';
 import { useUIStore } from '../store/uiStore';
 import { useTutorialStore } from '../store/tutorialStore';
 import { executeHumanRoll, completeAction, nextTurn } from '../engine/TurnManager';
-import { getFreedomPercent } from '../engine/WinCondition';
 
 // HUD
 import Header from '../components/hud/Header';
 import PlayerRow from '../components/hud/PlayerRow';
-import ProgressBar from '../components/hud/ProgressBar';
 import ActionBar from '../components/hud/ActionBar';
 
 // Board
@@ -47,7 +45,6 @@ export default function GameScreen() {
     const signalEvent = useTutorialStore(s => s.signalEvent);
 
     const currentPlayer = players[currentPlayerIndex];
-    const freedomPct = currentPlayer ? getFreedomPercent(currentPlayer) : 0;
 
     // Start tutorial on first game
     useEffect(() => {
@@ -112,11 +109,6 @@ export default function GameScreen() {
                         isActive={p.id === currentPlayer.id}
                     />
                 ))}
-            </div>
-
-            {/* Freedom progress with milestones */}
-            <div className="py-1.5 flex-shrink-0">
-                <ProgressBar percent={freedomPct} />
             </div>
 
             {/* Board — fills remaining space */}

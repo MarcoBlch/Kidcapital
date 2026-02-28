@@ -1,21 +1,20 @@
 import { motion } from 'framer-motion';
 import { MIN_ASSETS_TO_WIN, MIN_SAVINGS_TO_WIN } from '../../utils/constants';
-import { useGameStore } from '../../store/gameStore';
+import type { Player } from '../../types';
 
 interface ProgressBarProps {
     percent: number;
+    player: Player;
 }
 
-export default function ProgressBar({ percent }: ProgressBarProps) {
+export default function ProgressBar({ percent, player }: ProgressBarProps) {
     const clamped = Math.max(0, Math.min(100, percent));
-    const players = useGameStore(s => s.players);
-    const humanPlayer = players.find(p => p.isHuman);
 
-    const assetCount = humanPlayer?.assets.length ?? 0;
-    const savings = humanPlayer?.savings ?? 0;
-    const quizCorrect = humanPlayer?.quizCorrect ?? 0;
-    const quizTotal = humanPlayer?.quizTotal ?? 0;
-    const debt = humanPlayer?.debt ?? 0;
+    const assetCount = player.assets.length;
+    const savings = player.savings;
+    const quizCorrect = player.quizCorrect;
+    const quizTotal = player.quizTotal;
+    const debt = player.debt;
 
     const milestones = [
         { label: '🏪', done: assetCount >= MIN_ASSETS_TO_WIN, tip: `${assetCount}/${MIN_ASSETS_TO_WIN} biz` },
@@ -25,9 +24,9 @@ export default function ProgressBar({ percent }: ProgressBarProps) {
     ];
 
     return (
-        <div className="w-full px-4">
+        <div className="w-full mt-2">
             {/* Progress bar */}
-            <div className="h-3 bg-white/5 rounded-full overflow-hidden border border-white/10">
+            <div className="h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
                 <motion.div
                     className="h-full rounded-full"
                     style={{
@@ -42,13 +41,13 @@ export default function ProgressBar({ percent }: ProgressBarProps) {
             </div>
 
             {/* Win condition milestones */}
-            <div className="flex items-center justify-between mt-1.5 px-1">
+            <div className="flex items-center justify-between mt-1 px-1">
                 {milestones.map((m, i) => (
                     <div key={i} className="flex items-center gap-1">
                         <span className={`text-xs ${m.done ? '' : 'grayscale opacity-40'}`}>
                             {m.label}
                         </span>
-                        <span className={`text-[9px] font-medium ${m.done ? 'text-emerald-400' : 'text-white/30'
+                        <span className={`text-[8px] font-medium ${m.done ? 'text-emerald-400' : 'text-white/30'
                             }`}>
                             {m.tip}
                         </span>
