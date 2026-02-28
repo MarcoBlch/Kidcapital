@@ -14,7 +14,8 @@ export default function SetupScreen() {
     const showModal = useUIStore(s => s.showModal);
     const initGame = useGameStore(s => s.initGame);
 
-    const [name, setName] = useState('');
+    const savedName = localStorage.getItem('kidcapital_player_name') || '';
+    const [name, setName] = useState(savedName);
     const [avatar, setAvatar] = useState<string>(PLAYER_AVATARS[0]);
     const [botCount, setBotCount] = useState(1);
     const [difficulty, setDifficulty] = useState<Difficulty>('11-14');
@@ -29,13 +30,18 @@ export default function SetupScreen() {
     const canStart = name.trim().length > 0;
 
     const handleStart = () => {
+        const finalName = name.trim();
+        if (!savedName) {
+            localStorage.setItem('kidcapital_player_name', finalName);
+        }
+
         const selectedBots = BOTS.slice(0, botCount).map(b => ({
             name: b.name,
             avatar: b.avatar,
             personality: b.personality as BotPersonality,
         }));
 
-        initGame(name.trim(), avatar, selectedBots, difficulty, dailyBonus);
+        initGame(finalName, avatar, selectedBots, difficulty, dailyBonus);
         setScreen('game');
     };
 
