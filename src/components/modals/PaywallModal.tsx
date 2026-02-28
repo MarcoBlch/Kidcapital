@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '../../store/uiStore';
-// import { purchasePremium } from '../../lib/revenueCat'; // TODO
+import { purchasePremiumPkg, restorePurchasesPkg } from '../../lib/revenuecat';
 
 export default function PaywallModal() {
     const activeModal = useUIStore(s => s.activeModal);
@@ -16,20 +16,25 @@ export default function PaywallModal() {
 
     const handlePurchase = async () => {
         setIsPurchasing(true);
-        // try {
-        //     await purchasePremium();
-        //     closeModal();
-        // } catch (e) {
-        //     console.error('Purchase failed', e);
-        // } finally {
-        //     setIsPurchasing(false);
-        // }
-        setTimeout(() => setIsPurchasing(false), 1500);
+        try {
+            const success = await purchasePremiumPkg();
+            if (success) {
+                closeModal();
+            }
+        } catch (e) {
+            console.error('Purchase failed', e);
+        } finally {
+            setIsPurchasing(false);
+        }
     };
 
     const handleRestore = async () => {
-        // TODO: Restore Logic
-        console.log('Restoring...');
+        setIsPurchasing(true);
+        try {
+            await restorePurchasesPkg();
+        } finally {
+            setIsPurchasing(false);
+        }
     };
 
     return (
