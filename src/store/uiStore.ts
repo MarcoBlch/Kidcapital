@@ -12,6 +12,7 @@ export type ModalType =
     | 'challenge'
     | 'bank'
     | 'portfolio'
+    | 'leaderboard'
     | null;
 
 interface CoinAnim {

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
 import { useUIStore } from '../store/uiStore';
 import { useAchievementStore } from '../store/achievementStore';
+import { useSupabaseStore } from '../store/supabaseStore';
 import { getFreedomPercent } from '../engine/WinCondition';
 import { getLevelForXP, getXPToNextLevel } from '../data/achievements';
 
@@ -47,7 +48,21 @@ export default function EndScreen() {
     useEffect(() => {
         if (recordedRef.current) return;
         recordedRef.current = true;
+
+        // 1. Give XP locally
         useAchievementStore.getState().recordGameEnd(isHumanWinner, month);
+
+        // 2. Sync to Supabase Leaderboard
+        const finalXp = useAchievementStore.getState().xp;
+        const currentLevel = getLevelForXP(finalXp);
+
+        useSupabaseStore.getState().updateProfile({
+            username: humanPlayer.name,
+            avatar: humanPlayer.avatar,
+            level: currentLevel.level,
+            xp: finalXp,
+            net_worth: netWorth
+        });
     }, []);
 
     const handlePlayAgain = () => {

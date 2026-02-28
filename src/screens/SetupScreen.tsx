@@ -7,9 +7,11 @@ import { BOTS } from '../data/bots';
 import { PLAYER_AVATARS, MAX_NAME_LENGTH } from '../utils/constants';
 import type { BotPersonality, Difficulty } from '../types';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
+import LeaderboardModal from '../components/modals/LeaderboardModal';
 
 export default function SetupScreen() {
     const setScreen = useUIStore(s => s.setScreen);
+    const showModal = useUIStore(s => s.showModal);
     const initGame = useGameStore(s => s.initGame);
 
     const [name, setName] = useState('');
@@ -55,8 +57,14 @@ export default function SetupScreen() {
                     }}
                 />
             )}
-            <div className="max-w-md mx-auto">
-                <h1 className="font-display text-3xl text-amber-400 mb-1 text-center tracking-tight">
+            <div className="max-w-md mx-auto relative">
+                <button
+                    onClick={() => showModal('leaderboard' as any)}
+                    className="absolute right-0 top-1 w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-xl shadow-[0_0_15px_rgba(245,158,11,0.4)] border-2 border-amber-200/50 hover:scale-110 active:scale-95 transition-transform"
+                >
+                    🏆
+                </button>
+                <h1 className="font-display text-3xl text-amber-400 mb-1 text-center tracking-tight pr-12">
                     🐷 New Game
                 </h1>
                 <p className="text-sm text-white/30 text-center mb-6">
@@ -191,6 +199,8 @@ export default function SetupScreen() {
                     🎲 Start Playing!
                 </motion.button>
             </div>
+
+            <LeaderboardModal />
         </motion.div>
     );
 }
