@@ -26,6 +26,7 @@ interface GameStore extends GameState {
         playerAvatar: string,
         bots: { name: string; avatar: string; personality: BotPersonality }[],
         difficulty: Difficulty,
+        dailyBonus?: number,
     ) => void;
     resetGame: () => void;
 
@@ -78,9 +79,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     turnLocked: false,
 
     // --- Init ---
-    initGame: (playerName, playerAvatar, bots, difficulty) => {
+    initGame: (playerName, playerAvatar, bots, difficulty, dailyBonus = 0) => {
         const players: Player[] = [
-            createDefaultPlayer(0, playerName, playerAvatar, true, difficulty),
+            // Human player gets the daily bonus
+            createDefaultPlayer(0, playerName, playerAvatar, true, difficulty, undefined, dailyBonus),
+            // Bots do not get the daily bonus
             ...bots.map((bot, i) =>
                 createDefaultPlayer(i + 1, bot.name, bot.avatar, false, difficulty, bot.personality),
             ),

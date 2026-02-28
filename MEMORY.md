@@ -48,6 +48,13 @@ and race to achieve Financial Freedom (passive income ≥ expenses + zero debt).
 
 ---
 
+## 🤖 AI AGENT WORKFLOW RULES (CRITICAL)
+
+1. **Always note changes at the end of each step:** Update documentation (`walkthrough.md`, `task.md`, `BRAINSTORM.md`) with what has been implemented so you remember what was done and can follow the established order.
+2. **Consult documentation first:** At the start of any new session or before starting a new step, YOU MUST ALWAYS read `MEMORY.md`, `BRAINSTORM.md`, and `walkthrough.md` to understand context and next steps.
+
+---
+
 ## WIN CONDITION
 
 ```

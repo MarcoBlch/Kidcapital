@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUIStore } from '../store/uiStore';
 import { useGameStore } from '../store/gameStore';
+import { useDailyRewardStore } from '../store/dailyRewardStore';
 import { BOTS } from '../data/bots';
 import { PLAYER_AVATARS, MAX_NAME_LENGTH } from '../utils/constants';
 import type { BotPersonality, Difficulty } from '../types';
+import DailyRewardModal from '../components/modals/DailyRewardModal';
 
 export default function SetupScreen() {
     const setScreen = useUIStore(s => s.setScreen);
@@ -15,6 +17,13 @@ export default function SetupScreen() {
     const [botCount, setBotCount] = useState(1);
     const [difficulty, setDifficulty] = useState<Difficulty>('11-14');
 
+    // Daily reward state
+    const [rewardClaimed, setRewardClaimed] = useState(false);
+    const checkDailyReward = useDailyRewardStore(s => s.checkDailyReward);
+    // Determine if we should show the modal (only initially before they claim it)
+    const showDailyRewardModal = !rewardClaimed && checkDailyReward().isAvailable;
+    const [dailyBonus, setDailyBonus] = useState(0);
+
     const canStart = name.trim().length > 0;
 
     const handleStart = () => {
@@ -24,7 +33,7 @@ export default function SetupScreen() {
             personality: b.personality as BotPersonality,
         }));
 
-        initGame(name.trim(), avatar, selectedBots, difficulty);
+        initGame(name.trim(), avatar, selectedBots, difficulty, dailyBonus);
         setScreen('game');
     };
 
@@ -38,6 +47,14 @@ export default function SetupScreen() {
                 background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
             }}
         >
+            {showDailyRewardModal && (
+                <DailyRewardModal
+                    onClose={(bonusAmount) => {
+                        setDailyBonus(bonusAmount);
+                        setRewardClaimed(true);
+                    }}
+                />
+            )}
             <div className="max-w-md mx-auto">
                 <h1 className="font-display text-3xl text-amber-400 mb-1 text-center tracking-tight">
                     🐷 New Game

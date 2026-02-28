@@ -289,3 +289,10 @@ Marc already has a Supabase account. Open-source, self-hostable, PostgreSQL-base
 
 ### 4. Parental dashboard: ❌ Not now
 ### 5. School mode: ❌ Not now
+
+### 6. Phase 2 Features (Completed)
+- ✅ **Onboarding tutorial ("Penny Teaches You")**: Interactive 8-step tutorial with `TutorialManager`, spotlight overlay, and `localStorage` persistence.
+- ✅ **Achievements & XP levels**: 15 achievements, 6 XP levels with persistent storage and toast notifications.
+- ✅ **Age-based difficulty**: 8-10 vs 11-14 selection at setup, adjusting starting cash, expenses, and filtering quiz challenges by age.
+- ✅ **Portfolio visualization**: Added a 'Portfolio' modal accessible from the action bar to view net worth, passive income, and a list of owned businesses.
+- ✅ **Daily rewards & streaks**: Bonus starting cash based on consecutive daily logins. Modals handle streaks dynamically at the start of a `SetupScreen`.
