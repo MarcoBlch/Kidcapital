@@ -369,7 +369,7 @@ describe('createDefaultPlayer', () => {
     });
 
     it('should set bot personality if provided', () => {
-        const bot = createDefaultPlayer(1, 'Chloe', '🐢', false, 'conservative');
+        const bot = createDefaultPlayer(1, 'Chloe', '🐢', false, '11-14', 'conservative');
         expect(bot.isHuman).toBe(false);
         expect(bot.personality).toBe('conservative');
     });

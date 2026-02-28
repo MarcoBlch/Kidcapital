@@ -329,7 +329,6 @@ function showPennyForSpace(
     const triggerMap: Record<string, string> = {
         invest: 'land_invest',
         payday: 'payday_positive',
-        life: 'life_event_good',
         hustle: 'hustle',
         temptation: 'generic',
         challenge: 'generic',

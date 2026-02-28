@@ -1,5 +1,9 @@
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/gameStore';
+import { useUIStore } from '../../store/uiStore';
+
+// We import Button variants but ActionBar currently uses custom styled motion.buttons.
+// Let's stick with the existing styling conventions for alignment.
 
 interface ActionBarProps {
     onRoll: () => void;
@@ -10,6 +14,7 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
     const turnPhase = useGameStore(s => s.turnPhase);
     const diceResult = useGameStore(s => s.diceResult);
     const currentPlayer = useGameStore(s => s.players[s.currentPlayerIndex]);
+    const showModal = useUIStore(s => s.showModal);
 
     const canRoll = turnPhase === 'idle' && currentPlayer?.isHuman;
     const showNext = turnPhase === 'turn_end' && currentPlayer?.isHuman;
@@ -45,8 +50,23 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
                     </motion.div>
                 )}
 
-                {/* Right: action button */}
-                <div className="flex-shrink-0">
+                {/* Right: action buttons */}
+                <div className="flex flex-shrink-0 items-center gap-2">
+                    {/* Always allow viewing portfolio on your turn, unless it's over */}
+                    {currentPlayer?.isHuman && (
+                        <motion.button
+                            whileTap={{ scale: 0.92 }}
+                            onClick={() => showModal('portfolio' as any)}
+                            className="
+                                px-4 py-2.5 rounded-2xl font-display text-sm font-bold
+                                bg-white/10 border border-white/20 text-white
+                                hover:bg-white/15 cursor-pointer transition-all
+                            "
+                        >
+                            💼
+                        </motion.button>
+                    )}
+
                     {canRoll && (
                         <motion.button
                             whileTap={{ scale: 0.92 }}

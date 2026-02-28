@@ -1,4 +1,4 @@
-import type { Player, Asset, PaydayReport } from '../types';
+import type { Player, Asset, PaydayReport, Difficulty } from '../types';
 import { GO_BONUS, DOWN_PAYMENT_RATE, LOAN_INTEREST_RATE, LOAN_MONTHLY_RATE } from '../utils/constants';
 
 // ============================================
@@ -203,25 +203,28 @@ export function applyGoBonus(player: Player): Player {
 }
 
 /**
- * Create a default player with starting values.
+ * Create a default player with starting values based on difficulty level.
  */
 export function createDefaultPlayer(
     id: number,
     name: string,
     avatar: string,
     isHuman: boolean,
+    difficulty: Difficulty = '11-14',
     personality?: Player['personality'],
 ): Player {
+    const isEasy = difficulty === '8-10';
+
     return {
         id,
         name,
         avatar,
         isHuman,
         personality,
-        cash: 100,          // was 200
+        cash: isEasy ? 150 : 100,
         savings: 0,
-        salary: 35,         // was 50
-        baseExpenses: 30,   // was 20
+        salary: isEasy ? 40 : 35,
+        baseExpenses: isEasy ? 20 : 30,
         debt: 0,
         loanPayment: 0,
         assets: [],

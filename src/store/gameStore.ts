@@ -67,7 +67,7 @@ const initialState: GameState = {
     diceResult: null,
     isGameOver: false,
     winnerId: null,
-    difficulty: 'standard',
+    difficulty: '11-14',
     isPremium: false,
     soundEnabled: true,
     pennyMuted: false,
@@ -80,9 +80,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // --- Init ---
     initGame: (playerName, playerAvatar, bots, difficulty) => {
         const players: Player[] = [
-            createDefaultPlayer(0, playerName, playerAvatar, true),
+            createDefaultPlayer(0, playerName, playerAvatar, true, difficulty),
             ...bots.map((bot, i) =>
-                createDefaultPlayer(i + 1, bot.name, bot.avatar, false, bot.personality),
+                createDefaultPlayer(i + 1, bot.name, bot.avatar, false, difficulty, bot.personality),
             ),
         ];
         set({

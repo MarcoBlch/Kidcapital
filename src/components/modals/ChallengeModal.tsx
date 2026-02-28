@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { useAchievementStore } from '../../store/achievementStore';
 import { getRandomChallenge } from '../../data/challenges';
 import Button from '../ui/Button';
 
@@ -13,7 +14,8 @@ export default function ChallengeModal() {
     const showCoin = useUIStore(s => s.showCoin);
 
     const player = players[currentPlayerIndex];
-    const challenge = useMemo(() => getRandomChallenge(), []);
+    const difficulty = useGameStore(s => s.difficulty);
+    const challenge = useMemo(() => getRandomChallenge(difficulty), [difficulty]);
 
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [revealed, setRevealed] = useState(false);
@@ -29,6 +31,11 @@ export default function ChallengeModal() {
 
         const correct = index === challenge.correctIndex;
         playerQuizResult(player.id, correct, correct ? REWARD : 0);
+
+        // Track achievement
+        if (player.isHuman) {
+            useAchievementStore.getState().recordQuizResult(correct);
+        }
 
         if (correct) {
             showCoin(REWARD);

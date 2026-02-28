@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
 import { getRandomEvent } from '../../data/events';
+import { getPennyPhrase } from '../../data/penny-phrases';
 import Button from '../ui/Button';
 
 export default function LifeEventModal() {
@@ -22,6 +23,11 @@ export default function LifeEventModal() {
         setCollected(true);
         playerApplyLifeEvent(player.id, event.amount);
         showCoin(event.amount);
+
+        // Penny reacts based on the event context
+        const uiStore = useUIStore.getState();
+        uiStore.showPenny(getPennyPhrase(isGood ? 'life_event_good' : 'life_event_bad'));
+
         setTimeout(() => closeModal(), 600);
     };
 
@@ -38,8 +44,8 @@ export default function LifeEventModal() {
 
             <div
                 className={`inline-block px-6 py-3 rounded-2xl font-display text-2xl font-extrabold mb-5 ${isGood
-                        ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                        : 'bg-rose-50 text-rose-600 border border-rose-200'
+                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+                    : 'bg-rose-50 text-rose-600 border border-rose-200'
                     }`}
             >
                 {isGood ? '+' : ''}${event.amount}

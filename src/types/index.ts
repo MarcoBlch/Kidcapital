@@ -75,6 +75,7 @@ export interface Challenge {
     correctIndex: number;
     pennyExplanation: string;
     reward: number;
+    difficulty: Difficulty | 'all';
 }
 
 // --- Bot Personality ---
@@ -129,13 +130,12 @@ export type TurnPhase =
 
 // --- Difficulty ---
 
-export type Difficulty = 'standard' | 'medium' | 'hard';
+export type Difficulty = '8-10' | '11-14';
 
 export interface DifficultyConfig {
     cash: number;
     salary: number;
     baseExpenses: number;
-    availableTiers: AssetTier[];
 }
 
 // --- Game State ---

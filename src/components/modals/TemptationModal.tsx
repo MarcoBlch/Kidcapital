@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { useAchievementStore } from '../../store/achievementStore';
 import { getRandomTemptation } from '../../data/temptations';
 import Button from '../ui/Button';
 
@@ -24,6 +25,9 @@ export default function TemptationModal() {
         setChoice('buy');
         playerBuyTemptation(player.id, temptation.cost);
         showCoin(-temptation.cost);
+        if (player.isHuman) {
+            useAchievementStore.getState().resetTemptationStreak();
+        }
     };
 
     const handleSkip = () => {
@@ -32,6 +36,9 @@ export default function TemptationModal() {
         setChoice('skip');
         playerSkipTemptation(player.id);
         showCoin(5); // savings reward!
+        if (player.isHuman) {
+            useAchievementStore.getState().recordTemptationSkip();
+        }
     };
 
     const handleClose = () => closeModal();

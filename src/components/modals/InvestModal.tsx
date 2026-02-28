@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { useAchievementStore } from '../../store/achievementStore';
 import { getAvailableAssets } from '../../data/assets';
 import { canBuyAsset } from '../../engine/FinancialEngine';
 import Button from '../ui/Button';
@@ -24,14 +25,20 @@ export default function InvestModal() {
     const handleBuyCash = (asset: Asset) => {
         if (playerBuyAssetCash(player.id, asset)) {
             showCoin(-asset.cost);
+            if (player.isHuman) {
+                useAchievementStore.getState().incrementStat('totalAssetsEverBought');
+            }
             closeModal();
         }
     };
 
     const handleBuyLoan = (asset: Asset) => {
-        const down = Math.ceil(asset.cost * 0.30);
+        const down = Math.ceil(asset.cost * 0.40);
         if (playerBuyAssetLoan(player.id, asset)) {
             showCoin(-down);
+            if (player.isHuman) {
+                useAchievementStore.getState().incrementStat('totalAssetsEverBought');
+            }
             closeModal();
         }
     };

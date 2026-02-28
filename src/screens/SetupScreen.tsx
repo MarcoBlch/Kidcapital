@@ -4,8 +4,7 @@ import { useUIStore } from '../store/uiStore';
 import { useGameStore } from '../store/gameStore';
 import { BOTS } from '../data/bots';
 import { PLAYER_AVATARS, MAX_NAME_LENGTH } from '../utils/constants';
-import Button from '../components/ui/Button';
-import type { BotPersonality } from '../types';
+import type { BotPersonality, Difficulty } from '../types';
 
 export default function SetupScreen() {
     const setScreen = useUIStore(s => s.setScreen);
@@ -14,6 +13,7 @@ export default function SetupScreen() {
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState<string>(PLAYER_AVATARS[0]);
     const [botCount, setBotCount] = useState(1);
+    const [difficulty, setDifficulty] = useState<Difficulty>('11-14');
 
     const canStart = name.trim().length > 0;
 
@@ -24,7 +24,7 @@ export default function SetupScreen() {
             personality: b.personality as BotPersonality,
         }));
 
-        initGame(name.trim(), avatar, selectedBots, 'standard');
+        initGame(name.trim(), avatar, selectedBots, difficulty);
         setScreen('game');
     };
 
@@ -92,6 +92,29 @@ export default function SetupScreen() {
                     <p className="text-[10px] text-white/20 mt-1 text-right">
                         {name.length}/{MAX_NAME_LENGTH}
                     </p>
+                </div>
+
+                {/* Age Level */}
+                <div className="mb-5">
+                    <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
+                        Player Age (Difficulty)
+                    </label>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setDifficulty('8-10')}
+                            className={`flex-1 py-3 rounded-xl font-bold transition-all border-2 cursor-pointer ${difficulty === '8-10' ? 'bg-amber-400/15 border-amber-400/50 text-amber-300' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
+                        >
+                            8-10 Years
+                            <div className="text-[10px] font-normal opacity-70 mt-0.5">Easier start</div>
+                        </button>
+                        <button
+                            onClick={() => setDifficulty('11-14')}
+                            className={`flex-1 py-3 rounded-xl font-bold transition-all border-2 cursor-pointer ${difficulty === '11-14' ? 'bg-amber-400/15 border-amber-400/50 text-amber-300' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
+                        >
+                            11-14 Years
+                            <div className="text-[10px] font-normal opacity-70 mt-0.5">Standard</div>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Bot count */}

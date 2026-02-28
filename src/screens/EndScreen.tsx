@@ -1,7 +1,10 @@
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
 import { useUIStore } from '../store/uiStore';
+import { useAchievementStore } from '../store/achievementStore';
 import { getFreedomPercent } from '../engine/WinCondition';
+import { getLevelForXP, getXPToNextLevel } from '../data/achievements';
 
 export default function EndScreen() {
     const players = useGameStore(s => s.players);
@@ -35,7 +38,20 @@ export default function EndScreen() {
 
     const isHumanWinner = winner.id === humanPlayer.id;
 
+    // Record game end for achievements (once)
+    const recordedRef = useRef(false);
+    const xp = useAchievementStore(s => s.xp);
+    const level = getLevelForXP(xp);
+    const xpProgress = getXPToNextLevel(xp);
+
+    useEffect(() => {
+        if (recordedRef.current) return;
+        recordedRef.current = true;
+        useAchievementStore.getState().recordGameEnd(isHumanWinner, month);
+    }, []);
+
     const handlePlayAgain = () => {
+        useAchievementStore.getState().resetSession();
         resetGame();
         setScreen('setup');
     };
@@ -127,6 +143,38 @@ export default function EndScreen() {
                     </div>
                 </motion.div>
 
+                {/* XP Level Card */}
+                <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="bg-gradient-to-r from-amber-400/10 to-amber-500/10 rounded-2xl p-4 mb-4 border border-amber-400/20"
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center text-2xl">
+                            {level.icon}
+                        </div>
+                        <div className="flex-1">
+                            <div className="text-[9px] text-amber-300/50 uppercase tracking-wider font-bold">Level {level.level}</div>
+                            <div className="font-display text-base text-amber-300 font-bold">{level.title}</div>
+                            <div className="text-[10px] text-white/30">{xp} XP total</div>
+                        </div>
+                    </div>
+                    {/* XP progress bar */}
+                    <div className="mt-3 h-2 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${xpProgress.progress}%` }}
+                            transition={{ duration: 1, delay: 0.6 }}
+                        />
+                    </div>
+                    <div className="flex justify-between mt-1">
+                        <span className="text-[9px] text-white/20">{xpProgress.current} XP</span>
+                        <span className="text-[9px] text-white/20">{xpProgress.next} XP</span>
+                    </div>
+                </motion.div>
+
                 {/* Penny's final lesson */}
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -182,10 +230,10 @@ function StatRow({
             </span>
             <span
                 className={`text-sm font-bold ${highlight === 'positive'
-                        ? 'text-emerald-400'
-                        : highlight === 'negative'
-                            ? 'text-rose-400'
-                            : 'text-white'
+                    ? 'text-emerald-400'
+                    : highlight === 'negative'
+                        ? 'text-rose-400'
+                        : 'text-white'
                     }`}
             >
                 {value}

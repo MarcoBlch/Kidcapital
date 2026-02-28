@@ -23,16 +23,22 @@ import HustleModal from '../components/modals/HustleModal';
 import TemptationModal from '../components/modals/TemptationModal';
 import ChallengeModal from '../components/modals/ChallengeModal';
 import BankModal from '../components/modals/BankModal';
+import PortfolioModal from '../components/modals/PortfolioModal';
 
 // Overlays
 import PennyBubble from '../components/penny/PennyBubble';
 import CoinAnimation from '../components/ui/CoinAnimation';
+import AchievementToast from '../components/ui/AchievementToast';
 import TutorialOverlay from '../components/tutorial/TutorialOverlay';
+import { useAchievementTracker } from '../hooks/useAchievementTracker';
 
 export default function GameScreen() {
     const players = useGameStore(s => s.players);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const turnPhase = useGameStore(s => s.turnPhase);
+
+    // Achievement tracker
+    useAchievementTracker();
     const activeModal = useUIStore(s => s.activeModal);
     const modalSpaceColor = useUIStore(s => s.modalSpaceColor);
     const turnLog = useUIStore(s => s.turnLog);
@@ -142,6 +148,9 @@ export default function GameScreen() {
             {/* Coin animations */}
             <CoinAnimation />
 
+            {/* Achievement toasts */}
+            <AchievementToast />
+
             {/* Tutorial overlay */}
             <TutorialOverlay />
 
@@ -158,6 +167,7 @@ export default function GameScreen() {
                 {activeModal === 'temptation' && <TemptationModal />}
                 {activeModal === 'challenge' && <ChallengeModal />}
                 {activeModal === 'bank' && <BankModal />}
+                {activeModal === 'portfolio' && <PortfolioModal />}
             </BottomSheet>
         </div>
     );
