@@ -45,5 +45,5 @@ ios/
 android/
 *.ipa
 *.apk
-*.aab
-.memory.md
+*.aab# Private Memory Config
+MEMORY.md
