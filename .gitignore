@@ -46,3 +46,4 @@ android/
 *.ipa
 *.apk
 *.aab
+.memory.md
