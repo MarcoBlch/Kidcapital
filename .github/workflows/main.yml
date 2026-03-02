@@ -128,3 +128,22 @@ jobs:
         with:
           name: KidCapital-iOS-IPA
           path: ios/App/build/ipa/*.ipa
+
+      - name: Upload to App Store Connect
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          APPSTORE_PRIVATE_KEY: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+        run: |
+          # Create private keys directory required by altool
+          mkdir -p ~/.private_keys
+          
+          # Save the private key to the expected file format and location
+          echo "$APPSTORE_PRIVATE_KEY" > ~/.private_keys/AuthKey_${APPSTORE_KEY_ID}.p8
+          
+          # Upload the IPA to App Store Connect (TestFlight/App Store)
+          xcrun altool --upload-app \
+            -f ios/App/build/ipa/*.ipa \
+            -t ios \
+            --apiKey "$APPSTORE_KEY_ID" \
+            --apiIssuer "$APPSTORE_ISSUER_ID"
