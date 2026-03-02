@@ -58,6 +58,16 @@ jobs:
       - name: Capacitor Sync
         run: npx cap sync ios
 
+      - name: Configure Xcode Project
+        run: |
+          cd ios/App/App.xcodeproj
+          # Set Development Team
+          sed -i '' 's/DEVELOPMENT_TEAM = "";/DEVELOPMENT_TEAM = L7R8N22RC4;/g' project.pbxproj
+          # Enable Manual Code Signing
+          sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' project.pbxproj
+          # Set Provisioning Profile
+          sed -i '' 's/PROVISIONING_PROFILE_SPECIFIER = "";/PROVISIONING_PROFILE_SPECIFIER = "KidCapital App Store Profile";/g' project.pbxproj
+
       - name: Archive iOS App
         run: |
           cd ios/App
