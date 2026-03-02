@@ -47,3 +47,4 @@ android/
 *.apk
 *.aab# Private Memory Config
 MEMORY.md
+ios_certs/

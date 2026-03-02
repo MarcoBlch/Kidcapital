@@ -41,9 +41,9 @@ export async function purchasePremiumPkg(): Promise<boolean> {
         if (offerings.current && offerings.current.availablePackages.length > 0) {
             // Assume the first package in the current offering is the Premium unlock
             const pkg = offerings.current.availablePackages[0];
-            const purchaseResult = await Purchases.purchasePackage({ aPackage: pkg });
+            const { customerInfo } = await Purchases.purchasePackage({ aPackage: pkg });
 
-            if (typeof purchaseResult.customerInfo.entitlements.active['Premium'] !== 'undefined') {
+            if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
                 useUIStore.getState().setPremium(true);
                 return true;
             }
