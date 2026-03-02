@@ -52,6 +52,7 @@ jobs:
           echo "Installing profile $PROFILE_NAME with UUID $PROFILE_UUID"
           
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$PROFILE_UUID.mobileprovision
+          echo "APP_PROFILE_UUID=$PROFILE_UUID" >> $GITHUB_ENV
 
       - name: Install Dependencies
         run: npm ci || npm install
@@ -70,7 +71,7 @@ jobs:
           cd ios/App/App.xcodeproj
           sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' project.pbxproj
           sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer";/CODE_SIGN_IDENTITY = "Apple Distribution";/g' project.pbxproj
-          sed -i '' 's/INFOPLIST_FILE = App\/Info.plist;/INFOPLIST_FILE = App\/Info.plist; DEVELOPMENT_TEAM = L7R8N22RC4; PROVISIONING_PROFILE_SPECIFIER = "";/g' project.pbxproj
+          sed -i '' "s/INFOPLIST_FILE = App\/Info.plist;/INFOPLIST_FILE = App\/Info.plist; DEVELOPMENT_TEAM = L7R8N22RC4; PROVISIONING_PROFILE_SPECIFIER = \"\${APP_PROFILE_UUID}\";/g" project.pbxproj
 
       - name: Archive iOS App
         run: |
@@ -80,9 +81,7 @@ jobs:
             -scheme App \
             -configuration Release \
             -archivePath $PWD/build/App.xcarchive \
-            -allowProvisioningUpdates \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            DEVELOPMENT_TEAM=L7R8N22RC4
+            -allowProvisioningUpdates
 
       - name: Export IPA
         run: |
