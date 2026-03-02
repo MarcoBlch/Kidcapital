@@ -69,7 +69,9 @@ jobs:
         run: npx cap add ios
 
       - name: Capacitor Sync
-        run: npx cap sync ios
+        run: |
+          npx cap sync ios
+          npx @capacitor/assets generate --ios
 
       - name: Configure App Target Code Signing
         run: |
