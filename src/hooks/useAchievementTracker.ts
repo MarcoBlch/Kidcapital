@@ -8,7 +8,6 @@ import { useAchievementStore } from '../store/achievementStore';
  */
 export function useAchievementTracker() {
     const players = useGameStore(s => s.players);
-    const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const turnPhase = useGameStore(s => s.turnPhase);
     const maxStat = useAchievementStore(s => s.maxStat);
 

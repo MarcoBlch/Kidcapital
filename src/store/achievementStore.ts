@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import {
     ACHIEVEMENTS,
     INITIAL_STATS,
-    getLevelForXP,
     type Achievement,
     type AchievementStats,
 } from '../data/achievements';

@@ -1,4 +1,4 @@
-import type { DifficultyConfig, AssetTier } from '../types';
+import type { DifficultyConfig } from '../types';
 
 // ============================================
 // KidCapital — Constants & Configuration
@@ -37,19 +37,16 @@ export const DIFFICULTY_CONFIGS: Record<string, DifficultyConfig> = {
         cash: 100,          // was 200
         salary: 35,         // was 50
         baseExpenses: 30,   // was 20
-        availableTiers: [1, 2] as AssetTier[],
     },
     medium: {
         cash: 80,
         salary: 30,
         baseExpenses: 35,
-        availableTiers: [1, 2, 3] as AssetTier[],
     },
     hard: {
         cash: 60,
         salary: 25,
         baseExpenses: 40,
-        availableTiers: [1, 2, 3] as AssetTier[],
     },
 };
 
