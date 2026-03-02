@@ -70,7 +70,7 @@ jobs:
           cd ios/App/App.xcodeproj
           sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' project.pbxproj
           sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer";/CODE_SIGN_IDENTITY = "Apple Distribution";/g' project.pbxproj
-          sed -i '' 's/INFOPLIST_FILE = App\/Info.plist;/INFOPLIST_FILE = App\/Info.plist; DEVELOPMENT_TEAM = L7R8N22RC4; PROVISIONING_PROFILE_SPECIFIER = "KidCapital App Store Profile";/g' project.pbxproj
+          sed -i '' 's/INFOPLIST_FILE = App\/Info.plist;/INFOPLIST_FILE = App\/Info.plist; DEVELOPMENT_TEAM = L7R8N22RC4; PROVISIONING_PROFILE_SPECIFIER = "";/g' project.pbxproj
 
       - name: Archive iOS App
         run: |
@@ -80,7 +80,9 @@ jobs:
             -scheme App \
             -configuration Release \
             -archivePath $PWD/build/App.xcarchive \
-            -allowProvisioningUpdates
+            -allowProvisioningUpdates \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            DEVELOPMENT_TEAM=L7R8N22RC4
 
       - name: Export IPA
         run: |
