@@ -61,6 +61,9 @@ const SPACE_TYPE_TO_MODAL: Record<string, ModalType> = {
     temptation: 'temptation',
     challenge: 'challenge',
     bank: 'bank',
+    portfolio: 'portfolio',
+    leaderboard: 'leaderboard',
+    paywall: 'paywall',
     start: null,
 };
 
