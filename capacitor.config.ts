@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.marcobelchior.kidcapital',
+  appId: 'com.marcobloch.kidcapital',
   appName: 'KidCapital',
   webDir: 'dist'
 };
