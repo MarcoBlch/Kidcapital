@@ -40,6 +40,7 @@ jobs:
 
           # import certificate to keychain
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # apply provisioning profile
@@ -68,6 +69,7 @@ jobs:
         run: |
           cd ios/App/App.xcodeproj
           sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' project.pbxproj
+          sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer";/CODE_SIGN_IDENTITY = "Apple Distribution";/g' project.pbxproj
           sed -i '' 's/INFOPLIST_FILE = App\/Info.plist;/INFOPLIST_FILE = App\/Info.plist; DEVELOPMENT_TEAM = L7R8N22RC4; PROVISIONING_PROFILE_SPECIFIER = "KidCapital App Store Profile";/g' project.pbxproj
 
       - name: Archive iOS App
