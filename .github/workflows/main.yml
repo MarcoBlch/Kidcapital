@@ -66,14 +66,13 @@ jobs:
             -scheme App \
             -configuration Release \
             -archivePath $PWD/build/App.xcarchive \
-            CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM=L7R8N22RC4 \
-            PROVISIONING_PROFILE_SPECIFIER="KidCapital App Store Profile" \
-            CODE_SIGN_IDENTITY="Apple Distribution"
+            -allowProvisioningUpdates
 
       - name: Export IPA
         run: |
           cd ios/App
+          
+          # Create ExportOptions.plist dynamically
           cat <<EOF > ExportOptions.plist
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -82,14 +81,20 @@ jobs:
               <key>method</key>
               <string>app-store</string>
               <key>teamID</key>
-              <string>84SNNP97ZY</string>
+              <string>L7R8N22RC4</string>
               <key>provisioningProfiles</key>
               <dict>
-                  <key>com.marcobloch.kidcapital</key>
+                  <key>io.marcobelchior.kidcapital</key>
                   <string>KidCapital App Store Profile</string>
               </dict>
+              <key>signingCertificate</key>
+              <string>Apple Distribution</string>
               <key>signingStyle</key>
               <string>manual</string>
+              <key>stripSwiftSymbols</key>
+              <true/>
+              <key>manageAppVersionAndBuildNumber</key>
+              <true/>
           </dict>
           </plist>
           EOF
