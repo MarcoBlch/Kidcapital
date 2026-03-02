@@ -48,3 +48,4 @@ android/
 *.aab# Private Memory Config
 MEMORY.md
 ios_certs/
+MEMORY.md:Zone.Identifier
