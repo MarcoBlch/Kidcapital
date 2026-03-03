@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">KidCapital</string>
     <string name="title_activity_main">KidCapital</string>
-    <string name="package_name">io.marcobelchior.kidcapital</string>
-    <string name="custom_url_scheme">io.marcobelchior.kidcapital</string>
+    <string name="package_name">com.marcobloch.kidcapital</string>
+    <string name="custom_url_scheme">com.marcobloch.kidcapital</string>
 </resources>

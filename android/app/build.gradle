@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "io.marcobelchior.kidcapital"
+    namespace "com.marcobloch.kidcapital"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "io.marcobelchior.kidcapital"
+        applicationId "com.marcobloch.kidcapital"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -16,10 +16,23 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (System.env.ANDROID_KEYSTORE_PATH != null) {
+                storeFile file(System.env.ANDROID_KEYSTORE_PATH)
+                storePassword System.env.ANDROID_STORE_PASSWORD
+                keyAlias System.env.ANDROID_KEY_ALIAS
+                keyPassword System.env.ANDROID_KEY_PASSWORD
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (System.env.ANDROID_KEYSTORE_PATH != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }

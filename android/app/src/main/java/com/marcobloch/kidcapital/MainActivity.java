@@ -1,4 +1,4 @@
-package io.marcobelchior.kidcapital;
+package com.marcobloch.kidcapital;
 
 import com.getcapacitor.BridgeActivity;
 
