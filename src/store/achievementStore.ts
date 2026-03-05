@@ -5,6 +5,7 @@ import {
     type Achievement,
     type AchievementStats,
 } from '../data/achievements';
+import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 
 // ============================================
 // Achievement Store — persisted in localStorage
@@ -53,7 +54,7 @@ const STORAGE_KEY = 'kidcapital_achievements';
 
 function loadFromStorage(): { stats: AchievementStats; unlockedIds: string[]; xp: number } {
     try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = safeGetItem(STORAGE_KEY);
         if (raw) {
             const data = JSON.parse(raw);
             return {
@@ -67,7 +68,7 @@ function loadFromStorage(): { stats: AchievementStats; unlockedIds: string[]; xp
 }
 
 function saveToStorage(stats: AchievementStats, unlockedIds: Set<string>, xp: number) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    safeSetItem(STORAGE_KEY, JSON.stringify({
         stats,
         unlockedIds: Array.from(unlockedIds),
         xp,

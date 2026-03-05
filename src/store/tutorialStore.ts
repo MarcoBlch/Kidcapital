@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { useGameStore } from './gameStore';
+import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 
 // ============================================
 // Tutorial Steps — "Penny Teaches You" 🐷
@@ -110,7 +111,7 @@ interface TutorialStore {
 const STORAGE_KEY = 'kidcapital_tutorial_done';
 
 export const useTutorialStore = create<TutorialStore>((set, get) => ({
-    isCompleted: localStorage.getItem(STORAGE_KEY) === 'true',
+    isCompleted: safeGetItem(STORAGE_KEY) === 'true',
     isActive: false,
     currentStepIndex: 0,
 
@@ -135,7 +136,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     },
 
     completeTutorial: () => {
-        localStorage.setItem(STORAGE_KEY, 'true');
+        safeSetItem(STORAGE_KEY, 'true');
         set({ isActive: false, isCompleted: true });
 
         // Restart the game automatically so the user starts fresh after the tutorial

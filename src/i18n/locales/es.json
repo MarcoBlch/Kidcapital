@@ -1,0 +1,26 @@
+{
+    "splash": {
+        "title": "KidCapital",
+        "subtitle": "El Simulador Financiero Definitivo",
+        "start": "Toca para Empezar",
+        "loading": "Cargando..."
+    },
+    "setup": {
+        "title": "🐷 Nueva Partida",
+        "subtitle": "¡Crea tu jugador y elige tus oponentes!",
+        "avatar": "Elige tu avatar",
+        "name": "Tu nombre",
+        "name_placeholder": "Escribe tu nombre...",
+        "difficulty": "Edad del Jugador (Dificultad)",
+        "diff_easy": "8-10 Años",
+        "diff_easy_desc": "Inicio más fácil",
+        "diff_med": "11-14 Años",
+        "diff_med_desc": "Estándar",
+        "diff_hard": "15-18 Años",
+        "diff_hard_desc": "Modo Difícil",
+        "opponents": "Oponentes",
+        "bot_singular": "Bot",
+        "bot_plural": "Bots",
+        "start_game": "🎲 ¡A Jugar!"
+    }
+}

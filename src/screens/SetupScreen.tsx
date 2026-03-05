@@ -9,14 +9,17 @@ import type { BotPersonality, Difficulty } from '../types';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
 import LeaderboardModal from '../components/modals/LeaderboardModal';
 import PaywallModal from '../components/modals/PaywallModal';
+import { useTranslation } from 'react-i18next';
+import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 
 export default function SetupScreen() {
+    const { t, i18n } = useTranslation();
     const setScreen = useUIStore(s => s.setScreen);
     const showModal = useUIStore(s => s.showModal);
     const isPremium = useUIStore(s => s.isPremium);
     const initGame = useGameStore(s => s.initGame);
 
-    const savedName = localStorage.getItem('kidcapital_player_name') || '';
+    const savedName = safeGetItem('kidcapital_player_name') || '';
     const [name, setName] = useState(savedName);
     const [avatar, setAvatar] = useState<string>(PLAYER_AVATARS[0]);
     const [botCount, setBotCount] = useState(1);
@@ -34,7 +37,7 @@ export default function SetupScreen() {
     const handleStart = () => {
         const finalName = name.trim();
         if (!savedName) {
-            localStorage.setItem('kidcapital_player_name', finalName);
+            safeSetItem('kidcapital_player_name', finalName);
         }
 
         const selectedBots = BOTS.slice(0, botCount).map(b => ({
@@ -86,16 +89,16 @@ export default function SetupScreen() {
                     🏆
                 </button>
                 <h1 className="font-display text-3xl text-amber-400 mb-1 text-center tracking-tight pr-12">
-                    🐷 New Game
+                    {t('setup.title')}
                 </h1>
                 <p className="text-sm text-white/30 text-center mb-6">
-                    Set up your player and pick opponents!
+                    {t('setup.subtitle')}
                 </p>
 
                 {/* Avatar selection */}
                 <div className="mb-5">
                     <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
-                        Choose your avatar
+                        {t('setup.avatar')}
                     </label>
                     <div className="grid grid-cols-5 gap-2">
                         {PLAYER_AVATARS.map((a, index) => {
@@ -130,13 +133,13 @@ export default function SetupScreen() {
                 {/* Name input */}
                 <div className="mb-5">
                     <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
-                        Your name
+                        {t('setup.name')}
                     </label>
                     <input
                         type="text"
                         value={name}
                         onChange={e => setName(e.target.value.slice(0, MAX_NAME_LENGTH))}
-                        placeholder="Enter your name..."
+                        placeholder={t('setup.name_placeholder')}
                         maxLength={MAX_NAME_LENGTH}
                         className="
               w-full px-4 py-3 rounded-xl border-2 border-white/10
@@ -153,30 +156,30 @@ export default function SetupScreen() {
                 {/* Age Level */}
                 <div className="mb-5">
                     <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
-                        Player Age (Difficulty)
+                        {t('setup.difficulty')}
                     </label>
                     <div className="flex gap-2">
                         <button
                             onClick={() => setDifficulty('8-10')}
                             className={`flex-1 py-3 rounded-xl font-bold transition-all border-2 cursor-pointer ${difficulty === '8-10' ? 'bg-amber-400/15 border-amber-400/50 text-amber-300' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
                         >
-                            8-10 Years
-                            <div className="text-[10px] font-normal opacity-70 mt-0.5">Easier start</div>
+                            {t('setup.diff_easy')}
+                            <div className="text-[10px] font-normal opacity-70 mt-0.5">{t('setup.diff_easy_desc')}</div>
                         </button>
                         <button
                             onClick={() => setDifficulty('11-14')}
                             className={`flex-1 py-3 rounded-xl font-bold transition-all border-2 cursor-pointer ${difficulty === '11-14' ? 'bg-amber-400/15 border-amber-400/50 text-amber-300' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
                         >
-                            <div className="text-sm">11-14 Years</div>
-                            <div className="text-[10px] font-normal opacity-70 mt-0.5">Standard</div>
+                            <div className="text-sm">{t('setup.diff_med')}</div>
+                            <div className="text-[10px] font-normal opacity-70 mt-0.5">{t('setup.diff_med_desc')}</div>
                         </button>
 
                         <button
                             onClick={() => !isPremium ? showModal('paywall' as any) : setDifficulty('15-18' as Difficulty)}
                             className={`relative flex-1 py-3 rounded-xl font-bold transition-all border-2 cursor-pointer ${difficulty === '15-18' ? 'bg-amber-400/15 border-amber-400/50 text-amber-300' : !isPremium ? 'bg-black/20 border-white/5 opacity-60' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
                         >
-                            <div className="text-sm">15-18 Years</div>
-                            <div className="text-[10px] font-normal opacity-70 mt-0.5 text-rose-300">Hard Mode</div>
+                            <div className="text-sm">{t('setup.diff_hard')}</div>
+                            <div className="text-[10px] font-normal opacity-70 mt-0.5 text-rose-300">{t('setup.diff_hard_desc')}</div>
                             {!isPremium && <div className="absolute top-1 right-1 text-[10px]">🔒</div>}
                         </button>
                     </div>
@@ -184,8 +187,15 @@ export default function SetupScreen() {
 
                 {/* Bot count */}
                 <div className="mb-6">
-                    <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
-                        Opponents ({botCount})
+                    <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block flex justify-between items-center">
+                        <span>{t('setup.opponents')} ({botCount})</span>
+
+                        {/* Language switcher - super simple for now */}
+                        <div className="flex gap-1">
+                            <button onClick={() => { i18n.changeLanguage('en'); safeSetItem('kidcapital_language', 'en'); }} className={`px-1.5 py-0.5 rounded ${i18n.language === 'en' ? 'bg-white/20 text-white' : 'text-white/30'}`}>EN</button>
+                            <button onClick={() => { i18n.changeLanguage('fr'); safeSetItem('kidcapital_language', 'fr'); }} className={`px-1.5 py-0.5 rounded ${i18n.language === 'fr' ? 'bg-white/20 text-white' : 'text-white/30'}`}>FR</button>
+                            <button onClick={() => { i18n.changeLanguage('es'); safeSetItem('kidcapital_language', 'es'); }} className={`px-1.5 py-0.5 rounded ${i18n.language === 'es' ? 'bg-white/20 text-white' : 'text-white/30'}`}>ES</button>
+                        </div>
                     </label>
                     <div className="flex gap-2 mb-3">
                         {[1, 2, 3].map(n => {
@@ -204,7 +214,7 @@ export default function SetupScreen() {
                                         }
                                     `}
                                 >
-                                    {n} Bot{n > 1 ? 's' : ''}
+                                    {n} {n > 1 ? t('setup.bot_plural') : t('setup.bot_singular')}
                                     {isLocked && <div className="absolute top-1.5 right-2 text-[10px]">🔒</div>}
                                 </button>
                             );
@@ -242,7 +252,7 @@ export default function SetupScreen() {
                         }
           `}
                 >
-                    🎲 Start Playing!
+                    {t('setup.start_game')}
                 </motion.button>
             </div>
 

@@ -1,0 +1,26 @@
+{
+    "splash": {
+        "title": "KidCapital",
+        "subtitle": "Le Simulateur Financier Ultime",
+        "start": "Appuyez pour commencer",
+        "loading": "Chargement..."
+    },
+    "setup": {
+        "title": "🐷 Nouvelle Partie",
+        "subtitle": "Crée ton joueur et choisis tes adversaires !",
+        "avatar": "Choisis ton avatar",
+        "name": "Ton prénom",
+        "name_placeholder": "Entre ton prénom...",
+        "difficulty": "Âge du Joueur (Difficulté)",
+        "diff_easy": "8-10 Ans",
+        "diff_easy_desc": "Début plus facile",
+        "diff_med": "11-14 Ans",
+        "diff_med_desc": "Standard",
+        "diff_hard": "15-18 Ans",
+        "diff_hard_desc": "Mode Difficile",
+        "opponents": "Adversaires",
+        "bot_singular": "Bot",
+        "bot_plural": "Bots",
+        "start_game": "🎲 C'est parti !"
+    }
+}

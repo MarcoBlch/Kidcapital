@@ -45,7 +45,13 @@ ios/
 android/
 *.ipa
 *.apk
-*.aab# Private Memory Config
+*.aab
+app-release.aab
+
+# Debug files
+debug_*
+
+# Private Memory Config
 MEMORY.md
 ios_certs/
 MEMORY.md:Zone.Identifier

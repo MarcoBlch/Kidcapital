@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 
 interface DailyRewardStore {
     lastClaimDate: string | null;
@@ -20,11 +21,7 @@ interface DailyRewardStore {
 const STORAGE_KEY = 'kidcapital_daily_reward';
 
 export const useDailyRewardStore = create<DailyRewardStore>((set, get) => {
-    // Load initial state from localStorage safely (for test environments)
-    let saved = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-        saved = localStorage.getItem(STORAGE_KEY);
-    }
+    const saved = safeGetItem(STORAGE_KEY);
     const initialState = saved ? JSON.parse(saved) : { lastClaimDate: null, currentStreak: 0 };
 
     return {
@@ -67,9 +64,7 @@ export const useDailyRewardStore = create<DailyRewardStore>((set, get) => {
                 const today = new Date().toISOString().split('T')[0];
                 const newState = { lastClaimDate: today, currentStreak: streak };
                 set(newState);
-                if (typeof window !== 'undefined' && window.localStorage) {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
-                }
+                safeSetItem(STORAGE_KEY, JSON.stringify(newState));
             }
         }
     };

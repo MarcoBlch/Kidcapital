@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useUIStore } from '../store/uiStore';
+import { useTranslation } from 'react-i18next';
 
 export default function SplashScreen() {
     const setScreen = useUIStore(s => s.setScreen);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const timer = setTimeout(() => setScreen('setup'), 2500);
@@ -46,10 +48,10 @@ export default function SplashScreen() {
                 </motion.div>
 
                 <h1 className="font-display text-4xl text-amber-400 mb-2 tracking-tight">
-                    KidCapital
+                    {t('splash.title')}
                 </h1>
                 <p className="text-sm text-amber-200/50 font-medium">
-                    Learn Money, Have Fun!
+                    {t('splash.subtitle')}
                 </p>
             </motion.div>
 
