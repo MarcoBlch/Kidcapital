@@ -246,7 +246,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     getPlayer: (id) => {
         const state = get();
-        return state.players.find(p => p.id === id)!;
+        const player = state.players.find(p => p.id === id);
+        if (!player) {
+            console.warn(`getPlayer: player id ${id} not found, returning fallback`);
+            return createDefaultPlayer(id, 'Unknown', '❓', false);
+        }
+        return player;
     },
 
     updatePlayer: (id, updates) => {

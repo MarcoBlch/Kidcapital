@@ -22,7 +22,14 @@ const STORAGE_KEY = 'kidcapital_daily_reward';
 
 export const useDailyRewardStore = create<DailyRewardStore>((set, get) => {
     const saved = safeGetItem(STORAGE_KEY);
-    const initialState = saved ? JSON.parse(saved) : { lastClaimDate: null, currentStreak: 0 };
+    let initialState = { lastClaimDate: null as string | null, currentStreak: 0 };
+    if (saved) {
+        try {
+            initialState = JSON.parse(saved);
+        } catch {
+            // Corrupt data — reset to defaults
+        }
+    }
 
     return {
         ...initialState,

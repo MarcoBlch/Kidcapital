@@ -124,44 +124,54 @@ async function executeBotTurn(): Promise<void> {
 
     game.setTurnLocked(true);
     game.setTurnPhase('bot_acting');
-    ui.addLog(`${bot.avatar} ${bot.name}'s turn...`);
 
-    await sleep(TIMING.BOT_STEP_PAUSE);
+    try {
+        ui.addLog(`${bot.avatar} ${bot.name}'s turn...`);
 
-    // Roll
-    const diceResult = rollDice();
-    game.setDiceResult(diceResult);
-    ui.addLog(`${bot.avatar} rolled ${diceResult}`);
+        await sleep(TIMING.BOT_STEP_PAUSE);
 
-    await sleep(TIMING.BOT_STEP_PAUSE);
+        // Roll
+        const diceResult = rollDice();
+        game.setDiceResult(diceResult);
+        ui.addLog(`${bot.avatar} rolled ${diceResult}`);
 
-    // Move
-    const oldPos = bot.position;
-    const newPos = (oldPos + diceResult) % BOARD_SIZE;
-    const passedGo = oldPos + diceResult >= BOARD_SIZE;
+        await sleep(TIMING.BOT_STEP_PAUSE);
 
-    game.movePlayerTo(bot.id, newPos, passedGo);
-    if (passedGo) {
-        ui.addLog(`${bot.avatar} passed GO! +$${GO_BONUS}`);
+        // Move
+        const oldPos = bot.position;
+        const newPos = (oldPos + diceResult) % BOARD_SIZE;
+        const passedGo = oldPos + diceResult >= BOARD_SIZE;
+
+        game.movePlayerTo(bot.id, newPos, passedGo);
+        if (passedGo) {
+            ui.addLog(`${bot.avatar} passed GO! +$${GO_BONUS}`);
+        }
+
+        await sleep(TIMING.BOT_STEP_PAUSE);
+
+        // Resolve space (no modal for bots)
+        const space = BOARD[newPos];
+        try {
+            await resolveBotSpace(bot.id, space.type, bot.personality ?? 'balanced');
+        } catch (spaceErr) {
+            console.error(`Bot ${bot.name} space resolve error:`, spaceErr);
+            ui.addLog(`${bot.avatar} skipped (error)`);
+        }
+
+        await sleep(TIMING.BOT_STEP_PAUSE);
+
+        // Check win
+        const winnerId = game.checkWinCondition();
+        if (winnerId !== null) {
+            ui.setScreen('end');
+            game.setTurnLocked(false);
+            return;
+        }
+    } catch (err) {
+        console.error(`Bot turn error (${bot.name}):`, err);
     }
 
-    await sleep(TIMING.BOT_STEP_PAUSE);
-
-    // Resolve space (no modal for bots)
-    const space = BOARD[newPos];
-    await resolveBotSpace(bot.id, space.type, bot.personality ?? 'balanced');
-
-    await sleep(TIMING.BOT_STEP_PAUSE);
-
-    // Check win
-    const winnerId = game.checkWinCondition();
-    if (winnerId !== null) {
-        ui.setScreen('end');
-        game.setTurnLocked(false);
-        return;
-    }
-
-    // Next turn
+    // Always unlock and advance, even on error
     game.setTurnPhase('turn_end');
     game.setTurnLocked(false);
 
