@@ -67,6 +67,14 @@ jobs:
       - name: Install Dependencies
         run: npm ci || npm install
 
+      - name: Create Env File
+        env:
+          VITE_REVENUECAT_APPLE_KEY: ${{ secrets.VITE_REVENUECAT_APPLE_KEY }}
+          VITE_REVENUECAT_GOOGLE_KEY: ${{ secrets.VITE_REVENUECAT_GOOGLE_KEY }}
+        run: |
+          echo "VITE_REVENUECAT_APPLE_KEY=$VITE_REVENUECAT_APPLE_KEY" > .env
+          echo "VITE_REVENUECAT_GOOGLE_KEY=$VITE_REVENUECAT_GOOGLE_KEY" >> .env
+
       - name: Build Web App
         run: npm run build
 
@@ -181,6 +189,14 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci || npm install
+
+      - name: Create Env File
+        env:
+          VITE_REVENUECAT_APPLE_KEY: ${{ secrets.VITE_REVENUECAT_APPLE_KEY }}
+          VITE_REVENUECAT_GOOGLE_KEY: ${{ secrets.VITE_REVENUECAT_GOOGLE_KEY }}
+        run: |
+          echo "VITE_REVENUECAT_APPLE_KEY=$VITE_REVENUECAT_APPLE_KEY" > .env
+          echo "VITE_REVENUECAT_GOOGLE_KEY=$VITE_REVENUECAT_GOOGLE_KEY" >> .env
 
       - name: Build Web App
         run: npm run build
