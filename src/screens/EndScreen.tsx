@@ -75,25 +75,25 @@ export default function EndScreen() {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-dvh px-5 py-8 safe-top"
+            className="min-h-dvh px-5 md:px-12 py-8 md:py-12 safe-top"
             style={{
                 background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
             }}
         >
-            <div className="max-w-md mx-auto text-center">
+            <div className="max-w-md md:max-w-2xl mx-auto text-center">
                 {/* Winner */}
                 <motion.div
                     initial={{ scale: 0.5, y: 20 }}
                     animate={{ scale: 1, y: 0 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                 >
-                    <div className="text-6xl mb-3">
+                    <div className="text-6xl md:text-8xl mb-3 md:mb-5">
                         {isHumanWinner ? '🏆' : '🎮'}
                     </div>
-                    <h1 className="font-display text-3xl text-amber-400 mb-1">
+                    <h1 className="font-display text-3xl md:text-4xl text-amber-400 mb-1">
                         {isHumanWinner ? 'YOU WIN!' : `${winner.name} Wins!`}
                     </h1>
-                    <p className="text-sm text-white/40 mb-6">
+                    <p className="text-sm md:text-base text-white/40 mb-6 md:mb-8">
                         {isHumanWinner
                             ? 'Financial Freedom achieved! 🦋'
                             : `${winner.avatar} reached freedom first!`}

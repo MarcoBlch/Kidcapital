@@ -13,11 +13,11 @@ export default function Header() {
     const freedomPct = getFreedomPercent(currentPlayer);
 
     return (
-        <div className="flex items-center justify-between px-3 py-2 safe-top">
+        <div className="flex items-center justify-between px-3 md:px-6 py-2 md:py-3 safe-top">
             {/* Month badge */}
             <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1">
                 <span className="text-[10px] text-amber-200/70">Month</span>
-                <span className="font-display text-sm text-amber-300 font-bold">
+                <span className="font-display text-sm md:text-base text-amber-300 font-bold">
                     {month}
                 </span>
             </div>
@@ -27,7 +27,7 @@ export default function Header() {
                 <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-base">
                     {currentPlayer.avatar}
                 </div>
-                <span className="font-display text-sm text-white font-semibold">
+                <span className="font-display text-sm md:text-base text-white font-semibold">
                     {currentPlayer.name}'s Turn
                 </span>
                 {hasDebt && (
@@ -39,7 +39,7 @@ export default function Header() {
 
             {/* Freedom % */}
             <div className="bg-emerald-500/15 rounded-full px-3 py-1">
-                <span className="font-display text-sm text-emerald-400 font-bold">
+                <span className="font-display text-sm md:text-base text-emerald-400 font-bold">
                     {freedomPct}%
                 </span>
             </div>

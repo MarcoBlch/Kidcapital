@@ -19,7 +19,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
     return (
         <div
             className={`
-                flex flex-col gap-1.5 px-3 py-2 rounded-2xl transition-all duration-300
+                flex flex-col gap-1.5 px-3 md:px-5 py-2 md:py-3 rounded-2xl transition-all duration-300
                 ${isActive
                     ? 'bg-white/15 border border-amber-400/40 pulse-ring'
                     : 'bg-white/5 border border-white/5'
@@ -55,7 +55,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-white truncate">
+                        <span className="text-xs md:text-sm font-bold text-white truncate">
                             {player.name}
                         </span>
                         {isActive && (
@@ -65,7 +65,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
                         )}
                     </div>
                     <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[11px] font-bold text-amber-300">
+                        <span className="text-[11px] md:text-sm font-bold text-amber-300">
                             ${player.cash}
                         </span>
                         {passiveIncome > 0 && (

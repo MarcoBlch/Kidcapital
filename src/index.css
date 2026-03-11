@@ -222,3 +222,22 @@ h6,
 .space-glow {
   animation: space-glow 2s ease-in-out infinite;
 }
+
+/* ============================================
+   iPad / Tablet Optimizations (≥768px)
+   ============================================ */
+
+@media (min-width: 768px) {
+  /* Scale up base font for tablets */
+  html {
+    font-size: 18px;
+  }
+
+  /* Wider bottom sheets on iPad */
+  .ipad-sheet {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 28px;
+  }
+}

@@ -25,7 +25,7 @@ export default function SplashScreen() {
             {/* Glow circle */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div
-                    className="w-64 h-64 rounded-full"
+                    className="w-64 h-64 md:w-96 md:h-96 rounded-full"
                     style={{
                         background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)',
                     }}
@@ -42,15 +42,15 @@ export default function SplashScreen() {
                 <motion.div
                     animate={{ rotate: [0, -5, 5, -3, 0] }}
                     transition={{ duration: 1.5, delay: 0.5 }}
-                    className="text-7xl mb-4"
+                    className="text-7xl md:text-9xl mb-4 md:mb-6"
                 >
                     🐷
                 </motion.div>
 
-                <h1 className="font-display text-4xl text-amber-400 mb-2 tracking-tight">
+                <h1 className="font-display text-4xl md:text-6xl text-amber-400 mb-2 tracking-tight">
                     {t('splash.title')}
                 </h1>
-                <p className="text-sm text-amber-200/50 font-medium">
+                <p className="text-sm md:text-lg text-amber-200/50 font-medium">
                     {t('splash.subtitle')}
                 </p>
             </motion.div>

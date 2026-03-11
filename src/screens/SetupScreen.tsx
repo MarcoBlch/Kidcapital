@@ -55,7 +55,7 @@ export default function SetupScreen() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
-            className="min-h-dvh px-5 py-6 safe-top"
+            className="min-h-dvh px-5 md:px-12 py-6 md:py-10 safe-top"
             style={{
                 background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
             }}
@@ -71,27 +71,27 @@ export default function SetupScreen() {
 
             {/* Premium Upsell Button */}
             {!isPremium && (
-                <div className="max-w-md mx-auto mb-4 flex justify-center">
+                <div className="max-w-md md:max-w-2xl mx-auto mb-4 md:mb-6 flex justify-center">
                     <button
                         onClick={() => showModal('paywall' as any)}
-                        className="bg-gradient-to-r from-amber-400 to-amber-600 text-amber-950 font-bold px-4 py-1.5 rounded-full text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] animate-pulse"
+                        className="bg-gradient-to-r from-amber-400 to-amber-600 text-amber-950 font-bold px-4 md:px-6 py-1.5 md:py-2.5 rounded-full text-sm md:text-base shadow-[0_0_15px_rgba(245,158,11,0.3)] animate-pulse"
                     >
                         Get KidCapital+ 👑
                     </button>
                 </div>
             )}
 
-            <div className="max-w-md mx-auto relative">
+            <div className="max-w-md md:max-w-2xl mx-auto relative">
                 <button
                     onClick={() => showModal('leaderboard' as any)}
                     className="absolute right-0 top-1 w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-xl shadow-[0_0_15px_rgba(245,158,11,0.4)] border-2 border-amber-200/50 hover:scale-110 active:scale-95 transition-transform"
                 >
                     🏆
                 </button>
-                <h1 className="font-display text-3xl text-amber-400 mb-1 text-center tracking-tight pr-12">
+                <h1 className="font-display text-3xl md:text-4xl text-amber-400 mb-1 text-center tracking-tight pr-12">
                     {t('setup.title')}
                 </h1>
-                <p className="text-sm text-white/30 text-center mb-6">
+                <p className="text-sm md:text-base text-white/30 text-center mb-6 md:mb-8">
                     {t('setup.subtitle')}
                 </p>
 
@@ -100,7 +100,7 @@ export default function SetupScreen() {
                     <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
                         {t('setup.avatar')}
                     </label>
-                    <div className="grid grid-cols-5 gap-2">
+                    <div className="grid grid-cols-5 gap-2 md:gap-4">
                         {PLAYER_AVATARS.map((a, index) => {
                             const isLocked = !isPremium && index > 3;
                             return (
@@ -108,7 +108,7 @@ export default function SetupScreen() {
                                     key={a}
                                     onClick={() => isLocked ? showModal('paywall' as any) : setAvatar(a)}
                                     className={`
-                                        relative w-12 h-12 rounded-2xl flex items-center justify-center text-2xl
+                                        relative w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center text-2xl md:text-3xl
                                         transition-all cursor-pointer border-2 mx-auto
                                         ${avatar === a
                                             ? 'bg-amber-400/15 border-amber-400/60 scale-110 shadow-[0_0_12px_rgba(245,158,11,0.3)]'
@@ -244,7 +244,7 @@ export default function SetupScreen() {
                     onClick={handleStart}
                     disabled={!canStart}
                     className={`
-            w-full py-3.5 rounded-2xl font-display text-base font-bold
+            w-full py-3.5 md:py-4.5 rounded-2xl font-display text-base md:text-lg font-bold
             transition-all cursor-pointer
             ${canStart
                             ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-amber-900 shadow-glow-gold'

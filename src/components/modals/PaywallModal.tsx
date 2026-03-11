@@ -9,6 +9,7 @@ export default function PaywallModal() {
 
     // We'll read from real products later, hardcode for now
     const [isPurchasing, setIsPurchasing] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const isOpen = activeModal === 'paywall';
 
@@ -16,13 +17,17 @@ export default function PaywallModal() {
 
     const handlePurchase = async () => {
         setIsPurchasing(true);
+        setErrorMessage(null);
         try {
-            const success = await purchasePremiumPkg();
-            if (success) {
+            const result = await purchasePremiumPkg();
+            if (result.success) {
                 closeModal();
+            } else if (result.error) {
+                setErrorMessage(result.error);
             }
         } catch (e) {
             console.error('Purchase failed', e);
+            setErrorMessage('An unexpected error occurred. Please try again.');
         } finally {
             setIsPurchasing(false);
         }
@@ -30,8 +35,14 @@ export default function PaywallModal() {
 
     const handleRestore = async () => {
         setIsPurchasing(true);
+        setErrorMessage(null);
         try {
-            await restorePurchasesPkg();
+            const result = await restorePurchasesPkg();
+            if (result.success) {
+                closeModal();
+            } else if (result.error) {
+                setErrorMessage(result.error);
+            }
         } finally {
             setIsPurchasing(false);
         }
@@ -44,7 +55,7 @@ export default function PaywallModal() {
                     initial={{ opacity: 0, scale: 0.9, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                    className="w-full max-w-sm bg-gradient-to-b from-slate-900 to-slate-800 border-2 border-amber-500/40 rounded-3xl shadow-2xl shadow-amber-500/20 overflow-hidden flex flex-col relative"
+                    className="w-full max-w-sm md:max-w-lg bg-gradient-to-b from-slate-900 to-slate-800 border-2 border-amber-500/40 rounded-3xl shadow-2xl shadow-amber-500/20 overflow-hidden flex flex-col relative"
                 >
                     {/* Close Button */}
                     <button
@@ -100,6 +111,15 @@ export default function PaywallModal() {
                                 </>
                             )}
                         </button>
+
+                        {/* Error message banner */}
+                        {errorMessage && (
+                            <div className="mt-3 px-4 py-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30">
+                                <p className="text-xs text-rose-300 text-center leading-relaxed">
+                                    {errorMessage}
+                                </p>
+                            </div>
+                        )}
 
                         <div className="mt-4 text-center">
                             <button

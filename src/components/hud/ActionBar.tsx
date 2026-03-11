@@ -20,8 +20,8 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
     const showNext = turnPhase === 'turn_end' && currentPlayer?.isHuman;
 
     return (
-        <div className="glass-dark border-t border-white/10 px-4 py-3 safe-bottom flex-shrink-0">
-            <div className="flex items-center justify-between gap-3">
+        <div className="glass-dark border-t border-white/10 px-4 md:px-8 py-3 md:py-4 safe-bottom flex-shrink-0">
+            <div className="flex items-center justify-between gap-3 md:max-w-3xl md:mx-auto">
                 {/* Left: player badge */}
                 <div className="flex items-center gap-2 min-w-0">
                     <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg">

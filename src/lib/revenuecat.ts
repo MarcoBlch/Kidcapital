@@ -2,6 +2,11 @@ import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
 import { Capacitor } from '@capacitor/core';
 import { useUIStore } from '../store/uiStore';
 
+export interface PurchaseResult {
+    success: boolean;
+    error?: string;
+}
+
 export async function initRevenueCat() {
     // Only initialize on real devices/emulators
     if (Capacitor.isNativePlatform()) {
@@ -28,12 +33,12 @@ export async function initRevenueCat() {
     }
 }
 
-export async function purchasePremiumPkg(): Promise<boolean> {
+export async function purchasePremiumPkg(): Promise<PurchaseResult> {
     if (!Capacitor.isNativePlatform()) {
         console.warn("Purchases are only available on iOS/Android native apps. Generating mock success for Web.");
         // Mock success for web development
         useUIStore.getState().setPremium(true);
-        return true;
+        return { success: true };
     }
 
     try {
@@ -45,33 +50,38 @@ export async function purchasePremiumPkg(): Promise<boolean> {
 
             if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
                 useUIStore.getState().setPremium(true);
-                return true;
+                return { success: true };
             }
+            return { success: false, error: 'Purchase completed but entitlement not found. Please try restoring purchases.' };
         } else {
             console.warn("No packages found to purchase in RevenueCat dashboard.");
+            return { success: false, error: 'This product is not available right now. Please try again later.' };
         }
     } catch (e: any) {
-        if (!e.userCancelled) {
-            console.error("Purchase Error:", e);
+        if (e.userCancelled) {
+            return { success: false }; // User cancelled, no error to show
         }
+        console.error("Purchase Error:", e);
+        return { success: false, error: 'Something went wrong with the purchase. Please try again.' };
     }
-    return false;
 }
 
-export async function restorePurchasesPkg(): Promise<boolean> {
+export async function restorePurchasesPkg(): Promise<PurchaseResult> {
     if (!Capacitor.isNativePlatform()) {
         console.warn("Restore only available natively");
-        return false;
+        return { success: false, error: 'Restore is only available on iOS/Android.' };
     }
 
     try {
         const { customerInfo } = await Purchases.restorePurchases();
         if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
             useUIStore.getState().setPremium(true);
-            return true;
+            return { success: true };
         }
+        return { success: false, error: 'No previous purchase found for this account.' };
     } catch (e) {
         console.error("Restore Error:", e);
+        return { success: false, error: 'Could not restore purchases. Please try again.' };
     }
-    return false;
 }
+
