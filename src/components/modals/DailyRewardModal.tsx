@@ -11,7 +11,10 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
 
     // We expect this modal to only be rendered if a reward IS available, 
     // but we'll read the state just to be sure.
-    const { isAvailable, streak, bonusCash } = checkDailyReward();
+    const rewardData = checkDailyReward();
+    const isAvailable = rewardData?.isAvailable;
+    const streak = rewardData?.streak || 0;
+    const bonusCash = rewardData?.bonusCash || 0;
 
     const handleClaim = () => {
         claimDailyReward();

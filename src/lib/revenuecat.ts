@@ -23,8 +23,8 @@ export async function initRevenueCat() {
             }
 
             // Initial check to see if user already has premium
-            const { customerInfo } = await Purchases.getCustomerInfo();
-            if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
+            const customerInfo = (await Purchases.getCustomerInfo()).customerInfo;
+            if (customerInfo?.entitlements?.active?.['Premium']) {
                 useUIStore.getState().setPremium(true);
             }
         } catch (e) {
@@ -46,9 +46,9 @@ export async function purchasePremiumPkg(): Promise<PurchaseResult> {
         if (offerings.current && offerings.current.availablePackages.length > 0) {
             // Assume the first package in the current offering is the Premium unlock
             const pkg = offerings.current.availablePackages[0];
-            const { customerInfo } = await Purchases.purchasePackage({ aPackage: pkg });
+            const customerInfo = (await Purchases.purchasePackage({ aPackage: pkg })).customerInfo;
 
-            if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
+            if (customerInfo?.entitlements?.active?.['Premium']) {
                 useUIStore.getState().setPremium(true);
                 return { success: true };
             }
@@ -73,8 +73,8 @@ export async function restorePurchasesPkg(): Promise<PurchaseResult> {
     }
 
     try {
-        const { customerInfo } = await Purchases.restorePurchases();
-        if (typeof customerInfo.entitlements.active['Premium'] !== 'undefined') {
+        const customerInfo = (await Purchases.restorePurchases()).customerInfo;
+        if (customerInfo?.entitlements?.active?.['Premium']) {
             useUIStore.getState().setPremium(true);
             return { success: true };
         }

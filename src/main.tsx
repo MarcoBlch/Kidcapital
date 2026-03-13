@@ -5,20 +5,21 @@ import './i18n/config'
 import App from './App.tsx'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
 
-try {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </StrictMode>,
-  )
-} catch (err) {
-  console.error('Fatal init error:', err);
-  // Show minimal fallback UI if even React fails to mount
-  const root = document.getElementById('root');
-  if (root) {
-    root.innerHTML = `
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  try {
+    createRoot(rootElement).render(
+      <StrictMode>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </StrictMode>,
+    );
+  } catch (err) {
+    console.error('Fatal init error:', err);
+    // Show minimal fallback UI if even React fails to mount
+    rootElement.innerHTML = `
       <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1a1a2e;color:white;font-family:sans-serif;text-align:center;padding:2rem">
         <div style="font-size:4rem;margin-bottom:1rem">🐷</div>
         <h1 style="font-size:1.3rem;color:#fbbf24">KidCapital couldn't start</h1>
@@ -26,4 +27,6 @@ try {
       </div>
     `;
   }
+} else {
+  console.error('Fatal: Root element not found');
 }
