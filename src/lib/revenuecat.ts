@@ -1,10 +1,35 @@
-import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
+import { Purchases, LOG_LEVEL, PURCHASES_ERROR_CODE } from '@revenuecat/purchases-capacitor';
 import { Capacitor } from '@capacitor/core';
 import { useUIStore } from '../store/uiStore';
 
 export interface PurchaseResult {
     success: boolean;
     error?: string;
+}
+
+function getPurchaseErrorMessage(e: any): string {
+    const code = e?.code as string | undefined;
+    switch (code) {
+        case PURCHASES_ERROR_CODE.STORE_PROBLEM_ERROR:
+            return 'The App Store encountered an issue. Please try again in a moment.';
+        case PURCHASES_ERROR_CODE.PURCHASE_NOT_ALLOWED_ERROR:
+            return 'Purchases are not allowed on this device. Check your device restrictions.';
+        case PURCHASES_ERROR_CODE.PURCHASE_INVALID_ERROR:
+            return 'This purchase could not be completed. The product may not be available.';
+        case PURCHASES_ERROR_CODE.PRODUCT_NOT_AVAILABLE_FOR_PURCHASE_ERROR:
+            return 'This product is not currently available for purchase.';
+        case PURCHASES_ERROR_CODE.NETWORK_ERROR:
+            return 'Network error. Please check your connection and try again.';
+        case PURCHASES_ERROR_CODE.CONFIGURATION_ERROR:
+        case PURCHASES_ERROR_CODE.INVALID_CREDENTIALS_ERROR:
+            return 'Store configuration error. Please contact support.';
+        case PURCHASES_ERROR_CODE.PAYMENT_PENDING_ERROR:
+            return 'Payment is pending. Please check back later.';
+        case PURCHASES_ERROR_CODE.PRODUCT_ALREADY_PURCHASED_ERROR:
+            return 'You already own this product. Try restoring purchases.';
+        default:
+            return `Purchase failed (code: ${code ?? 'unknown'}). ${e?.message || 'Please try again.'}`;
+    }
 }
 
 export async function initRevenueCat() {
@@ -58,11 +83,11 @@ export async function purchasePremiumPkg(): Promise<PurchaseResult> {
             return { success: false, error: 'This product is not available right now. Please try again later.' };
         }
     } catch (e: any) {
-        if (e.userCancelled) {
-            return { success: false }; // User cancelled, no error to show
+        if (e?.userCancelled || e?.code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) {
+            return { success: false };
         }
-        console.error("Purchase Error:", e);
-        return { success: false, error: 'Something went wrong with the purchase. Please try again.' };
+        console.error("Purchase Error:", JSON.stringify(e, null, 2));
+        return { success: false, error: getPurchaseErrorMessage(e) };
     }
 }
 
@@ -79,9 +104,20 @@ export async function restorePurchasesPkg(): Promise<PurchaseResult> {
             return { success: true };
         }
         return { success: false, error: 'No previous purchase found for this account.' };
-    } catch (e) {
-        console.error("Restore Error:", e);
-        return { success: false, error: 'Could not restore purchases. Please try again.' };
+    } catch (e: any) {
+        console.error("Restore Error:", JSON.stringify(e, null, 2));
+        return { success: false, error: getPurchaseErrorMessage(e) };
+    }
+}
+
+export async function getProductPrice(): Promise<string | null> {
+    if (!Capacitor.isNativePlatform()) return null;
+    try {
+        const offerings = await Purchases.getOfferings();
+        const pkg = offerings.current?.availablePackages?.[0];
+        return pkg?.product?.priceString ?? null;
+    } catch {
+        return null;
     }
 }
 

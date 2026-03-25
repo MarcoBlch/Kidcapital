@@ -75,22 +75,22 @@ export default function EndScreen() {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-dvh px-5 md:px-12 py-8 md:py-12 safe-top"
+            className="min-h-dvh px-5 md:px-12 lg:px-16 py-8 md:py-12 lg:py-14 safe-top"
             style={{
                 background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
             }}
         >
-            <div className="max-w-md md:max-w-2xl mx-auto text-center">
+            <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto text-center">
                 {/* Winner */}
                 <motion.div
                     initial={{ scale: 0.5, y: 20 }}
                     animate={{ scale: 1, y: 0 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                 >
-                    <div className="text-6xl md:text-8xl mb-3 md:mb-5">
+                    <div className="text-6xl md:text-8xl lg:text-9xl mb-3 md:mb-5">
                         {isHumanWinner ? '🏆' : '🎮'}
                     </div>
-                    <h1 className="font-display text-3xl md:text-4xl text-amber-400 mb-1">
+                    <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-amber-400 mb-1">
                         {isHumanWinner ? 'YOU WIN!' : `${winner.name} Wins!`}
                     </h1>
                     <p className="text-sm md:text-base text-white/40 mb-6 md:mb-8">
@@ -105,7 +105,7 @@ export default function EndScreen() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="bg-white/5 rounded-2xl p-5 mb-6 text-left border border-white/10"
+                    className="bg-white/5 rounded-2xl p-5 lg:p-6 mb-6 text-left border border-white/10"
                 >
                     <h2 className="font-display text-lg text-white mb-4">
                         📊 Your Report Card
@@ -215,7 +215,7 @@ export default function EndScreen() {
                     whileTap={{ scale: 0.95 }}
                     onClick={handlePlayAgain}
                     className="
-            w-full py-3.5 rounded-2xl font-display text-base font-bold
+            w-full py-3.5 lg:py-5 rounded-2xl font-display text-base lg:text-xl font-bold
             bg-gradient-to-r from-amber-400 to-amber-500 text-amber-900
             shadow-glow-gold cursor-pointer transition-all
           "

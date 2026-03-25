@@ -60,13 +60,13 @@ export default function LeaderboardModal() {
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="w-full max-w-sm bg-slate-900 border border-amber-500/30 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+                    className="w-full max-w-sm md:max-w-lg lg:max-w-xl bg-slate-900 border border-amber-500/30 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
                 >
                     {/* Header */}
                     <div className="px-5 py-4 bg-gradient-to-br from-amber-500/20 to-amber-700/20 border-b border-amber-500/20 flex justify-between items-center shrink-0">
                         <div className="flex items-center gap-2">
                             <span className="text-2xl">🏆</span>
-                            <h2 className="text-xl font-bold bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text text-transparent">
+                            <h2 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text text-transparent">
                                 Global Top 50
                             </h2>
                         </div>
@@ -98,7 +98,7 @@ export default function LeaderboardModal() {
                                 return (
                                     <div
                                         key={p.id}
-                                        className={`flex items-center gap-3 p-3 rounded-2xl border transition-all ${isMe
+                                        className={`flex items-center gap-3 p-3 lg:p-4 rounded-2xl border transition-all ${isMe
                                                 ? 'bg-amber-500/20 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.2)]'
                                                 : 'bg-white/5 border-white/5'
                                             }`}

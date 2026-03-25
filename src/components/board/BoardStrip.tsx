@@ -34,7 +34,7 @@ export default function BoardStrip() {
             {/* Scrollable board */}
             <div
                 ref={scrollRef}
-                className="relative flex items-center gap-3 overflow-x-auto px-6 py-4 no-scrollbar"
+                className="relative flex items-center gap-3 md:gap-4 lg:gap-5 overflow-x-auto px-6 md:px-8 lg:px-10 py-4 lg:py-6 no-scrollbar"
             >
                 {BOARD.map(space => {
                     const playersOnSpace = players

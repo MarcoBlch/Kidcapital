@@ -20,18 +20,18 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
     const showNext = turnPhase === 'turn_end' && currentPlayer?.isHuman;
 
     return (
-        <div className="glass-dark border-t border-white/10 px-4 md:px-8 py-3 md:py-4 safe-bottom flex-shrink-0">
-            <div className="flex items-center justify-between gap-3 md:max-w-3xl md:mx-auto">
+        <div className="glass-dark border-t border-white/10 px-4 md:px-8 lg:px-10 py-3 md:py-4 lg:py-5 safe-bottom flex-shrink-0">
+            <div className="flex items-center justify-between gap-3 md:max-w-3xl lg:max-w-5xl md:mx-auto">
                 {/* Left: player badge */}
                 <div className="flex items-center gap-2 min-w-0">
-                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg">
+                    <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-white/10 flex items-center justify-center text-lg lg:text-xl">
                         {currentPlayer?.avatar}
                     </div>
                     <div>
-                        <div className="text-xs font-bold text-white truncate">
+                        <div className="text-xs lg:text-sm font-bold text-white truncate">
                             {currentPlayer?.name}
                         </div>
-                        <div className="text-[10px] text-amber-300 font-medium">
+                        <div className="text-[10px] lg:text-xs text-amber-300 font-medium">
                             💵 ${currentPlayer?.cash}
                         </div>
                     </div>
@@ -58,7 +58,7 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
                             whileTap={{ scale: 0.92 }}
                             onClick={() => showModal('portfolio' as any)}
                             className="
-                                px-4 py-2.5 rounded-2xl font-display text-sm font-bold
+                                px-4 lg:px-5 py-2.5 lg:py-3 rounded-2xl font-display text-sm lg:text-base font-bold
                                 bg-white/10 border border-white/20 text-white
                                 hover:bg-white/15 cursor-pointer transition-all
                             "
@@ -73,7 +73,7 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
                             whileHover={{ scale: 1.05 }}
                             onClick={onRoll}
                             className="
-                                px-6 py-2.5 rounded-2xl font-display text-sm font-bold
+                                px-6 lg:px-8 py-2.5 lg:py-3 rounded-2xl font-display text-sm lg:text-base font-bold
                                 bg-gradient-to-r from-amber-400 to-amber-500
                                 text-amber-900 shadow-glow-gold
                                 active:from-amber-500 active:to-amber-600
@@ -90,7 +90,7 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
                             whileTap={{ scale: 0.92 }}
                             onClick={onNext}
                             className="
-                                px-5 py-2.5 rounded-2xl font-display text-sm font-bold
+                                px-5 lg:px-6 py-2.5 lg:py-3 rounded-2xl font-display text-sm lg:text-base font-bold
                                 bg-white/10 border border-white/20 text-white
                                 hover:bg-white/15 cursor-pointer transition-all
                             "

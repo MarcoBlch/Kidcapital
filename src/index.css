@@ -224,20 +224,11 @@ h6,
 }
 
 /* ============================================
-   iPad / Tablet Optimizations (≥768px)
+   Tablet Optimizations (≥1024px)
    ============================================ */
 
-@media (min-width: 768px) {
-  /* Scale up base font for tablets */
+@media (min-width: 1024px) {
   html {
     font-size: 18px;
-  }
-
-  /* Wider bottom sheets on iPad */
-  .ipad-sheet {
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 28px;
   }
 }

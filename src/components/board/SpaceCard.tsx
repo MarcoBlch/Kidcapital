@@ -34,22 +34,23 @@ export default function SpaceCard({ space, isActive, playersOnSpace }: SpaceCard
                 className={`
                     relative flex flex-col items-center justify-center rounded-2xl
                     border-2 transition-all duration-300
-                    ${isActive ? 'space-glow' : ''}
+                    ${isActive
+                        ? 'w-16 h-[72px] md:w-20 md:h-[88px] lg:w-24 lg:h-[100px] space-glow'
+                        : 'w-[52px] h-[58px] md:w-16 md:h-[72px] lg:w-20 lg:h-[84px]'
+                    }
                 `}
                 style={{
-                    width: isActive ? 64 : 52,
-                    height: isActive ? 72 : 58,
                     borderColor: isActive ? colors.border : 'rgba(255,255,255,0.1)',
                     backgroundColor: isActive ? colors.bg : 'rgba(255,255,255,0.05)',
                     boxShadow: isActive ? colors.glow : 'none',
                 }}
             >
-                <span className={`${isActive ? 'text-2xl' : 'text-xl'} leading-none transition-all`}>
+                <span className={`${isActive ? 'text-2xl md:text-3xl lg:text-4xl' : 'text-xl md:text-2xl lg:text-3xl'} leading-none transition-all`}>
                     {space.icon}
                 </span>
                 {/* Always show label */}
                 <span
-                    className="text-[8px] font-bold mt-1 leading-none text-center px-1"
+                    className="text-[8px] md:text-[10px] lg:text-xs font-bold mt-1 leading-none text-center px-1"
                     style={{ color: isActive ? colors.text : 'rgba(255,255,255,0.35)' }}
                 >
                     {space.label}

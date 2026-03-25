@@ -47,10 +47,10 @@ export default function SplashScreen() {
                     🐷
                 </motion.div>
 
-                <h1 className="font-display text-4xl md:text-6xl text-amber-400 mb-2 tracking-tight">
+                <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-amber-400 mb-2 tracking-tight">
                     {t('splash.title')}
                 </h1>
-                <p className="text-sm md:text-lg text-amber-200/50 font-medium">
+                <p className="text-sm md:text-lg lg:text-xl text-amber-200/50 font-medium">
                     {t('splash.subtitle')}
                 </p>
             </motion.div>

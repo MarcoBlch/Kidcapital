@@ -19,7 +19,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
     return (
         <div
             className={`
-                flex flex-col gap-1.5 px-3 md:px-5 py-2 md:py-3 rounded-2xl transition-all duration-300
+                flex flex-col gap-1.5 px-3 md:px-5 lg:px-6 py-2 md:py-3 lg:py-4 rounded-2xl transition-all duration-300
                 ${isActive
                     ? 'bg-white/15 border border-amber-400/40 pulse-ring'
                     : 'bg-white/5 border border-white/5'
@@ -55,7 +55,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                        <span className="text-xs md:text-sm font-bold text-white truncate">
+                        <span className="text-xs md:text-sm lg:text-base font-bold text-white truncate">
                             {player.name}
                         </span>
                         {isActive && (
@@ -65,7 +65,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
                         )}
                     </div>
                     <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[11px] md:text-sm font-bold text-amber-300">
+                        <span className="text-[11px] md:text-sm lg:text-base font-bold text-amber-300">
                             ${player.cash}
                         </span>
                         {passiveIncome > 0 && (
@@ -86,7 +86,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
                     {[0, 1, 2].map(i => (
                         <div
                             key={i}
-                            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${i < player.assets.length
+                            className={`w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full transition-all duration-300 ${i < player.assets.length
                                 ? 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.5)]'
                                 : 'bg-white/10'
                                 }`}

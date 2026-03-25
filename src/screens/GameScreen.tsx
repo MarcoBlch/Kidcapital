@@ -101,7 +101,7 @@ export default function GameScreen() {
             <Header />
 
             {/* Player cards */}
-            <div className="px-2 md:px-6 py-1 md:py-2 space-y-1 md:space-y-2 flex-shrink-0">
+            <div className="px-2 md:px-6 lg:px-8 py-1 md:py-2 lg:py-3 space-y-1 md:space-y-2 flex-shrink-0">
                 {players.map(p => (
                     <PlayerRow
                         key={p.id}
@@ -120,10 +120,10 @@ export default function GameScreen() {
 
             {/* Bot turn log */}
             {turnLog.length > 0 && (
-                <div className="px-3 md:px-6 py-1 flex-shrink-0">
+                <div className="px-3 md:px-6 lg:px-8 py-1 flex-shrink-0">
                     <div className="bg-white/5 rounded-xl px-3 py-1.5 max-h-14 overflow-y-auto no-scrollbar border border-white/5">
                         {turnLog.slice(-3).map((log, i) => (
-                            <div key={i} className="text-[10px] text-white/40 py-0.5">
+                            <div key={i} className="text-[10px] lg:text-xs text-white/40 py-0.5">
                                 {log}
                             </div>
                         ))}

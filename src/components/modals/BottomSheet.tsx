@@ -39,7 +39,7 @@ export default function BottomSheet({
                             damping: 35,
                             mass: 0.8,
                         }}
-                        className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px] max-h-[88vh] overflow-y-auto safe-bottom md:max-w-xl md:mx-auto md:rounded-b-[28px] md:bottom-4"
+                        className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px] max-h-[88vh] overflow-y-auto safe-bottom md:max-w-xl lg:max-w-2xl md:mx-auto md:rounded-b-[28px] md:bottom-4"
                         style={{ boxShadow: '0 -8px 40px rgba(0,0,0,0.12)' }}
                     >
                         {/* Color stripe */}
@@ -54,7 +54,7 @@ export default function BottomSheet({
                         </div>
 
                         {/* Content */}
-                        <div className="px-5 pb-6">
+                        <div className="px-5 md:px-6 lg:px-8 pb-6 lg:pb-8">
                             {children}
                         </div>
                     </motion.div>

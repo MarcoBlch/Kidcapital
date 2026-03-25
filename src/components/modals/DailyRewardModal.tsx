@@ -46,15 +46,15 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.9, y: -20 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    className="relative z-10 mx-6 max-w-sm w-full"
+                    className="relative z-10 mx-6 max-w-sm md:max-w-md lg:max-w-lg w-full"
                 >
                     <div className="bg-gradient-to-br from-[#1e2a4a] to-[#162040] rounded-3xl border border-amber-400/30 p-6 shadow-[0_0_50px_rgba(245,158,11,0.2)] text-center">
 
-                        <div className="text-6xl mb-4 inline-block drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+                        <div className="text-6xl lg:text-7xl mb-4 inline-block drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">
                             📅
                         </div>
 
-                        <h2 className="font-display text-2xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 mb-2">
+                        <h2 className="font-display text-2xl lg:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 mb-2">
                             Daily Log-in Bonus!
                         </h2>
 
@@ -78,7 +78,7 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
                         {/* Reward Amount */}
                         <div className="flex flex-col items-center mb-6">
                             <span className="text-xs text-white/50 uppercase tracking-widest mb-1 font-bold">Your Bonus</span>
-                            <div className="font-display text-5xl font-black text-emerald-400 drop-shadow-[0_2px_10px_rgba(52,211,153,0.3)]">
+                            <div className="font-display text-5xl lg:text-6xl font-black text-emerald-400 drop-shadow-[0_2px_10px_rgba(52,211,153,0.3)]">
                                 +${bonusCash}
                             </div>
                             {streak > 1 && (
