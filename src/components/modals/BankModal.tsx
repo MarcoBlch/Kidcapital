@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
 import Button from '../ui/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function BankModal() {
+    const { t } = useTranslation();
     const players = useGameStore(s => s.players);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const playerDeposit = useGameStore(s => s.playerDeposit);
@@ -46,22 +48,22 @@ export default function BankModal() {
     return (
         <div>
             <h2 className="font-display text-xl text-indigo-500 mb-1">
-                🏦 Bank
+                {t('modals.bank.title')}
             </h2>
             <p className="text-xs text-slate-400 mb-4">
-                Savings earn 5% interest each Payday!
+                {t('modals.bank.subtitle')}
             </p>
 
             {/* Balance display */}
             <div className="flex gap-3 mb-4">
                 <div className="flex-1 bg-amber-50 rounded-xl p-3 text-center">
-                    <div className="text-[10px] text-slate-400 mb-1">Cash</div>
+                    <div className="text-[10px] text-slate-400 mb-1">{t('modals.bank.cash')}</div>
                     <div className="font-display text-lg font-bold text-amber-600">
                         ${player.cash}
                     </div>
                 </div>
                 <div className="flex-1 bg-indigo-50 rounded-xl p-3 text-center">
-                    <div className="text-[10px] text-slate-400 mb-1">Savings</div>
+                    <div className="text-[10px] text-slate-400 mb-1">{t('modals.bank.savings')}</div>
                     <div className="font-display text-lg font-bold text-indigo-600">
                         ${player.savings}
                     </div>
@@ -77,7 +79,7 @@ export default function BankModal() {
                             : 'bg-slate-100 text-slate-500'
                         }`}
                 >
-                    Deposit →
+                    {t('modals.bank.deposit')}
                 </button>
                 <button
                     onClick={() => { setTab('withdraw'); setAmount(0); }}
@@ -86,7 +88,7 @@ export default function BankModal() {
                             : 'bg-slate-100 text-slate-500'
                         }`}
                 >
-                    ← Withdraw
+                    {t('modals.bank.withdraw')}
                 </button>
             </div>
 
@@ -109,7 +111,7 @@ export default function BankModal() {
                     className="flex-1"
                     onClick={handleAll}
                 >
-                    All
+                    {t('modals.bank.all')}
                 </Button>
             </div>
 
@@ -119,16 +121,16 @@ export default function BankModal() {
                     ${amount}
                 </div>
                 <div className="text-xs text-slate-400">
-                    {tab === 'deposit' ? 'Cash → Savings' : 'Savings → Cash'}
+                    {tab === 'deposit' ? t('modals.bank.cash_to_savings') : t('modals.bank.savings_to_cash')}
                 </div>
             </div>
 
             <div className="flex gap-3">
                 <Button fullWidth onClick={handleConfirm} disabled={amount <= 0}>
-                    {tab === 'deposit' ? '💰 Deposit' : '💵 Withdraw'}
+                    {tab === 'deposit' ? t('modals.bank.deposit_btn') : t('modals.bank.withdraw_btn')}
                 </Button>
                 <Button variant="ghost" onClick={closeModal}>
-                    Skip
+                    {t('modals.skip')}
                 </Button>
             </div>
         </div>

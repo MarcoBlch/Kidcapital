@@ -6,8 +6,10 @@ import { getAvailableAssets } from '../../data/assets';
 import { canBuyAsset } from '../../engine/FinancialEngine';
 import Button from '../ui/Button';
 import type { Asset } from '../../types';
+import { useTranslation } from 'react-i18next';
 
 export default function InvestModal() {
+    const { t } = useTranslation();
     const players = useGameStore(s => s.players);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const playerBuyAssetCash = useGameStore(s => s.playerBuyAssetCash);
@@ -50,12 +52,12 @@ export default function InvestModal() {
     return (
         <div>
             <h2 className="font-display text-xl text-emerald-600 mb-1">
-                🏪 Business Market
+                {t('modals.invest.title')}
             </h2>
             <p className="text-xs text-slate-400 mb-4">
                 {player.debt > 0
-                    ? '⚠️ Pay off debt before investing!'
-                    : 'Choose a business to buy!'}
+                    ? t('modals.invest.subtitle_debt')
+                    : t('modals.invest.subtitle_normal')}
             </p>
 
             <div className="space-y-3 max-h-[50vh] overflow-y-auto">
@@ -80,7 +82,7 @@ export default function InvestModal() {
                                         <span className="text-slate-400">🔧 -${asset.maint}/mo</span>
                                     </div>
                                     <div className="text-[10px] text-slate-400 mt-1">
-                                        Net +${asset.income - asset.maint}/mo • Tier {asset.tier}
+                                        {t('modals.invest.net', { amount: asset.income - asset.maint, tier: asset.tier })}
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +95,7 @@ export default function InvestModal() {
                                     disabled={!buyOpts.cash}
                                     onClick={() => handleBuyCash(asset)}
                                 >
-                                    Buy ${asset.cost}
+                                    {t('modals.invest.buy', { cost: asset.cost })}
                                 </Button>
                                 <Button
                                     size="sm"
@@ -102,7 +104,7 @@ export default function InvestModal() {
                                     disabled={!buyOpts.loan}
                                     onClick={() => handleBuyLoan(asset)}
                                 >
-                                    Loan (${down} down)
+                                    {t('modals.invest.loan', { down })}
                                 </Button>
                             </div>
                         </div>
@@ -112,7 +114,7 @@ export default function InvestModal() {
                 {available.length === 0 && (
                     <div className="text-center text-slate-400 py-8">
                         <span className="text-3xl">🎉</span>
-                        <p className="mt-2 font-medium">You own all businesses!</p>
+                        <p className="mt-2 font-medium">{t('modals.invest.own_all')}</p>
                     </div>
                 )}
             </div>
@@ -123,7 +125,7 @@ export default function InvestModal() {
                 className="mt-3"
                 onClick={handleSkip}
             >
-                Skip
+                {t('modals.invest.skip')}
             </Button>
         </div>
     );

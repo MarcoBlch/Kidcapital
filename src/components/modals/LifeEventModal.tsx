@@ -4,8 +4,10 @@ import { useUIStore } from '../../store/uiStore';
 import { getRandomEvent } from '../../data/events';
 import { getPennyPhrase } from '../../data/penny-phrases';
 import Button from '../ui/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function LifeEventModal() {
+    const { t } = useTranslation();
     const playerApplyLifeEvent = useGameStore(s => s.playerApplyLifeEvent);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const players = useGameStore(s => s.players);
@@ -52,7 +54,7 @@ export default function LifeEventModal() {
             </div>
 
             <Button fullWidth onClick={handleCollect} disabled={collected}>
-                {isGood ? 'Sweet! 🎉' : 'Ouch! 😅'}
+                {isGood ? t('modals.life_event.sweet') : t('modals.life_event.ouch')}
             </Button>
         </div>
     );

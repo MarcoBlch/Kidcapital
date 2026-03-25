@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '../../store/uiStore';
 import { purchasePremiumPkg, restorePurchasesPkg, getProductPrice } from '../../lib/revenuecat';
+import { useTranslation } from 'react-i18next';
 
 export default function PaywallModal() {
+    const { t } = useTranslation();
     const activeModal = useUIStore(s => s.activeModal);
     const closeModal = useUIStore(s => s.closeModal);
 
@@ -31,7 +33,7 @@ export default function PaywallModal() {
             }
         } catch (e) {
             console.error('Purchase failed', e);
-            setErrorMessage('An unexpected error occurred. Please try again.');
+            setErrorMessage(t('modals.paywall.error'));
         } finally {
             setIsPurchasing(false);
         }
@@ -74,20 +76,20 @@ export default function PaywallModal() {
                         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-rose-500/20" />
                         <div className="text-6xl lg:text-7xl mb-4 drop-shadow-xl animate-bounce">👑</div>
                         <h2 className="text-3xl lg:text-4xl font-display font-black text-white tracking-tight mb-2 relative z-10">
-                            KidCapital<span className="text-amber-400">+</span>
+                            {t('modals.paywall.title')}<span className="text-amber-400">{t('modals.paywall.title_plus')}</span>
                         </h2>
                         <p className="text-amber-200/80 text-sm relative z-10 font-bold">
-                            Unlock the full billionaire experience.
+                            {t('modals.paywall.subtitle')}
                         </p>
                     </div>
 
                     {/* Features List */}
                     <div className="px-6 py-6 lg:px-8 lg:py-8 space-y-4 lg:space-y-5">
-                        <FeatureItem icon="🎭" title="All 10 Premium Avatars" />
-                        <FeatureItem icon="🔥" title="Hard Difficulty (Age 15-18)" />
-                        <FeatureItem icon="🤖" title="Play against up to 3 Bots" />
-                        <FeatureItem icon="🌍" title="Online Multiplayer" isComingSoon />
-                        <FeatureItem icon="🚫" title="No Ads, Forever" />
+                        <FeatureItem icon="🎭" title={t('modals.paywall.feature_avatars')} />
+                        <FeatureItem icon="🔥" title={t('modals.paywall.feature_hard')} />
+                        <FeatureItem icon="🤖" title={t('modals.paywall.feature_bots')} />
+                        <FeatureItem icon="🌍" title={t('modals.paywall.feature_multi')} isComingSoon soonLabel={t('modals.paywall.soon')} />
+                        <FeatureItem icon="🚫" title={t('modals.paywall.feature_ads')} />
                     </div>
 
                     {/* Purchase Box */}
@@ -105,12 +107,12 @@ export default function PaywallModal() {
                             `}
                         >
                             {isPurchasing ? (
-                                <span>Processing...</span>
+                                <span>{t('modals.paywall.processing')}</span>
                             ) : (
                                 <>
-                                    <span>Unlock Now</span>
+                                    <span>{t('modals.paywall.unlock')}</span>
                                     <span className="text-xs text-amber-950/70 font-sans tracking-wide">
-                                        One-Time Payment of {price}
+                                        {t('modals.paywall.one_time', { price })}
                                     </span>
                                 </>
                             )}
@@ -130,7 +132,7 @@ export default function PaywallModal() {
                                 onClick={handleRestore}
                                 className="text-xs text-white/40 underline hover:text-white/80 transition-colors"
                             >
-                                Already purchased? Restore here.
+                                {t('modals.paywall.restore')}
                             </button>
                         </div>
                     </div>
@@ -140,7 +142,7 @@ export default function PaywallModal() {
     );
 }
 
-function FeatureItem({ icon, title, isComingSoon = false }: { icon: string, title: string, isComingSoon?: boolean }) {
+function FeatureItem({ icon, title, isComingSoon = false, soonLabel }: { icon: string, title: string, isComingSoon?: boolean, soonLabel?: string }) {
     return (
         <div className="flex items-center gap-4">
             <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/5 flex items-center justify-center text-xl lg:text-2xl shrink-0 border border-white/10">
@@ -150,7 +152,7 @@ function FeatureItem({ icon, title, isComingSoon = false }: { icon: string, titl
                 {title}
                 {isComingSoon && (
                     <span className="text-[9px] uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30 px-1.5 py-0.5 rounded-full">
-                        Soon
+                        {soonLabel || 'Soon'}
                     </span>
                 )}
             </div>

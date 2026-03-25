@@ -76,7 +76,7 @@ export default function SetupScreen() {
                         onClick={() => showModal('paywall' as any)}
                         className="bg-gradient-to-r from-amber-400 to-amber-600 text-amber-950 font-bold px-4 md:px-6 py-1.5 md:py-2.5 rounded-full text-sm md:text-base shadow-[0_0_15px_rgba(245,158,11,0.3)] animate-pulse"
                     >
-                        Get KidCapital+ 👑
+                        {t('setup.get_premium')}
                     </button>
                 </div>
             )}
@@ -192,9 +192,9 @@ export default function SetupScreen() {
 
                         {/* Language switcher - super simple for now */}
                         <div className="flex gap-1">
-                            <button onClick={() => { i18n.changeLanguage('en'); safeSetItem('kidcapital_language', 'en'); }} className={`px-1.5 py-0.5 rounded ${i18n.language === 'en' ? 'bg-white/20 text-white' : 'text-white/30'}`}>EN</button>
-                            <button onClick={() => { i18n.changeLanguage('fr'); safeSetItem('kidcapital_language', 'fr'); }} className={`px-1.5 py-0.5 rounded ${i18n.language === 'fr' ? 'bg-white/20 text-white' : 'text-white/30'}`}>FR</button>
-                            <button onClick={() => { i18n.changeLanguage('es'); safeSetItem('kidcapital_language', 'es'); }} className={`px-1.5 py-0.5 rounded ${i18n.language === 'es' ? 'bg-white/20 text-white' : 'text-white/30'}`}>ES</button>
+                            {['en', 'fr', 'es', 'pt', 'de'].map(lang => (
+                                <button key={lang} onClick={() => { i18n.changeLanguage(lang); safeSetItem('kidcapital_language', lang); }} className={`px-1.5 py-0.5 rounded text-[10px] ${i18n.language === lang ? 'bg-white/20 text-white' : 'text-white/30'}`}>{lang.toUpperCase()}</button>
+                            ))}
                         </div>
                     </label>
                     <div className="flex gap-2 mb-3">
@@ -231,7 +231,7 @@ export default function SetupScreen() {
                                 <span className="text-2xl lg:text-3xl">{bot.avatar}</span>
                                 <div>
                                     <div className="text-sm lg:text-base font-bold text-white">{bot.name}</div>
-                                    <div className="text-[10px] lg:text-xs text-white/30">{bot.description}</div>
+                                    <div className="text-[10px] lg:text-xs text-white/30">{t(`data.bots.${bot.id}.description`, { defaultValue: bot.description })}</div>
                                 </div>
                             </div>
                         ))}

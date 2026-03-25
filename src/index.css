@@ -44,6 +44,9 @@
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 28px;
+
+  /* Breakpoints — lower lg so iPad Air 11″ (820px) triggers lg: classes */
+  --breakpoint-lg: 800px;
 }
 
 /* ============================================
@@ -227,7 +230,7 @@ h6,
    Tablet Optimizations (≥1024px)
    ============================================ */
 
-@media (min-width: 1024px) {
+@media (min-width: 800px) {
   html {
     font-size: 18px;
   }

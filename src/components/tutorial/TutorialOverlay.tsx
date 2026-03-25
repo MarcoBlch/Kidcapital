@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTutorialStore } from '../../store/tutorialStore';
+import { useTranslation } from 'react-i18next';
 
 export default function TutorialOverlay() {
+    const { t } = useTranslation();
     const isActive = useTutorialStore(s => s.isActive);
     const getCurrentStep = useTutorialStore(s => s.getCurrentStep);
     const nextStep = useTutorialStore(s => s.nextStep);
@@ -68,10 +70,10 @@ export default function TutorialOverlay() {
                         {/* Content */}
                         <div className="px-6 pb-2 text-center">
                             <h3 className="font-display text-lg text-amber-300 mb-2">
-                                {step.title}
+                                {t(`tutorial.${step.id}_title`, { defaultValue: step.title })}
                             </h3>
                             <p className="text-sm text-white/70 leading-relaxed whitespace-pre-line">
-                                {step.message}
+                                {t(`tutorial.${step.id}_msg`, { defaultValue: step.message })}
                             </p>
                         </div>
 
@@ -88,14 +90,14 @@ export default function TutorialOverlay() {
                                         shadow-[0_4px_20px_rgba(245,158,11,0.3)]
                                     "
                                 >
-                                    {currentStepIndex === totalSteps - 1 ? "Let's Go! 🎲" : 'Got it! →'}
+                                    {currentStepIndex === totalSteps - 1 ? t('tutorial.lets_go') : t('tutorial.got_it')}
                                 </motion.button>
                             ) : (
                                 <div className="text-center">
                                     <p className="text-[11px] text-amber-300/50 font-medium animate-pulse">
-                                        {step.waitFor === 'roll' && '👆 Tap "Roll!" to continue...'}
-                                        {step.waitFor === 'modal_close' && '👆 Close the card to continue...'}
-                                        {step.waitFor === 'next_turn' && '👆 Tap "Next" to continue...'}
+                                        {step.waitFor === 'roll' && t('tutorial.wait_roll')}
+                                        {step.waitFor === 'modal_close' && t('tutorial.wait_modal')}
+                                        {step.waitFor === 'next_turn' && t('tutorial.wait_next')}
                                     </p>
                                 </div>
                             )}
@@ -105,7 +107,7 @@ export default function TutorialOverlay() {
                                 onClick={completeTutorial}
                                 className="mt-3 w-full text-center text-[10px] text-white/20 hover:text-white/40 transition-colors cursor-pointer"
                             >
-                                Skip tutorial
+                                {t('tutorial.skip')}
                             </button>
                         </div>
                     </div>

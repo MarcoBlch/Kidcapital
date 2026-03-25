@@ -4,8 +4,10 @@ import { useUIStore } from '../../store/uiStore';
 import { useAchievementStore } from '../../store/achievementStore';
 import { getRandomChallenge } from '../../data/challenges';
 import Button from '../ui/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function ChallengeModal() {
+    const { t } = useTranslation();
     const players = useGameStore(s => s.players);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const playerQuizResult = useGameStore(s => s.playerQuizResult);
@@ -51,10 +53,10 @@ export default function ChallengeModal() {
     return (
         <div>
             <h2 className="font-display text-lg text-cyan-600 mb-1">
-                🧠 Money Quiz!
+                {t('modals.challenge.title')}
             </h2>
             <p className="text-[10px] text-slate-400 mb-2">
-                Answer correctly to earn ${REWARD} — but wrong answers cost ${Math.abs(PENALTY)}!
+                {t('modals.challenge.subtitle', { reward: REWARD, penalty: Math.abs(PENALTY) })}
             </p>
 
             <p className="text-sm font-medium text-slate-800 mb-4 leading-relaxed">
@@ -100,8 +102,8 @@ export default function ChallengeModal() {
                 <div className={`rounded-xl p-4 mb-4 ${isCorrect ? 'bg-emerald-50 border border-emerald-200' : 'bg-rose-50 border border-rose-200'}`}>
                     <div className="font-display text-sm font-bold mb-2">
                         {isCorrect
-                            ? `🎉 Correct! +$${REWARD}`
-                            : `😕 Wrong! -$${Math.abs(PENALTY)}`}
+                            ? t('modals.challenge.correct', { reward: REWARD })
+                            : t('modals.challenge.wrong', { penalty: Math.abs(PENALTY) })}
                     </div>
                     <p className="text-xs text-slate-600 leading-relaxed">
                         🐷 {challenge.pennyExplanation}
@@ -111,7 +113,7 @@ export default function ChallengeModal() {
 
             {revealed && (
                 <Button fullWidth onClick={handleClose}>
-                    Continue
+                    {t('modals.continue')}
                 </Button>
             )}
         </div>

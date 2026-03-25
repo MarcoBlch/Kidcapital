@@ -4,8 +4,10 @@ import { useUIStore } from '../../store/uiStore';
 import { useAchievementStore } from '../../store/achievementStore';
 import { getRandomTemptation } from '../../data/temptations';
 import Button from '../ui/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function TemptationModal() {
+    const { t } = useTranslation();
     const players = useGameStore(s => s.players);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const playerBuyTemptation = useGameStore(s => s.playerBuyTemptation);
@@ -46,10 +48,10 @@ export default function TemptationModal() {
     return (
         <div>
             <h2 className="font-display text-lg text-pink-500 mb-1">
-                🛍️ Temptation!
+                {t('modals.temptation.title')}
             </h2>
             <p className="text-[10px] text-slate-400 mb-3">
-                Want vs. Need — what will you choose?
+                {t('modals.temptation.subtitle')}
             </p>
 
             {/* Item card */}
@@ -70,7 +72,7 @@ export default function TemptationModal() {
             {!decided && (
                 <div className="bg-amber-50 rounded-xl p-3 mb-4 border border-amber-100">
                     <p className="text-xs text-amber-700 leading-relaxed">
-                        🐷 This is a "want", not a "need". If you skip it, you'll save <strong>+$5</strong> in your savings account! But buying feels fun too... What's more important to you?
+                        {t('modals.temptation.dilemma')}
                     </p>
                 </div>
             )}
@@ -78,18 +80,18 @@ export default function TemptationModal() {
             {/* Decision result */}
             {decided && choice === 'buy' && (
                 <div className="bg-pink-50 rounded-xl p-3 mb-4 border border-pink-200">
-                    <p className="text-sm font-bold text-pink-600 mb-1">🛍️ You bought it!</p>
+                    <p className="text-sm font-bold text-pink-600 mb-1">{t('modals.temptation.bought_title')}</p>
                     <p className="text-xs text-slate-500">
-                        It feels good now, but that money is gone. Was it worth it? 🤔
+                        {t('modals.temptation.bought_text')}
                     </p>
                 </div>
             )}
 
             {decided && choice === 'skip' && (
                 <div className="bg-emerald-50 rounded-xl p-3 mb-4 border border-emerald-200">
-                    <p className="text-sm font-bold text-emerald-600 mb-1">💪 Great self-control!</p>
+                    <p className="text-sm font-bold text-emerald-600 mb-1">{t('modals.temptation.skip_title')}</p>
                     <p className="text-xs text-slate-500">
-                        You saved $5 into your savings! Saying "no" to wants now means more freedom later. Smart choice!
+                        {t('modals.temptation.skip_text')}
                     </p>
                 </div>
             )}
@@ -103,21 +105,21 @@ export default function TemptationModal() {
                         onClick={handleBuy}
                         disabled={!canAfford}
                     >
-                        🛒 Buy ${temptation.cost}
+                        {t('modals.temptation.buy_btn', { cost: temptation.cost })}
                     </Button>
                     <Button fullWidth variant="success" onClick={handleSkip}>
-                        💪 Skip (+$5 saved)
+                        {t('modals.temptation.skip_btn')}
                     </Button>
                 </div>
             ) : (
                 <Button fullWidth onClick={handleClose}>
-                    Continue
+                    {t('modals.continue')}
                 </Button>
             )}
 
             {!canAfford && !decided && (
                 <p className="text-[10px] text-rose-400 text-center mt-2">
-                    You don't have enough cash!
+                    {t('modals.temptation.not_enough')}
                 </p>
             )}
         </div>

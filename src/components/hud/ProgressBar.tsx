@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { MIN_ASSETS_TO_WIN, MIN_SAVINGS_TO_WIN } from '../../utils/constants';
 import type { Player } from '../../types';
+import { useTranslation } from 'react-i18next';
 
 interface ProgressBarProps {
     percent: number;
@@ -8,6 +9,7 @@ interface ProgressBarProps {
 }
 
 export default function ProgressBar({ percent, player }: ProgressBarProps) {
+    const { t } = useTranslation();
     const clamped = Math.max(0, Math.min(100, percent));
 
     const assetCount = player.assets.length;
@@ -17,10 +19,10 @@ export default function ProgressBar({ percent, player }: ProgressBarProps) {
     const debt = player.debt;
 
     const milestones = [
-        { label: '🏪', done: assetCount >= MIN_ASSETS_TO_WIN, tip: `${assetCount}/${MIN_ASSETS_TO_WIN} biz` },
+        { label: '🏪', done: assetCount >= MIN_ASSETS_TO_WIN, tip: t('game.biz', { count: assetCount, target: MIN_ASSETS_TO_WIN }) },
         { label: '🏦', done: savings >= MIN_SAVINGS_TO_WIN, tip: `$${savings}/$${MIN_SAVINGS_TO_WIN}` },
         { label: '🧠', done: quizTotal > 0 && (quizCorrect / quizTotal) >= 0.5, tip: quizTotal > 0 ? `${Math.round(quizCorrect / quizTotal * 100)}%` : '0%' },
-        { label: '💰', done: debt === 0, tip: debt > 0 ? `$${debt} debt` : 'No debt' },
+        { label: '💰', done: debt === 0, tip: debt > 0 ? t('game.debt_amount', { amount: debt }) : t('game.no_debt') },
     ];
 
     return (

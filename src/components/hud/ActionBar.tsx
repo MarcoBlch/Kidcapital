@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { useTranslation } from 'react-i18next';
 
 // We import Button variants but ActionBar currently uses custom styled motion.buttons.
 // Let's stick with the existing styling conventions for alignment.
@@ -11,6 +12,7 @@ interface ActionBarProps {
 }
 
 export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
+    const { t } = useTranslation();
     const turnPhase = useGameStore(s => s.turnPhase);
     const diceResult = useGameStore(s => s.diceResult);
     const currentPlayer = useGameStore(s => s.players[s.currentPlayerIndex]);
@@ -80,7 +82,7 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
                                 cursor-pointer transition-all
                             "
                         >
-                            🎲 Roll!
+                            {t('game.roll')}
                         </motion.button>
                     )}
                     {showNext && (
@@ -95,7 +97,7 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
                                 hover:bg-white/15 cursor-pointer transition-all
                             "
                         >
-                            Next →
+                            {t('game.next')}
                         </motion.button>
                     )}
                     {turnPhase === 'bot_acting' && (
@@ -111,14 +113,14 @@ export default function ActionBar({ onRoll, onNext }: ActionBarProps) {
                                 ))}
                             </div>
                             <span className="text-[11px] text-white/50 font-medium">
-                                Bot thinking...
+                                {t('game.bot_thinking')}
                             </span>
                         </div>
                     )}
                     {(turnPhase === 'rolling' || turnPhase === 'moving') && (
                         <div className="px-4 py-2.5">
                             <span className="text-[11px] text-amber-300/60 font-medium animate-pulse">
-                                Moving...
+                                {t('game.moving')}
                             </span>
                         </div>
                     )}

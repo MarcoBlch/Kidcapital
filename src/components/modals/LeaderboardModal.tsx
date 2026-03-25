@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '../../store/uiStore';
 import { supabase } from '../../lib/supabase';
 import { useSupabaseStore } from '../../store/supabaseStore';
+import { useTranslation } from 'react-i18next';
 
 interface Profile {
     id: string;
@@ -13,6 +14,7 @@ interface Profile {
 }
 
 export default function LeaderboardModal() {
+    const { t } = useTranslation();
     const activeModal = useUIStore(s => s.activeModal);
     const closeModal = useUIStore(s => s.closeModal);
     const session = useSupabaseStore(s => s.session);
@@ -43,7 +45,7 @@ export default function LeaderboardModal() {
             setLeaders(data || []);
         } catch (err: any) {
             console.error('Leaderboard error:', err);
-            setError('Could not load leaderboard.');
+            setError(t('modals.leaderboard.error'));
         } finally {
             setLoading(false);
         }
@@ -67,7 +69,7 @@ export default function LeaderboardModal() {
                         <div className="flex items-center gap-2">
                             <span className="text-2xl">🏆</span>
                             <h2 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text text-transparent">
-                                Global Top 50
+                                {t('modals.leaderboard.title')}
                             </h2>
                         </div>
                         <button
@@ -82,7 +84,7 @@ export default function LeaderboardModal() {
                     <div className="flex-1 overflow-y-auto p-4 space-y-2 no-scrollbar">
                         {loading ? (
                             <div className="py-8 text-center text-amber-200/50 animate-pulse text-sm">
-                                Loading top players...
+                                {t('modals.leaderboard.loading')}
                             </div>
                         ) : error ? (
                             <div className="py-8 text-center text-rose-400 text-sm">
@@ -90,7 +92,7 @@ export default function LeaderboardModal() {
                             </div>
                         ) : leaders.length === 0 ? (
                             <div className="py-8 text-center text-white/40 text-sm">
-                                No players yet! Play a game to be the first!
+                                {t('modals.leaderboard.empty')}
                             </div>
                         ) : (
                             leaders.map((p, index) => {
@@ -116,10 +118,10 @@ export default function LeaderboardModal() {
                                         <div className="flex-1 min-w-0">
                                             <div className="font-bold text-white truncate text-sm flex items-center gap-1.5">
                                                 {p.username}
-                                                {isMe && <span className="text-[9px] bg-amber-500 text-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">You</span>}
+                                                {isMe && <span className="text-[9px] bg-amber-500 text-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">{t('modals.leaderboard.you')}</span>}
                                             </div>
                                             <div className="text-[10px] text-amber-200/60">
-                                                Level {p.level}
+                                                {t('modals.leaderboard.level', { level: p.level })}
                                             </div>
                                         </div>
                                         <div className="text-right shrink-0">

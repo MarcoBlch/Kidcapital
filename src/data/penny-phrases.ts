@@ -1,4 +1,5 @@
 import type { PennyMessage } from '../types';
+import i18n from '../i18n/config';
 
 // ============================================
 // KidCapital — Penny Fallback Phrases
@@ -157,5 +158,7 @@ export const PENNY_PHRASES: PennyMessage[] = [
 export function getPennyPhrase(trigger: string): string {
     const group = PENNY_PHRASES.find(p => p.trigger === trigger)
         ?? PENNY_PHRASES.find(p => p.trigger === 'generic')!;
-    return group.messages[Math.floor(Math.random() * group.messages.length)];
+    const index = Math.floor(Math.random() * group.messages.length);
+    const key = `penny.${trigger}_${index}`;
+    return i18n.t(key, { defaultValue: group.messages[index] });
 }

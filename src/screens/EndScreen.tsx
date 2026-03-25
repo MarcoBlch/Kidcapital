@@ -6,8 +6,10 @@ import { useAchievementStore } from '../store/achievementStore';
 import { useSupabaseStore } from '../store/supabaseStore';
 import { getFreedomPercent } from '../engine/WinCondition';
 import { getLevelForXP, getXPToNextLevel } from '../data/achievements';
+import { useTranslation } from 'react-i18next';
 
 export default function EndScreen() {
+    const { t } = useTranslation();
     const players = useGameStore(s => s.players);
     const winnerId = useGameStore(s => s.winnerId);
     const month = useGameStore(s => s.month);
@@ -91,12 +93,12 @@ export default function EndScreen() {
                         {isHumanWinner ? '🏆' : '🎮'}
                     </div>
                     <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-amber-400 mb-1">
-                        {isHumanWinner ? 'YOU WIN!' : `${winner.name} Wins!`}
+                        {isHumanWinner ? t('end.you_win') : t('end.name_wins', { name: winner.name })}
                     </h1>
                     <p className="text-sm md:text-base text-white/40 mb-6 md:mb-8">
                         {isHumanWinner
-                            ? 'Financial Freedom achieved! 🦋'
-                            : `${winner.avatar} reached freedom first!`}
+                            ? t('end.freedom_achieved')
+                            : t('end.reached_first', { avatar: winner.avatar })}
                     </p>
                 </motion.div>
 
@@ -108,35 +110,35 @@ export default function EndScreen() {
                     className="bg-white/5 rounded-2xl p-5 lg:p-6 mb-6 text-left border border-white/10"
                 >
                     <h2 className="font-display text-lg text-white mb-4">
-                        📊 Your Report Card
+                        {t('end.report_card')}
                     </h2>
 
                     <div className="space-y-2.5">
-                        <StatRow label="Months Played" value={`${month}`} icon="📅" />
+                        <StatRow label={t('end.months')} value={`${month}`} icon="📅" />
                         <StatRow
-                            label="Net Worth"
+                            label={t('end.net_worth')}
                             value={`$${netWorth}`}
                             icon="💰"
                             highlight={netWorth > 0 ? 'positive' : 'negative'}
                         />
                         <StatRow
-                            label="Passive Income"
+                            label={t('end.passive_income')}
                             value={`$${passiveIncome}/mo`}
                             icon="📈"
                             highlight="positive"
                         />
                         <StatRow
-                            label="Businesses Owned"
+                            label={t('end.businesses')}
                             value={`${humanPlayer.assets.length}`}
                             icon="🏪"
                         />
                         <StatRow
-                            label="Savings"
+                            label={t('end.savings')}
                             value={`$${humanPlayer.savings}`}
                             icon="🏦"
                         />
                         <StatRow
-                            label="Freedom"
+                            label={t('end.freedom')}
                             value={`${getFreedomPercent(humanPlayer)}%`}
                             icon="🦋"
                             highlight="positive"
@@ -144,13 +146,13 @@ export default function EndScreen() {
 
                         <div className="border-t border-white/10 pt-2.5 mt-2.5">
                             <StatRow
-                                label="Impulse Control"
+                                label={t('end.impulse')}
                                 value={`${impulseScore}%`}
                                 icon="💪"
                                 highlight={impulseScore >= 50 ? 'positive' : 'negative'}
                             />
                             <StatRow
-                                label="Quiz Accuracy"
+                                label={t('end.quiz')}
                                 value={`${quizAccuracy}% (${humanPlayer.quizCorrect}/${humanPlayer.quizTotal})`}
                                 icon="🧠"
                             />
@@ -170,9 +172,9 @@ export default function EndScreen() {
                             {level.icon}
                         </div>
                         <div className="flex-1">
-                            <div className="text-[9px] text-amber-300/50 uppercase tracking-wider font-bold">Level {level.level}</div>
+                            <div className="text-[9px] text-amber-300/50 uppercase tracking-wider font-bold">{t('end.level', { level: level.level })}</div>
                             <div className="font-display text-base text-amber-300 font-bold">{level.title}</div>
-                            <div className="text-[10px] text-white/30">{xp} XP total</div>
+                            <div className="text-[10px] text-white/30">{t('end.xp_total', { xp })}</div>
                         </div>
                     </div>
                     {/* XP progress bar */}
@@ -200,13 +202,11 @@ export default function EndScreen() {
                     <div className="flex items-center gap-2 mb-2">
                         <span className="text-2xl">🐷</span>
                         <span className="font-display text-sm font-bold text-amber-300">
-                            Penny says:
+                            {t('end.penny_says')}
                         </span>
                     </div>
                     <p className="text-sm text-white/60 leading-relaxed">
-                        {isHumanWinner
-                            ? "Amazing job! You learned that passive income = freedom. Your money works for YOU now! Keep these skills in real life! 🌟"
-                            : "Great effort! Every game teaches you something new about money. Try again and see if you can be the first to reach Financial Freedom! 💪"}
+                        {isHumanWinner ? t('end.penny_win') : t('end.penny_lose')}
                     </p>
                 </motion.div>
 
@@ -220,7 +220,7 @@ export default function EndScreen() {
             shadow-glow-gold cursor-pointer transition-all
           "
                 >
-                    🎲 Play Again
+                    {t('end.play_again')}
                 </motion.button>
             </div>
         </motion.div>

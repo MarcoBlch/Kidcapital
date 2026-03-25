@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
 import { useAchievementStore } from '../../store/achievementStore';
+import { useTranslation } from 'react-i18next';
 
 export default function AchievementToast() {
+    const { t } = useTranslation();
     const notifications = useAchievementStore(s => s.notifications);
     const dismissNotification = useAchievementStore(s => s.dismissNotification);
 
@@ -37,7 +39,7 @@ export default function AchievementToast() {
                                 {/* Text */}
                                 <div className="flex-1 min-w-0">
                                     <div className="text-[9px] font-bold text-amber-900/60 uppercase tracking-wider">
-                                        🏅 Achievement Unlocked!
+                                        {t('achievements.unlocked')}
                                     </div>
                                     <div className="text-sm font-bold text-amber-900 truncate">
                                         {firstNotif.achievement.title}

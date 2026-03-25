@@ -1,7 +1,9 @@
 import { useGameStore } from '../../store/gameStore';
 import { getFreedomPercent } from '../../engine/WinCondition';
+import { useTranslation } from 'react-i18next';
 
 export default function Header() {
+    const { t } = useTranslation();
     const month = useGameStore(s => s.month);
     const players = useGameStore(s => s.players);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
@@ -16,7 +18,7 @@ export default function Header() {
         <div className="flex items-center justify-between px-3 md:px-6 lg:px-8 py-2 md:py-3 lg:py-4 safe-top">
             {/* Month badge */}
             <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1">
-                <span className="text-[10px] text-amber-200/70">Month</span>
+                <span className="text-[10px] text-amber-200/70">{t('game.month')}</span>
                 <span className="font-display text-sm md:text-base lg:text-lg text-amber-300 font-bold">
                     {month}
                 </span>
@@ -28,11 +30,11 @@ export default function Header() {
                     {currentPlayer.avatar}
                 </div>
                 <span className="font-display text-sm md:text-base lg:text-lg text-white font-semibold">
-                    {currentPlayer.name}'s Turn
+                    {t('game.turn', { name: currentPlayer.name })}
                 </span>
                 {hasDebt && (
                     <span className="text-[8px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded-full font-bold animate-pulse">
-                        DEBT
+                        {t('game.debt')}
                     </span>
                 )}
             </div>

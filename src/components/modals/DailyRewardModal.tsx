@@ -1,11 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDailyRewardStore } from '../../store/dailyRewardStore';
+import { useTranslation } from 'react-i18next';
 
 interface DailyRewardModalProps {
     onClose: (bonusAmount: number) => void;
 }
 
 export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
+    const { t } = useTranslation();
     const checkDailyReward = useDailyRewardStore(s => s.checkDailyReward);
     const claimDailyReward = useDailyRewardStore(s => s.claimDailyReward);
 
@@ -55,11 +57,11 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
                         </div>
 
                         <h2 className="font-display text-2xl lg:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 mb-2">
-                            Daily Log-in Bonus!
+                            {t('modals.daily_reward.title')}
                         </h2>
 
                         <p className="text-white/80 text-sm mb-6 leading-relaxed px-4">
-                            Welcome back! You get a cash bonus to jumpstart your businesses today.
+                            {t('modals.daily_reward.subtitle')}
                         </p>
 
                         {/* Streak Box */}
@@ -71,19 +73,19 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
                                 {flames}
                             </div>
                             <div className="text-amber-400 font-bold font-display tracking-widest uppercase text-xs">
-                                {streak} Day Streak!
+                                {t('modals.daily_reward.streak', { streak })}
                             </div>
                         </div>
 
                         {/* Reward Amount */}
                         <div className="flex flex-col items-center mb-6">
-                            <span className="text-xs text-white/50 uppercase tracking-widest mb-1 font-bold">Your Bonus</span>
+                            <span className="text-xs text-white/50 uppercase tracking-widest mb-1 font-bold">{t('modals.daily_reward.your_bonus')}</span>
                             <div className="font-display text-5xl lg:text-6xl font-black text-emerald-400 drop-shadow-[0_2px_10px_rgba(52,211,153,0.3)]">
                                 +${bonusCash}
                             </div>
                             {streak > 1 && (
                                 <div className="text-[10px] text-emerald-400/60 mt-2 bg-emerald-400/10 px-3 py-1 rounded-full">
-                                    Includes +${(streak - 1) * 5} streak bonus!
+                                    {t('modals.daily_reward.streak_bonus', { amount: (streak - 1) * 5 })}
                                 </div>
                             )}
                         </div>
@@ -92,7 +94,7 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
                             onClick={handleClaim}
                             className="w-full py-4 rounded-2xl font-display font-bold text-lg cursor-pointer transition-all active:scale-95 bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-[0_5px_20px_rgba(52,211,153,0.4)] border border-emerald-300/50 hover:brightness-110"
                         >
-                            Claim ${bonusCash} & Play!
+                            {t('modals.daily_reward.claim', { amount: bonusCash })}
                         </button>
                     </div>
                 </motion.div>

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { Space } from '../../types';
 import PlayerToken from './PlayerToken';
+import { useTranslation } from 'react-i18next';
 
 const COLOR_MAP: Record<string, { bg: string; border: string; glow: string; text: string }> = {
     amber: { bg: 'rgba(245,158,11,0.15)', border: '#f59e0b', glow: '0 0 16px rgba(245,158,11,0.5)', text: '#fcd34d' },
@@ -19,6 +20,7 @@ interface SpaceCardProps {
 }
 
 export default function SpaceCard({ space, isActive, playersOnSpace }: SpaceCardProps) {
+    const { t } = useTranslation();
     const colors = COLOR_MAP[space.color] ?? COLOR_MAP.amber;
 
     return (
@@ -53,7 +55,7 @@ export default function SpaceCard({ space, isActive, playersOnSpace }: SpaceCard
                     className="text-[8px] md:text-[10px] lg:text-xs font-bold mt-1 leading-none text-center px-1"
                     style={{ color: isActive ? colors.text : 'rgba(255,255,255,0.35)' }}
                 >
-                    {space.label}
+                    {t(`board.${space.type}`, { defaultValue: space.label })}
                 </span>
             </div>
 

@@ -3,8 +3,10 @@ import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
 import { getRandomHustle } from '../../data/hustles';
 import Button from '../ui/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function HustleModal() {
+    const { t } = useTranslation();
     const playerApplyHustle = useGameStore(s => s.playerApplyHustle);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const players = useGameStore(s => s.players);
@@ -36,7 +38,7 @@ export default function HustleModal() {
             </div>
 
             <Button fullWidth variant="success" onClick={handleCollect} disabled={collected}>
-                Collect! 💪
+                {t('modals.hustle.collect')}
             </Button>
         </div>
     );

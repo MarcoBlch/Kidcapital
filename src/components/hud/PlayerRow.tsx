@@ -1,6 +1,7 @@
 import { getFreedomPercent } from '../../engine/WinCondition';
 import type { Player } from '../../types';
 import ProgressBar from './ProgressBar';
+import { useTranslation } from 'react-i18next';
 
 interface PlayerRowProps {
     player: Player;
@@ -8,6 +9,7 @@ interface PlayerRowProps {
 }
 
 export default function PlayerRow({ player, isActive }: PlayerRowProps) {
+    const { t } = useTranslation();
     const freedomPct = getFreedomPercent(player);
     const passiveIncome = player.assets.reduce((s, a) => s + a.income, 0);
 
@@ -60,7 +62,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
                         </span>
                         {isActive && (
                             <span className="text-[7px] bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded-full font-bold leading-none uppercase tracking-wider">
-                                Turn
+                                {t('game.turn_badge')}
                             </span>
                         )}
                     </div>
