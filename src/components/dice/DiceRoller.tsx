@@ -71,15 +71,13 @@ export default function DiceRoller({ onRollComplete, disabled }: DiceRollerProps
                             ? { duration: 0.4, repeat: Infinity, ease: 'linear' }
                             : { type: 'spring', stiffness: 300, damping: 20 }
                     }
-                    className={`
-            relative w-16 h-16 rounded-xl border-2
-            flex items-center justify-center cursor-pointer select-none
-            transition-colors duration-200
-            ${disabled
-                            ? 'bg-slate-100 border-slate-200 cursor-not-allowed'
-                            : 'bg-white border-amber-300 shadow-card hover:shadow-heavy hover:border-amber-400 active:scale-95'
-                        }
-          `}
+                    className="relative w-16 h-16 rounded-xl flex items-center justify-center cursor-pointer select-none transition-colors duration-200"
+                    style={{
+                        background: disabled ? '#F0F0F0' : '#FFFFFF',
+                        border: disabled ? '2px solid #E0E0E0' : '2px solid #FFD700',
+                        boxShadow: disabled ? 'none' : '0 3px 0 #B8860B, 0 6px 12px rgba(0,0,0,0.1)',
+                        cursor: disabled ? 'not-allowed' : 'pointer',
+                    }}
                 >
                     {/* Dots */}
                     <svg width="48" height="48" viewBox="0 0 100 100">
@@ -89,7 +87,7 @@ export default function DiceRoller({ onRollComplete, disabled }: DiceRollerProps
                                 cx={cx}
                                 cy={cy}
                                 r="10"
-                                fill={disabled ? '#94a3b8' : '#1e293b'}
+                                fill={disabled ? '#9E9EAF' : '#1A1A2E'}
                             />
                         ))}
                     </svg>
@@ -100,7 +98,8 @@ export default function DiceRoller({ onRollComplete, disabled }: DiceRollerProps
                     <motion.div
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="font-display text-sm text-amber-600 font-bold"
+                        className="font-display text-sm font-bold"
+                        style={{ color: '#DAA520' }}
                     >
                         You rolled {result}!
                     </motion.div>

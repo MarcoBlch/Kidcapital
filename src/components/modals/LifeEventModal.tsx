@@ -37,18 +37,20 @@ export default function LifeEventModal() {
         <div className="text-center">
             <span className="text-5xl">{event.mood}</span>
             <h2
-                className={`font-display text-xl mt-3 mb-1 ${isGood ? 'text-emerald-600' : 'text-rose-600'
-                    }`}
+                className="font-display text-xl mt-3 mb-1"
+                style={{ color: isGood ? '#4CAF50' : '#EF5350' }}
             >
-                {event.title}
+                {t(`data.events.${event.id}_title`, { defaultValue: event.title })}
             </h2>
-            <p className="text-sm text-slate-500 mb-4">{event.text}</p>
+            <p className="text-sm mb-4" style={{ color: '#5D5D6E' }}>{t(`data.events.${event.id}_text`, { defaultValue: event.text })}</p>
 
             <div
-                className={`inline-block px-6 py-3 rounded-2xl font-display text-2xl font-extrabold mb-5 ${isGood
-                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                    : 'bg-rose-50 text-rose-600 border border-rose-200'
-                    }`}
+                className="inline-block px-6 py-3 rounded-2xl font-display text-2xl font-extrabold mb-5"
+                style={{
+                    background: isGood ? '#E8F5E9' : '#FFEBEE',
+                    color: isGood ? '#4CAF50' : '#EF5350',
+                    border: `2px solid ${isGood ? '#4CAF50' : '#EF5350'}`,
+                }}
             >
                 {isGood ? '+' : ''}${event.amount}
             </div>

@@ -28,12 +28,15 @@ export default function HustleModal() {
     return (
         <div className="text-center">
             <span className="text-5xl">{hustle.icon}</span>
-            <h2 className="font-display text-xl text-purple-600 mt-3 mb-1">
-                💼 {hustle.title}
+            <h2 className="font-display text-xl mt-3 mb-1" style={{ color: '#8E24AA' }}>
+                💼 {t(`data.hustles.${hustle.id}_title`, { defaultValue: hustle.title })}
             </h2>
-            <p className="text-sm text-slate-500 mb-4">{hustle.text}</p>
+            <p className="text-sm mb-4" style={{ color: '#5D5D6E' }}>{t(`data.hustles.${hustle.id}_text`, { defaultValue: hustle.text })}</p>
 
-            <div className="inline-block px-6 py-3 rounded-2xl font-display text-2xl font-extrabold bg-purple-50 text-purple-600 border border-purple-200 mb-5">
+            <div
+                className="inline-block px-6 py-3 rounded-2xl font-display text-2xl font-extrabold mb-5"
+                style={{ background: '#F3E5F5', color: '#8E24AA', border: '2px solid #AB47BC' }}
+            >
                 +${hustle.amount}
             </div>
 

@@ -61,7 +61,7 @@ export const CHALLENGES: Challenge[] = [
             "You shouldn't — spend it all!",
         ],
         correctIndex: 2,
-        pennyExplanation: "Pay yourself FIRST! Save, then spend what's left. 🐷",
+        pennyExplanation: "Pay yourself FIRST! Save, then spend what's left.",
         reward: 10,
         difficulty: '8-10',
     },

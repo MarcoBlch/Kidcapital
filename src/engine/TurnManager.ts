@@ -10,6 +10,7 @@ import { getAvailableAssets } from '../data/assets';
 import { canBuyAsset } from '../engine/FinancialEngine';
 import { rollDice, sleep } from '../utils/helpers';
 import { TIMING, GO_BONUS } from '../utils/constants';
+import i18n from '../i18n/config';
 
 /**
  * TurnManager — Orchestrates the turn flow.
@@ -126,14 +127,15 @@ async function executeBotTurn(): Promise<void> {
     game.setTurnPhase('bot_acting');
 
     try {
-        ui.addLog(`${bot.avatar} ${bot.name}'s turn...`);
+        ui.clearLog();
+        ui.addLog(i18n.t('bot.turn', { avatar: bot.avatar, name: bot.name }));
 
         await sleep(TIMING.BOT_STEP_PAUSE);
 
         // Roll
         const diceResult = rollDice();
         game.setDiceResult(diceResult);
-        ui.addLog(`${bot.avatar} rolled ${diceResult}`);
+        ui.addLog(i18n.t('bot.rolled', { avatar: bot.avatar, result: diceResult }));
 
         await sleep(TIMING.BOT_STEP_PAUSE);
 
@@ -144,7 +146,7 @@ async function executeBotTurn(): Promise<void> {
 
         game.movePlayerTo(bot.id, newPos, passedGo);
         if (passedGo) {
-            ui.addLog(`${bot.avatar} passed GO! +$${GO_BONUS}`);
+            ui.addLog(i18n.t('bot.passed_go', { avatar: bot.avatar, bonus: GO_BONUS }));
         }
 
         await sleep(TIMING.BOT_STEP_PAUSE);
@@ -155,7 +157,7 @@ async function executeBotTurn(): Promise<void> {
             await resolveBotSpace(bot.id, space.type, bot.personality ?? 'balanced');
         } catch (spaceErr) {
             console.error(`Bot ${bot.name} space resolve error:`, spaceErr);
-            ui.addLog(`${bot.avatar} skipped (error)`);
+            ui.addLog(i18n.t('bot.skipped_error', { avatar: bot.avatar }));
         }
 
         await sleep(TIMING.BOT_STEP_PAUSE);
@@ -199,7 +201,7 @@ async function resolveBotSpace(
     switch (spaceType) {
         case 'invest': {
             if (bot.debt > 0) {
-                ui.addLog(`${bot.avatar} can't invest (has debt)`);
+                ui.addLog(i18n.t('bot.cant_invest_debt', { avatar: bot.avatar }));
                 break;
             }
             const ownedIds = bot.assets.map(a => a.id);
@@ -213,7 +215,7 @@ async function resolveBotSpace(
                     .sort((a, b) => a.cost - b.cost)[0] ?? null;
                 if (chosen) {
                     game.playerBuyAssetCash(botId, chosen);
-                    ui.addLog(`${bot.avatar} bought ${chosen.name}! 🏪`);
+                    ui.addLog(i18n.t('bot.bought_asset', { avatar: bot.avatar, name: i18n.t(`data.assets.${chosen.id}_name`, { defaultValue: chosen.name }) }));
                     ui.showCoin(-chosen.cost);
                 }
             } else if (personality === 'aggressive') {
@@ -227,7 +229,7 @@ async function resolveBotSpace(
                     } else {
                         game.playerBuyAssetLoan(botId, chosen);
                     }
-                    ui.addLog(`${bot.avatar} bought ${chosen.name}! 🏪`);
+                    ui.addLog(i18n.t('bot.bought_asset', { avatar: bot.avatar, name: i18n.t(`data.assets.${chosen.id}_name`, { defaultValue: chosen.name }) }));
                 }
             } else {
                 chosen = available
@@ -240,17 +242,17 @@ async function resolveBotSpace(
                     } else if (opts.loan) {
                         game.playerBuyAssetLoan(botId, chosen);
                     }
-                    ui.addLog(`${bot.avatar} bought ${chosen.name}! 🏪`);
+                    ui.addLog(i18n.t('bot.bought_asset', { avatar: bot.avatar, name: i18n.t(`data.assets.${chosen.id}_name`, { defaultValue: chosen.name }) }));
                 }
             }
             if (!chosen) {
-                ui.addLog(`${bot.avatar} skipped investing`);
+                ui.addLog(i18n.t('bot.skipped_investing', { avatar: bot.avatar }));
             }
             break;
         }
         case 'payday': {
             const report = game.playerPayday(botId);
-            ui.addLog(`${bot.avatar} payday: net $${report.net}`);
+            ui.addLog(i18n.t('bot.payday_net', { avatar: bot.avatar, net: report.net }));
             ui.showCoin(report.net);
             break;
         }
@@ -258,14 +260,14 @@ async function resolveBotSpace(
             const event = getRandomEvent();
             game.playerApplyLifeEvent(botId, event.amount);
             const sign = event.amount >= 0 ? '+' : '';
-            ui.addLog(`${bot.avatar} ${event.title} (${sign}$${event.amount})`);
+            ui.addLog(i18n.t('bot.life_event', { avatar: bot.avatar, title: i18n.t(`data.events.${event.id}_title`, { defaultValue: event.title }), sign, amount: event.amount }));
             ui.showCoin(event.amount);
             break;
         }
         case 'hustle': {
             const hustle = getRandomHustle();
             game.playerApplyHustle(botId, hustle.amount);
-            ui.addLog(`${bot.avatar} ${hustle.title} +$${hustle.amount}`);
+            ui.addLog(i18n.t('bot.hustle', { avatar: bot.avatar, title: i18n.t(`data.hustles.${hustle.id}_title`, { defaultValue: hustle.title }), amount: hustle.amount }));
             ui.showCoin(hustle.amount);
             break;
         }
@@ -273,11 +275,11 @@ async function resolveBotSpace(
             const temptation = getRandomTemptation();
             if (personality === 'aggressive' && Math.random() < 0.3 && bot.cash >= temptation.cost) {
                 game.playerBuyTemptation(botId, temptation.cost);
-                ui.addLog(`${bot.avatar} bought ${temptation.name}! 🛍️`);
+                ui.addLog(i18n.t('bot.bought_temptation', { avatar: bot.avatar, name: i18n.t(`data.temptations.${temptation.id}_name`, { defaultValue: temptation.name }) }));
                 ui.showCoin(-temptation.cost);
             } else {
                 game.playerSkipTemptation(botId);
-                ui.addLog(`${bot.avatar} skipped ${temptation.name} 💪 +$5 saved`);
+                ui.addLog(i18n.t('bot.skipped_temptation', { avatar: bot.avatar, name: i18n.t(`data.temptations.${temptation.id}_name`, { defaultValue: temptation.name }) }));
             }
             break;
         }
@@ -289,7 +291,7 @@ async function resolveBotSpace(
             if (!correct) {
                 game.playerApplyLifeEvent(botId, penalty);
             }
-            ui.addLog(`${bot.avatar} quiz: ${correct ? 'correct! +$10 🧠' : 'wrong -$5 😕'}`);
+            ui.addLog(correct ? i18n.t('bot.quiz_correct', { avatar: bot.avatar }) : i18n.t('bot.quiz_wrong', { avatar: bot.avatar }));
             if (correct) ui.showCoin(10);
             else ui.showCoin(-5);
             break;
@@ -301,10 +303,10 @@ async function resolveBotSpace(
                     : Math.floor(bot.cash * 0.5);
                 if (saveAmount > 0) {
                     game.playerDeposit(botId, saveAmount);
-                    ui.addLog(`${bot.avatar} saved $${saveAmount} 🏦`);
+                    ui.addLog(i18n.t('bot.saved', { avatar: bot.avatar, amount: saveAmount }));
                 }
             } else {
-                ui.addLog(`${bot.avatar} skipped saving`);
+                ui.addLog(i18n.t('bot.skipped_saving', { avatar: bot.avatar }));
             }
             break;
         }

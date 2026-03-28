@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
 import { useAchievementStore } from '../../store/achievementStore';
-import { getAvailableAssets } from '../../data/assets';
+import { getAvailableAssets, getAssetImage } from '../../data/assets';
 import { canBuyAsset } from '../../engine/FinancialEngine';
 import Button from '../ui/Button';
 import type { Asset } from '../../types';
@@ -51,10 +51,10 @@ export default function InvestModal() {
 
     return (
         <div>
-            <h2 className="font-display text-xl text-emerald-600 mb-1">
+            <h2 className="font-display text-xl mb-1" style={{ color: '#4CAF50' }}>
                 {t('modals.invest.title')}
             </h2>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs mb-4" style={{ color: '#9E9EAF' }}>
                 {player.debt > 0
                     ? t('modals.invest.subtitle_debt')
                     : t('modals.invest.subtitle_normal')}
@@ -64,24 +64,35 @@ export default function InvestModal() {
                 {available.map(asset => {
                     const buyOpts = canBuyAsset(player, asset);
                     const down = Math.ceil(asset.cost * 0.30);
+                    const assetImg = getAssetImage(asset.id);
 
                     return (
                         <div
                             key={asset.id}
-                            className="bg-slate-50 rounded-2xl p-3 border border-slate-100"
+                            className="rounded-2xl p-3"
+                            style={{ background: '#FFF8F0', border: '2px solid #E0E0E0' }}
                         >
                             <div className="flex items-start gap-3">
-                                <span className="text-2xl">{asset.icon}</span>
+                                <div
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 overflow-hidden"
+                                    style={{ background: '#FFFFFF', border: '2px solid #E0E0E0' }}
+                                >
+                                    {assetImg ? (
+                                        <img src={assetImg} alt={t(`data.assets.${asset.id}_name`, { defaultValue: asset.name })} width={28} height={28} className="object-contain" draggable={false} />
+                                    ) : (
+                                        <span className="text-xl">{asset.icon}</span>
+                                    )}
+                                </div>
                                 <div className="flex-1">
-                                    <div className="font-display text-sm font-bold text-slate-800">
-                                        {asset.name}
+                                    <div className="font-display text-sm font-bold" style={{ color: '#1A1A2E' }}>
+                                        {t(`data.assets.${asset.id}_name`, { defaultValue: asset.name })}
                                     </div>
                                     <div className="flex items-center gap-3 mt-1 text-xs">
-                                        <span className="text-slate-500">💰 ${asset.cost}</span>
-                                        <span className="text-emerald-500">📈 +${asset.income}/mo</span>
-                                        <span className="text-slate-400">🔧 -${asset.maint}/mo</span>
+                                        <span style={{ color: '#5D5D6E' }}>💰 ${asset.cost}</span>
+                                        <span style={{ color: '#4CAF50' }}>📈 +${asset.income}/mo</span>
+                                        <span style={{ color: '#9E9EAF' }}>🔧 -${asset.maint}/mo</span>
                                     </div>
-                                    <div className="text-[10px] text-slate-400 mt-1">
+                                    <div className="text-[10px] mt-1" style={{ color: '#9E9EAF' }}>
                                         {t('modals.invest.net', { amount: asset.income - asset.maint, tier: asset.tier })}
                                     </div>
                                 </div>
@@ -112,7 +123,7 @@ export default function InvestModal() {
                 })}
 
                 {available.length === 0 && (
-                    <div className="text-center text-slate-400 py-8">
+                    <div className="text-center py-8" style={{ color: '#9E9EAF' }}>
                         <span className="text-3xl">🎉</span>
                         <p className="mt-2 font-medium">{t('modals.invest.own_all')}</p>
                     </div>

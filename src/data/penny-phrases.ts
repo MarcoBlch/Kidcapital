@@ -11,7 +11,7 @@ export const PENNY_PHRASES: PennyMessage[] = [
     {
         trigger: 'game_start',
         messages: [
-            "Hi! I'm Penny! Let's become Money Masters together! 🐷",
+            "Hi! I'm Penny! Let's become Money Masters together!",
             "Welcome to KidCapital! Roll the dice and start your journey to Financial Freedom! 💰",
         ],
     },

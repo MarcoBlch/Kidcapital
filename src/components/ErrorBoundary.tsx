@@ -40,15 +40,15 @@ export default class ErrorBoundary extends Component<Props, State> {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+                        background: '#2B6A4E',
                         color: 'white',
                         fontFamily: "'Baloo 2', cursive, sans-serif",
                         padding: '2rem',
                         textAlign: 'center',
                     }}
                 >
-                    <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🐷</div>
-                    <h1 style={{ fontSize: '1.5rem', color: '#fbbf24', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>😵</div>
+                    <h1 style={{ fontSize: '1.5rem', color: '#FFD700', marginBottom: '0.5rem' }}>
                         Oops! Something went wrong
                     </h1>
                     <p style={{ fontSize: '0.9rem', opacity: 0.7, marginBottom: '2rem', maxWidth: '300px' }}>
@@ -57,18 +57,19 @@ export default class ErrorBoundary extends Component<Props, State> {
                     <button
                         onClick={this.handleRestart}
                         style={{
-                            background: 'linear-gradient(135deg, #f59e0b, #d97706)',
-                            color: '#1a1a2e',
+                            background: '#FFD700',
+                            color: '#4A3800',
                             border: 'none',
-                            borderRadius: '9999px',
+                            borderRadius: '16px',
                             padding: '0.75rem 2rem',
                             fontSize: '1.1rem',
                             fontWeight: 700,
                             cursor: 'pointer',
                             fontFamily: "'Baloo 2', cursive, sans-serif",
+                            boxShadow: '0 5px 0 #B8860B, 0 8px 16px rgba(0,0,0,0.2)',
                         }}
                     >
-                        🔄 Try Again
+                        Try Again
                     </button>
                 </div>
             );

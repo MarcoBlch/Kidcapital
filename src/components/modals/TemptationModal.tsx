@@ -47,31 +47,37 @@ export default function TemptationModal() {
 
     return (
         <div>
-            <h2 className="font-display text-lg text-pink-500 mb-1">
+            <h2 className="font-display text-lg mb-1" style={{ color: '#EC407A' }}>
                 {t('modals.temptation.title')}
             </h2>
-            <p className="text-[10px] text-slate-400 mb-3">
+            <p className="text-[10px] mb-3" style={{ color: '#9E9EAF' }}>
                 {t('modals.temptation.subtitle')}
             </p>
 
             {/* Item card */}
-            <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-4 mb-4 border border-pink-100 text-center">
+            <div
+                className="rounded-2xl p-4 mb-4 text-center"
+                style={{ background: '#FFF0F3', border: '2px solid #FF8FAB' }}
+            >
                 <span className="text-4xl block mb-2">{temptation.icon}</span>
-                <h3 className="font-display text-base font-bold text-slate-800">
-                    {temptation.name}
+                <h3 className="font-display text-base font-bold" style={{ color: '#1A1A2E' }}>
+                    {t(`data.temptations.${temptation.id}_name`, { defaultValue: temptation.name })}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 mb-3">
-                    {temptation.text}
+                <p className="text-xs mt-1 mb-3" style={{ color: '#5D5D6E' }}>
+                    {t(`data.temptations.${temptation.id}_text`, { defaultValue: temptation.text })}
                 </p>
-                <div className="font-display text-2xl font-extrabold text-pink-500">
+                <div className="font-display text-2xl font-extrabold" style={{ color: '#EC407A' }}>
                     ${temptation.cost}
                 </div>
             </div>
 
             {/* Dilemma info */}
             {!decided && (
-                <div className="bg-amber-50 rounded-xl p-3 mb-4 border border-amber-100">
-                    <p className="text-xs text-amber-700 leading-relaxed">
+                <div
+                    className="rounded-xl p-3 mb-4"
+                    style={{ background: '#FFF8E1', border: '2px solid #FFD700' }}
+                >
+                    <p className="text-xs leading-relaxed" style={{ color: '#78350f' }}>
                         {t('modals.temptation.dilemma')}
                     </p>
                 </div>
@@ -79,18 +85,24 @@ export default function TemptationModal() {
 
             {/* Decision result */}
             {decided && choice === 'buy' && (
-                <div className="bg-pink-50 rounded-xl p-3 mb-4 border border-pink-200">
-                    <p className="text-sm font-bold text-pink-600 mb-1">{t('modals.temptation.bought_title')}</p>
-                    <p className="text-xs text-slate-500">
+                <div
+                    className="rounded-xl p-3 mb-4"
+                    style={{ background: '#FFEBEE', border: '2px solid #EF5350' }}
+                >
+                    <p className="text-sm font-bold mb-1" style={{ color: '#C62828' }}>{t('modals.temptation.bought_title')}</p>
+                    <p className="text-xs" style={{ color: '#5D5D6E' }}>
                         {t('modals.temptation.bought_text')}
                     </p>
                 </div>
             )}
 
             {decided && choice === 'skip' && (
-                <div className="bg-emerald-50 rounded-xl p-3 mb-4 border border-emerald-200">
-                    <p className="text-sm font-bold text-emerald-600 mb-1">{t('modals.temptation.skip_title')}</p>
-                    <p className="text-xs text-slate-500">
+                <div
+                    className="rounded-xl p-3 mb-4"
+                    style={{ background: '#E8F5E9', border: '2px solid #4CAF50' }}
+                >
+                    <p className="text-sm font-bold mb-1" style={{ color: '#2E7D32' }}>{t('modals.temptation.skip_title')}</p>
+                    <p className="text-xs" style={{ color: '#5D5D6E' }}>
                         {t('modals.temptation.skip_text')}
                     </p>
                 </div>
@@ -118,7 +130,7 @@ export default function TemptationModal() {
             )}
 
             {!canAfford && !decided && (
-                <p className="text-[10px] text-rose-400 text-center mt-2">
+                <p className="text-[10px] text-center mt-2" style={{ color: '#EF5350' }}>
                     {t('modals.temptation.not_enough')}
                 </p>
             )}

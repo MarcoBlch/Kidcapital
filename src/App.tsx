@@ -7,7 +7,6 @@ import SplashScreen from './screens/SplashScreen';
 import SetupScreen from './screens/SetupScreen';
 import GameScreen from './screens/GameScreen';
 import EndScreen from './screens/EndScreen';
-import './index.css';
 
 function App() {
   const currentScreen = useUIStore((s) => s.currentScreen);

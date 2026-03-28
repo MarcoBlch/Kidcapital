@@ -11,20 +11,21 @@ interface BottomSheetProps {
 export default function BottomSheet({
     isOpen,
     onClose,
-    accentColor = '#f59e0b',
+    accentColor = '#FFD700',
     children,
 }: BottomSheetProps) {
     return (
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
+                    {/* Backdrop — solid overlay, no blur */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black/30 z-40"
+                        className="fixed inset-0 z-40"
+                        style={{ background: 'rgba(0,0,0,0.5)' }}
                         onClick={onClose}
                     />
 
@@ -40,17 +41,17 @@ export default function BottomSheet({
                             mass: 0.8,
                         }}
                         className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px] max-h-[88vh] overflow-y-auto safe-bottom md:max-w-xl lg:max-w-2xl md:mx-auto md:rounded-b-[28px] md:bottom-4"
-                        style={{ boxShadow: '0 -8px 40px rgba(0,0,0,0.12)' }}
+                        style={{ boxShadow: '0 -8px 40px rgba(0,0,0,0.15)' }}
                     >
-                        {/* Color stripe */}
+                        {/* 4px colored accent bar */}
                         <div
-                            className="h-0.5 rounded-full mx-auto mt-0 mb-0"
+                            className="h-1 rounded-full mx-auto mt-0 mb-0"
                             style={{ backgroundColor: accentColor }}
                         />
 
                         {/* Drag handle */}
                         <div className="flex justify-center pt-3 pb-2">
-                            <div className="w-10 h-1 bg-slate-200 rounded-full" />
+                            <div className="w-10 h-1 rounded-full" style={{ background: '#E0E0E0' }} />
                         </div>
 
                         {/* Content */}

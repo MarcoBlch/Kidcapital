@@ -26,15 +26,18 @@ export default function ProgressBar({ percent, player }: ProgressBarProps) {
     ];
 
     return (
-        <div className="w-full mt-2">
+        <div className="w-full">
             {/* Progress bar */}
-            <div className="h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
+            <div
+                className="h-2 rounded-full overflow-hidden"
+                style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
                 <motion.div
                     className="h-full rounded-full"
                     style={{
                         background: clamped >= 100
-                            ? 'linear-gradient(90deg, #10b981, #34d399, #6ee7b7)'
-                            : 'linear-gradient(90deg, #f59e0b, #fbbf24, #10b981)',
+                            ? 'linear-gradient(90deg, #4CAF50, #66BB6A, #81C784)'
+                            : 'linear-gradient(90deg, #FFD700, #FFC107, #4CAF50)',
                     }}
                     initial={{ width: 0 }}
                     animate={{ width: `${clamped}%` }}
@@ -43,14 +46,16 @@ export default function ProgressBar({ percent, player }: ProgressBarProps) {
             </div>
 
             {/* Win condition milestones */}
-            <div className="flex items-center justify-between mt-1 px-1">
+            <div className="flex items-center justify-between mt-1 px-0.5">
                 {milestones.map((m, i) => (
-                    <div key={i} className="flex items-center gap-1">
-                        <span className={`text-xs ${m.done ? '' : 'grayscale opacity-40'}`}>
+                    <div key={i} className="flex items-center gap-0.5">
+                        <span className={`text-[10px] ${m.done ? '' : 'grayscale opacity-40'}`}>
                             {m.label}
                         </span>
-                        <span className={`text-[8px] font-medium ${m.done ? 'text-emerald-400' : 'text-white/30'
-                            }`}>
+                        <span
+                            className="text-[7px] md:text-[8px] font-bold"
+                            style={{ color: m.done ? '#66BB6A' : 'rgba(255,255,255,0.35)' }}
+                        >
                             {m.tip}
                         </span>
                     </div>

@@ -7,6 +7,7 @@ import { useSupabaseStore } from '../store/supabaseStore';
 import { getFreedomPercent } from '../engine/WinCondition';
 import { getLevelForXP, getXPToNextLevel } from '../data/achievements';
 import { useTranslation } from 'react-i18next';
+import PennyAvatar from '../components/ui/PennyAvatar';
 
 export default function EndScreen() {
     const { t } = useTranslation();
@@ -51,10 +52,8 @@ export default function EndScreen() {
         if (recordedRef.current) return;
         recordedRef.current = true;
 
-        // 1. Give XP locally
         useAchievementStore.getState().recordGameEnd(isHumanWinner, month);
 
-        // 2. Sync to Supabase Leaderboard
         const finalXp = useAchievementStore.getState().xp;
         const currentLevel = getLevelForXP(finalXp);
 
@@ -77,9 +76,9 @@ export default function EndScreen() {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-dvh px-5 md:px-12 lg:px-16 py-8 md:py-12 lg:py-14 safe-top"
+            className="min-h-dvh w-full flex flex-col items-center px-5 md:px-12 lg:px-16 py-8 md:py-12 lg:py-14 safe-top"
             style={{
-                background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+                background: 'linear-gradient(180deg, #FFE082 0%, #FFD54F 30%, #FFC107 100%)',
             }}
         >
             <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto text-center">
@@ -89,27 +88,35 @@ export default function EndScreen() {
                     animate={{ scale: 1, y: 0 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                 >
-                    <div className="text-6xl md:text-8xl lg:text-9xl mb-3 md:mb-5">
-                        {isHumanWinner ? '🏆' : '🎮'}
+                    <div className="flex justify-center mb-3 md:mb-5">
+                        {isHumanWinner
+                            ? <PennyAvatar pose="celebrate" size={120} />
+                            : <span className="text-6xl md:text-8xl">🎮</span>
+                        }
                     </div>
-                    <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-amber-400 mb-1">
+                    <h1 className="font-display text-3xl md:text-4xl lg:text-5xl mb-1" style={{ color: '#4A3800' }}>
                         {isHumanWinner ? t('end.you_win') : t('end.name_wins', { name: winner.name })}
                     </h1>
-                    <p className="text-sm md:text-base text-white/40 mb-6 md:mb-8">
+                    <p className="text-sm md:text-base mb-6 md:mb-8" style={{ color: '#78350f' }}>
                         {isHumanWinner
                             ? t('end.freedom_achieved')
                             : t('end.reached_first', { avatar: winner.avatar })}
                     </p>
                 </motion.div>
 
-                {/* Stats Report Card */}
+                {/* Stats Report Card — white card */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="bg-white/5 rounded-2xl p-5 lg:p-6 mb-6 text-left border border-white/10"
+                    className="rounded-2xl p-5 lg:p-6 mb-6 text-left"
+                    style={{
+                        background: '#FFFFFF',
+                        border: '2px solid #E0E0E0',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    }}
                 >
-                    <h2 className="font-display text-lg text-white mb-4">
+                    <h2 className="font-display text-lg mb-4" style={{ color: '#1A1A2E' }}>
                         {t('end.report_card')}
                     </h2>
 
@@ -144,7 +151,7 @@ export default function EndScreen() {
                             highlight="positive"
                         />
 
-                        <div className="border-t border-white/10 pt-2.5 mt-2.5">
+                        <div className="pt-2.5 mt-2.5" style={{ borderTop: '1px solid #E0E0E0' }}>
                             <StatRow
                                 label={t('end.impulse')}
                                 value={`${impulseScore}%`}
@@ -165,30 +172,41 @@ export default function EndScreen() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="bg-gradient-to-r from-amber-400/10 to-amber-500/10 rounded-2xl p-4 mb-4 border border-amber-400/20"
+                    className="rounded-2xl p-4 mb-4"
+                    style={{
+                        background: '#FFFFFF',
+                        border: '2px solid #FFD700',
+                        boxShadow: '0 4px 0 #B8860B',
+                    }}
                 >
                     <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center text-2xl">
+                        <div
+                            className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                            style={{ background: '#FFF8E1', border: '2px solid #FFD700' }}
+                        >
                             {level.icon}
                         </div>
                         <div className="flex-1">
-                            <div className="text-[9px] text-amber-300/50 uppercase tracking-wider font-bold">{t('end.level', { level: level.level })}</div>
-                            <div className="font-display text-base text-amber-300 font-bold">{level.title}</div>
-                            <div className="text-[10px] text-white/30">{t('end.xp_total', { xp })}</div>
+                            <div className="text-[9px] uppercase tracking-wider font-bold" style={{ color: '#DAA520' }}>
+                                {t('end.level', { level: level.level })}
+                            </div>
+                            <div className="font-display text-base font-bold" style={{ color: '#4A3800' }}>{level.title}</div>
+                            <div className="text-[10px]" style={{ color: '#9E9EAF' }}>{t('end.xp_total', { xp })}</div>
                         </div>
                     </div>
                     {/* XP progress bar */}
-                    <div className="mt-3 h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div className="mt-3 h-2 rounded-full overflow-hidden" style={{ background: '#F5F0E8' }}>
                         <motion.div
-                            className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500"
+                            className="h-full rounded-full"
+                            style={{ background: 'linear-gradient(90deg, #FFD700, #FFC107)' }}
                             initial={{ width: 0 }}
                             animate={{ width: `${xpProgress.progress}%` }}
                             transition={{ duration: 1, delay: 0.6 }}
                         />
                     </div>
                     <div className="flex justify-between mt-1">
-                        <span className="text-[9px] text-white/20">{xpProgress.current} XP</span>
-                        <span className="text-[9px] text-white/20">{xpProgress.next} XP</span>
+                        <span className="text-[9px]" style={{ color: '#9E9EAF' }}>{xpProgress.current} XP</span>
+                        <span className="text-[9px]" style={{ color: '#9E9EAF' }}>{xpProgress.next} XP</span>
                     </div>
                 </motion.div>
 
@@ -197,28 +215,34 @@ export default function EndScreen() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="bg-amber-400/10 rounded-2xl p-4 mb-6 border border-amber-400/20"
+                    className="rounded-2xl p-4 mb-6"
+                    style={{
+                        background: '#FFFFFF',
+                        border: '2px solid #FF8FAB',
+                        boxShadow: '0 4px 0 rgba(255,143,171,0.3)',
+                    }}
                 >
                     <div className="flex items-center gap-2 mb-2">
-                        <span className="text-2xl">🐷</span>
-                        <span className="font-display text-sm font-bold text-amber-300">
+                        <PennyAvatar pose={isHumanWinner ? 'proud' : 'wave'} size={32} />
+                        <span className="font-display text-sm font-bold" style={{ color: '#FF6B8A' }}>
                             {t('end.penny_says')}
                         </span>
                     </div>
-                    <p className="text-sm text-white/60 leading-relaxed">
+                    <p className="text-sm leading-relaxed" style={{ color: '#5D5D6E' }}>
                         {isHumanWinner ? t('end.penny_win') : t('end.penny_lose')}
                     </p>
                 </motion.div>
 
-                {/* Actions */}
+                {/* Play Again — BIG 3D gold button */}
                 <motion.button
-                    whileTap={{ scale: 0.95 }}
+                    whileTap={{ y: 4 }}
                     onClick={handlePlayAgain}
-                    className="
-            w-full py-3.5 lg:py-5 rounded-2xl font-display text-base lg:text-xl font-bold
-            bg-gradient-to-r from-amber-400 to-amber-500 text-amber-900
-            shadow-glow-gold cursor-pointer transition-all
-          "
+                    className="w-full py-3.5 lg:py-5 rounded-2xl font-display text-base lg:text-xl font-bold cursor-pointer transition-all"
+                    style={{
+                        background: '#FFD700',
+                        color: '#4A3800',
+                        boxShadow: '0 5px 0 #B8860B, 0 8px 16px rgba(0,0,0,0.2)',
+                    }}
                 >
                     {t('end.play_again')}
                 </motion.button>
@@ -240,16 +264,18 @@ function StatRow({
 }) {
     return (
         <div className="flex items-center justify-between py-1">
-            <span className="text-xs text-white/40 flex items-center gap-1.5">
+            <span className="text-xs flex items-center gap-1.5" style={{ color: '#9E9EAF' }}>
                 <span>{icon}</span> {label}
             </span>
             <span
-                className={`text-sm font-bold ${highlight === 'positive'
-                    ? 'text-emerald-400'
-                    : highlight === 'negative'
-                        ? 'text-rose-400'
-                        : 'text-white'
-                    }`}
+                className="text-sm font-bold"
+                style={{
+                    color: highlight === 'positive'
+                        ? '#4CAF50'
+                        : highlight === 'negative'
+                            ? '#EF5350'
+                            : '#1A1A2E',
+                }}
             >
                 {value}
             </span>

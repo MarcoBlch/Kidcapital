@@ -29,29 +29,42 @@ export default function AchievementToast() {
                         className="pointer-events-auto mx-4 max-w-xs w-full"
                         onClick={() => dismissNotification(firstNotif.id)}
                     >
-                        <div className="bg-gradient-to-r from-amber-400/95 to-amber-500/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-[0_8px_32px_rgba(245,158,11,0.4)] border border-amber-300/30">
+                        <div
+                            className="rounded-2xl px-4 py-3"
+                            style={{
+                                background: '#FFD700',
+                                boxShadow: '0 5px 0 #B8860B, 0 8px 24px rgba(0,0,0,0.25)',
+                                border: '2px solid #DAA520',
+                            }}
+                        >
                             <div className="flex items-center gap-3">
                                 {/* Icon */}
-                                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-2xl flex-shrink-0">
+                                <div
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                                    style={{ background: 'rgba(255,255,255,0.3)' }}
+                                >
                                     {firstNotif.achievement.icon}
                                 </div>
 
                                 {/* Text */}
                                 <div className="flex-1 min-w-0">
-                                    <div className="text-[9px] font-bold text-amber-900/60 uppercase tracking-wider">
+                                    <div className="text-[9px] font-bold uppercase tracking-wider" style={{ color: '#78350f' }}>
                                         {t('achievements.unlocked')}
                                     </div>
-                                    <div className="text-sm font-bold text-amber-900 truncate">
+                                    <div className="text-sm font-bold truncate" style={{ color: '#4A3800' }}>
                                         {firstNotif.achievement.title}
                                     </div>
-                                    <div className="text-[10px] text-amber-800/70 truncate">
+                                    <div className="text-[10px] truncate" style={{ color: '#78350f' }}>
                                         {firstNotif.achievement.description}
                                     </div>
                                 </div>
 
                                 {/* XP badge */}
-                                <div className="flex-shrink-0 bg-white/25 rounded-lg px-2 py-1">
-                                    <span className="text-xs font-bold text-amber-900">
+                                <div
+                                    className="flex-shrink-0 rounded-lg px-2 py-1"
+                                    style={{ background: 'rgba(255,255,255,0.35)' }}
+                                >
+                                    <span className="text-xs font-bold" style={{ color: '#4A3800' }}>
                                         +{firstNotif.achievement.xp} XP
                                     </span>
                                 </div>

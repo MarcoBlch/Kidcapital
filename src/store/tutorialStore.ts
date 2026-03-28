@@ -3,7 +3,7 @@ import { useGameStore } from './gameStore';
 import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 
 // ============================================
-// Tutorial Steps — "Penny Teaches You" 🐷
+// Tutorial Steps — "Penny Teaches You"
 // ============================================
 
 export interface TutorialStep {
@@ -21,7 +21,7 @@ export interface TutorialStep {
 export const TUTORIAL_STEPS: TutorialStep[] = [
     {
         id: 'welcome',
-        title: '🐷 Hi! I\'m Penny!',
+        title: 'Hi! I\'m Penny!',
         message: 'I\'m your money coach! I\'ll teach you how to become financially free. Let\'s play!',
         spotlightSelector: null,
         bubblePosition: 'center',
@@ -77,7 +77,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     },
     {
         id: 'penny_tips',
-        title: '🐷 Look for my tips!',
+        title: 'Look for my tips!',
         message: 'I\'ll pop up during the game with money tips. Tap me to dismiss, but try to read them — they\'ll help you win! Good luck! 🍀',
         spotlightSelector: null,
         bubblePosition: 'center',

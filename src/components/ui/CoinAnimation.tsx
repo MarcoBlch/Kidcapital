@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
 import { useUIStore } from '../../store/uiStore';
+import { uiCoin } from '../../assets/game';
 
 export default function CoinAnimation() {
     const coinAnimations = useUIStore(s => s.coinAnimations);
@@ -47,16 +48,16 @@ function CoinDrop({
             className="fixed left-1/2 top-1/3 -translate-x-1/2 z-50 pointer-events-none"
         >
             <div
-                className={`
-                    font-display text-2xl font-extrabold
-                    px-5 py-3 rounded-2xl
-                    ${isPositive
-                        ? 'text-emerald-300 bg-emerald-500/15 border-2 border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
-                        : 'text-rose-300 bg-rose-500/15 border-2 border-rose-500/30 shadow-[0_0_20px_rgba(244,63,94,0.3)]'
-                    }
-                `}
+                className="font-display text-2xl font-extrabold px-5 py-3 rounded-2xl flex items-center gap-2"
+                style={{
+                    color: isPositive ? '#2E7D32' : '#C62828',
+                    background: isPositive ? '#E8F5E9' : '#FFEBEE',
+                    border: `2px solid ${isPositive ? '#4CAF50' : '#EF5350'}`,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                }}
             >
-                {isPositive ? '💰' : '💸'} {display}
+                <img src={uiCoin} alt="coin" width={28} height={28} className="object-contain" />
+                {display}
             </div>
         </motion.div>
     );

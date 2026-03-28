@@ -11,23 +11,44 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     fullWidth?: boolean;
 }
 
-const variantStyles: Record<Variant, string> = {
-    primary:
-        'bg-gradient-to-b from-amber-400 to-amber-500 text-amber-900 shadow-md hover:from-amber-500 hover:to-amber-600',
-    secondary:
-        'bg-white border-2 border-amber-300 text-amber-700 hover:bg-amber-50',
-    danger:
-        'bg-gradient-to-b from-rose-400 to-rose-500 text-white shadow-md',
-    success:
-        'bg-gradient-to-b from-emerald-400 to-emerald-500 text-white shadow-md',
-    ghost:
-        'bg-transparent text-slate-500 hover:bg-slate-100',
+const variantStyles: Record<Variant, { bg: string; color: string; border?: string; shadow: string; activeShadow: string }> = {
+    primary: {
+        bg: '#FFD700',
+        color: '#4A3800',
+        shadow: '0 5px 0 #B8860B, 0 8px 16px rgba(0,0,0,0.2)',
+        activeShadow: '0 1px 0 #B8860B, 0 2px 4px rgba(0,0,0,0.2)',
+    },
+    secondary: {
+        bg: '#FFFFFF',
+        color: '#1A1A2E',
+        border: '2.5px solid #E0E0E0',
+        shadow: '0 3px 0 #D0D0D0',
+        activeShadow: '0 1px 0 #D0D0D0',
+    },
+    danger: {
+        bg: '#EC407A',
+        color: '#FFFFFF',
+        shadow: '0 5px 0 #C2185B, 0 8px 16px rgba(0,0,0,0.2)',
+        activeShadow: '0 1px 0 #C2185B, 0 2px 4px rgba(0,0,0,0.2)',
+    },
+    success: {
+        bg: '#4CAF50',
+        color: '#FFFFFF',
+        shadow: '0 5px 0 #2E7D32, 0 8px 16px rgba(0,0,0,0.2)',
+        activeShadow: '0 1px 0 #2E7D32, 0 2px 4px rgba(0,0,0,0.2)',
+    },
+    ghost: {
+        bg: 'transparent',
+        color: '#5D5D6E',
+        shadow: 'none',
+        activeShadow: 'none',
+    },
 };
 
 const sizeStyles: Record<Size, string> = {
-    sm: 'px-4 py-2 text-sm rounded-xl',
-    md: 'px-6 py-3 text-base rounded-xl',
-    lg: 'px-8 py-4 text-lg rounded-2xl',
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-3 text-base',
+    lg: 'px-8 py-4 text-lg',
 };
 
 export default function Button({
@@ -39,20 +60,47 @@ export default function Button({
     className = '',
     ...props
 }: ButtonProps) {
+    const vs = variantStyles[variant];
+
     return (
         <motion.button
-            whileTap={disabled ? undefined : { scale: 0.95 }}
-            whileHover={disabled ? undefined : { scale: 1.02 }}
+            whileTap={disabled ? undefined : { y: variant === 'ghost' ? 0 : 4 }}
             className={`
-        font-display font-bold
-        transition-colors duration-150
-        select-none cursor-pointer
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        ${fullWidth ? 'w-full' : ''}
-        ${disabled ? 'opacity-40 cursor-not-allowed saturate-0' : ''}
-        ${className}
-      `}
+                font-display font-bold
+                rounded-[16px] select-none cursor-pointer
+                transition-all duration-100
+                ${sizeStyles[size]}
+                ${fullWidth ? 'w-full' : ''}
+                ${disabled ? 'opacity-40 cursor-not-allowed saturate-0' : ''}
+                ${className}
+            `}
+            style={{
+                background: vs.bg,
+                color: vs.color,
+                border: vs.border || 'none',
+                boxShadow: disabled ? 'none' : vs.shadow,
+            }}
+            onPointerDown={(e) => {
+                if (!disabled && variant !== 'ghost') {
+                    const el = e.currentTarget;
+                    el.style.boxShadow = vs.activeShadow;
+                    el.style.transform = 'translateY(4px)';
+                }
+            }}
+            onPointerUp={(e) => {
+                if (!disabled && variant !== 'ghost') {
+                    const el = e.currentTarget;
+                    el.style.boxShadow = vs.shadow;
+                    el.style.transform = 'translateY(0)';
+                }
+            }}
+            onPointerLeave={(e) => {
+                if (!disabled && variant !== 'ghost') {
+                    const el = e.currentTarget;
+                    el.style.boxShadow = vs.shadow;
+                    el.style.transform = 'translateY(0)';
+                }
+            }}
             disabled={disabled}
             {...(props as any)}
         >

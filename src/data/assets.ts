@@ -1,10 +1,39 @@
 import type { Asset } from '../types';
+import {
+    bizLemonade,
+    bizDogwalk,
+    bizYardcare,
+    bizCandy,
+    bizBike,
+    bizArt,
+    bizPetgroom,
+    bizArcade,
+    bizFoodtruck,
+    bizMusic,
+} from '../assets/game';
 
 // ============================================
 // KidCapital — Business Catalog
 // Rebalanced: higher costs, lower net income, longer ROI
 // Makes investing a real commitment, not instant gratification
 // ============================================
+
+const ASSET_IMAGES: Record<string, string> = {
+    a1: bizLemonade,
+    a2: bizDogwalk,
+    a3: bizYardcare,
+    a4: bizCandy,
+    a5: bizBike,
+    a6: bizArt,
+    a7: bizPetgroom,
+    a8: bizArcade,
+    a9: bizFoodtruck,
+    a10: bizMusic,
+};
+
+export function getAssetImage(id: string): string | undefined {
+    return ASSET_IMAGES[id];
+}
 
 export const ASSETS: Asset[] = [
     // --- Tier 1: Starter ($80-$120) — takes 10+ months to pay off ---

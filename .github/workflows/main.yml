@@ -93,7 +93,7 @@ jobs:
           sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer";/CODE_SIGN_IDENTITY = "Apple Distribution";/g' project.pbxproj
           sed -i '' "s/INFOPLIST_FILE = App\/Info.plist;/INFOPLIST_FILE = App\/Info.plist; DEVELOPMENT_TEAM = ${{ env.APP_TEAM_ID }}; PROVISIONING_PROFILE_SPECIFIER = \"${{ env.APP_PROFILE_UUID }}\";/g" project.pbxproj
           sed -i '' "s/CURRENT_PROJECT_VERSION = 1;/CURRENT_PROJECT_VERSION = ${{ github.run_number }};/g" project.pbxproj
-          sed -i '' "s/MARKETING_VERSION = 1.0;/MARKETING_VERSION = 2.0;/g" project.pbxproj
+          sed -i '' "s/MARKETING_VERSION = 1.0;/MARKETING_VERSION = 3.0;/g" project.pbxproj
 
       - name: Archive iOS App
         run: |

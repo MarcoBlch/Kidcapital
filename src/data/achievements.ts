@@ -86,7 +86,7 @@ export const ACHIEVEMENTS: Achievement[] = [
         id: 'piggy_bank',
         title: 'Piggy Bank',
         description: 'Save $50 in one game',
-        icon: '🐷',
+        icon: '🐖',
         xp: 25,
         category: 'saver',
         check: s => s.totalSavingsEverReached >= 50,

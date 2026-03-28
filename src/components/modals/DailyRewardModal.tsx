@@ -11,8 +11,6 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
     const checkDailyReward = useDailyRewardStore(s => s.checkDailyReward);
     const claimDailyReward = useDailyRewardStore(s => s.claimDailyReward);
 
-    // We expect this modal to only be rendered if a reward IS available, 
-    // but we'll read the state just to be sure.
     const rewardData = checkDailyReward();
     const isAvailable = rewardData?.isAvailable;
     const streak = rewardData?.streak || 0;
@@ -25,9 +23,8 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
 
     if (!isAvailable) return null;
 
-    // Array of flame emojis to represent streak visually
     const flames = Array.from({ length: Math.min(streak, 7) }).map((_, i) => (
-        <span key={i} className="animate-pulse" style={{ animationDelay: `${i * 0.1}s` }}>🔥</span>
+        <span key={i}>🔥</span>
     ));
 
     return (
@@ -39,10 +36,10 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
                 transition={{ duration: 0.3 }}
                 className="fixed inset-0 z-[100] flex items-center justify-center"
             >
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+                {/* Solid overlay */}
+                <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.5)' }} />
 
-                {/* Modal card */}
+                {/* Modal card — white with gold accent */}
                 <motion.div
                     initial={{ scale: 0.85, y: 30 }}
                     animate={{ scale: 1, y: 0 }}
@@ -50,41 +47,52 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                     className="relative z-10 mx-6 max-w-sm md:max-w-md lg:max-w-lg w-full"
                 >
-                    <div className="bg-gradient-to-br from-[#1e2a4a] to-[#162040] rounded-3xl border border-amber-400/30 p-6 shadow-[0_0_50px_rgba(245,158,11,0.2)] text-center">
-
-                        <div className="text-6xl lg:text-7xl mb-4 inline-block drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+                    <div
+                        className="rounded-3xl p-6 text-center"
+                        style={{
+                            background: '#FFFFFF',
+                            border: '3px solid #FFD700',
+                            boxShadow: '0 8px 0 #B8860B, 0 12px 40px rgba(0,0,0,0.2)',
+                        }}
+                    >
+                        <div className="text-6xl lg:text-7xl mb-4 inline-block">
                             📅
                         </div>
 
-                        <h2 className="font-display text-2xl lg:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 mb-2">
+                        <h2 className="font-display text-2xl lg:text-3xl font-black tracking-wide mb-2" style={{ color: '#DAA520' }}>
                             {t('modals.daily_reward.title')}
                         </h2>
 
-                        <p className="text-white/80 text-sm mb-6 leading-relaxed px-4">
+                        <p className="text-sm mb-6 leading-relaxed px-4" style={{ color: '#5D5D6E' }}>
                             {t('modals.daily_reward.subtitle')}
                         </p>
 
                         {/* Streak Box */}
-                        <div className="bg-black/20 rounded-2xl p-4 mb-6 relative overflow-hidden">
-                            {/* Decorative glow */}
-                            <div className="absolute -top-10 -right-10 w-20 h-20 bg-amber-500/20 blur-2xl rounded-full" />
-
+                        <div
+                            className="rounded-2xl p-4 mb-6"
+                            style={{ background: '#FFF8E1', border: '2px solid #FFD700' }}
+                        >
                             <div className="text-3xl mb-1 flex justify-center gap-1">
                                 {flames}
                             </div>
-                            <div className="text-amber-400 font-bold font-display tracking-widest uppercase text-xs">
+                            <div className="font-bold font-display tracking-widest uppercase text-xs" style={{ color: '#DAA520' }}>
                                 {t('modals.daily_reward.streak', { streak })}
                             </div>
                         </div>
 
                         {/* Reward Amount */}
                         <div className="flex flex-col items-center mb-6">
-                            <span className="text-xs text-white/50 uppercase tracking-widest mb-1 font-bold">{t('modals.daily_reward.your_bonus')}</span>
-                            <div className="font-display text-5xl lg:text-6xl font-black text-emerald-400 drop-shadow-[0_2px_10px_rgba(52,211,153,0.3)]">
+                            <span className="text-xs uppercase tracking-widest mb-1 font-bold" style={{ color: '#9E9EAF' }}>
+                                {t('modals.daily_reward.your_bonus')}
+                            </span>
+                            <div className="font-display text-5xl lg:text-6xl font-black" style={{ color: '#4CAF50' }}>
                                 +${bonusCash}
                             </div>
                             {streak > 1 && (
-                                <div className="text-[10px] text-emerald-400/60 mt-2 bg-emerald-400/10 px-3 py-1 rounded-full">
+                                <div
+                                    className="text-[10px] mt-2 px-3 py-1 rounded-full"
+                                    style={{ background: '#E8F5E9', color: '#2E7D32' }}
+                                >
                                     {t('modals.daily_reward.streak_bonus', { amount: (streak - 1) * 5 })}
                                 </div>
                             )}
@@ -92,7 +100,12 @@ export default function DailyRewardModal({ onClose }: DailyRewardModalProps) {
 
                         <button
                             onClick={handleClaim}
-                            className="w-full py-4 rounded-2xl font-display font-bold text-lg cursor-pointer transition-all active:scale-95 bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-[0_5px_20px_rgba(52,211,153,0.4)] border border-emerald-300/50 hover:brightness-110"
+                            className="w-full py-4 rounded-2xl font-display font-bold text-lg cursor-pointer transition-all active:scale-95"
+                            style={{
+                                background: '#4CAF50',
+                                color: '#FFFFFF',
+                                boxShadow: '0 5px 0 #2E7D32, 0 8px 16px rgba(0,0,0,0.15)',
+                            }}
                         >
                             {t('modals.daily_reward.claim', { amount: bonusCash })}
                         </button>

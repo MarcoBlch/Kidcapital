@@ -47,24 +47,24 @@ export default function BankModal() {
 
     return (
         <div>
-            <h2 className="font-display text-xl text-indigo-500 mb-1">
+            <h2 className="font-display text-xl mb-1" style={{ color: '#3949AB' }}>
                 {t('modals.bank.title')}
             </h2>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs mb-4" style={{ color: '#9E9EAF' }}>
                 {t('modals.bank.subtitle')}
             </p>
 
             {/* Balance display */}
             <div className="flex gap-3 mb-4">
-                <div className="flex-1 bg-amber-50 rounded-xl p-3 text-center">
-                    <div className="text-[10px] text-slate-400 mb-1">{t('modals.bank.cash')}</div>
-                    <div className="font-display text-lg font-bold text-amber-600">
+                <div className="flex-1 rounded-xl p-3 text-center" style={{ background: '#FFF8E1', border: '2px solid #FFD700' }}>
+                    <div className="text-[10px] mb-1" style={{ color: '#9E9EAF' }}>{t('modals.bank.cash')}</div>
+                    <div className="font-display text-lg font-bold" style={{ color: '#DAA520' }}>
                         ${player.cash}
                     </div>
                 </div>
-                <div className="flex-1 bg-indigo-50 rounded-xl p-3 text-center">
-                    <div className="text-[10px] text-slate-400 mb-1">{t('modals.bank.savings')}</div>
-                    <div className="font-display text-lg font-bold text-indigo-600">
+                <div className="flex-1 rounded-xl p-3 text-center" style={{ background: '#E8EAF6', border: '2px solid #5C6BC0' }}>
+                    <div className="text-[10px] mb-1" style={{ color: '#9E9EAF' }}>{t('modals.bank.savings')}</div>
+                    <div className="font-display text-lg font-bold" style={{ color: '#3949AB' }}>
                         ${player.savings}
                     </div>
                 </div>
@@ -74,19 +74,21 @@ export default function BankModal() {
             <div className="flex gap-2 mb-4">
                 <button
                     onClick={() => { setTab('deposit'); setAmount(0); }}
-                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${tab === 'deposit'
-                            ? 'bg-indigo-500 text-white'
-                            : 'bg-slate-100 text-slate-500'
-                        }`}
+                    className="flex-1 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer"
+                    style={{
+                        background: tab === 'deposit' ? '#3949AB' : '#F0F0F0',
+                        color: tab === 'deposit' ? '#FFFFFF' : '#9E9EAF',
+                    }}
                 >
                     {t('modals.bank.deposit')}
                 </button>
                 <button
                     onClick={() => { setTab('withdraw'); setAmount(0); }}
-                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${tab === 'withdraw'
-                            ? 'bg-amber-500 text-white'
-                            : 'bg-slate-100 text-slate-500'
-                        }`}
+                    className="flex-1 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer"
+                    style={{
+                        background: tab === 'withdraw' ? '#DAA520' : '#F0F0F0',
+                        color: tab === 'withdraw' ? '#FFFFFF' : '#9E9EAF',
+                    }}
                 >
                     {t('modals.bank.withdraw')}
                 </button>
@@ -117,10 +119,10 @@ export default function BankModal() {
 
             {/* Amount display */}
             <div className="text-center mb-4">
-                <div className="font-display text-3xl font-extrabold text-slate-800">
+                <div className="font-display text-3xl font-extrabold" style={{ color: '#1A1A2E' }}>
                     ${amount}
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs" style={{ color: '#9E9EAF' }}>
                     {tab === 'deposit' ? t('modals.bank.cash_to_savings') : t('modals.bank.savings_to_cash')}
                 </div>
             </div>

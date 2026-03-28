@@ -65,8 +65,8 @@ export const MIN_ASSETS_TO_WIN = 3;        // was 2
 export const MIN_SAVINGS_TO_WIN = 50;      // need emergency fund
 export const QUIZ_ACCURACY_TO_WIN = 0.5;   // must answer >= 50% correctly
 
-// --- Available Avatars ---
+// --- Available Avatars (illustrated image keys) ---
 export const PLAYER_AVATARS = [
-    '😎', '🤠', '🧑‍🚀', '🦸', '🧙', '🎤', '🏄', '🤓',
-    '🥷', '🧑‍🎨', '🧑‍🔬', '🦊',
+    'fox', 'cat', 'bunny', 'owl', 'lion', 'panda',
+    'turtle', 'monkey', 'frog', 'unicorn',
 ] as const;

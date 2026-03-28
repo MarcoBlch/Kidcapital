@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { useTranslation } from 'react-i18next';
+import PennyAvatar from '../ui/PennyAvatar';
 
 export default function TutorialOverlay() {
     const { t } = useTranslation();
@@ -29,7 +30,7 @@ export default function TutorialOverlay() {
                 onClick={isWaitingForTap ? nextStep : undefined}
             >
                 {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+                <div className="absolute inset-0 pointer-events-none" style={{ background: 'rgba(0,0,0,0.6)' }} />
 
                 {/* Tutorial card */}
                 <motion.div
@@ -40,18 +41,28 @@ export default function TutorialOverlay() {
                     className="relative z-[101] mx-6 max-w-sm w-full pointer-events-auto"
                     onClick={e => e.stopPropagation()}
                 >
-                    <div className="bg-gradient-to-br from-[#1e2a4a] to-[#162040] rounded-3xl border border-amber-400/20 shadow-[0_0_40px_rgba(245,158,11,0.15)] overflow-hidden">
+                    <div
+                        className="rounded-3xl overflow-hidden"
+                        style={{
+                            background: '#FFFFFF',
+                            border: '3px solid #FFD700',
+                            boxShadow: '0 8px 0 #B8860B, 0 12px 40px rgba(0,0,0,0.2)',
+                        }}
+                    >
                         {/* Progress dots */}
                         <div className="flex items-center justify-center gap-1.5 pt-4 pb-2">
                             {Array.from({ length: totalSteps }).map((_, i) => (
                                 <div
                                     key={i}
-                                    className={`h-1 rounded-full transition-all duration-300 ${i === currentStepIndex
-                                        ? 'w-5 bg-amber-400'
-                                        : i < currentStepIndex
-                                            ? 'w-2 bg-amber-400/40'
-                                            : 'w-2 bg-white/10'
-                                        }`}
+                                    className="h-1 rounded-full transition-all duration-300"
+                                    style={{
+                                        width: i === currentStepIndex ? 20 : 8,
+                                        background: i === currentStepIndex
+                                            ? '#FFD700'
+                                            : i < currentStepIndex
+                                                ? 'rgba(255,215,0,0.4)'
+                                                : '#E0E0E0',
+                                    }}
                                 />
                             ))}
                         </div>
@@ -61,18 +72,17 @@ export default function TutorialOverlay() {
                             <motion.div
                                 animate={{ rotate: [0, -5, 5, -3, 0] }}
                                 transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
-                                className="w-16 h-16 rounded-full bg-amber-400/15 border-2 border-amber-400/30 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.2)]"
                             >
-                                <span className="text-3xl">🐷</span>
+                                <PennyAvatar pose="teach" size={64} showBubble />
                             </motion.div>
                         </div>
 
                         {/* Content */}
                         <div className="px-6 pb-2 text-center">
-                            <h3 className="font-display text-lg text-amber-300 mb-2">
+                            <h3 className="font-display text-lg mb-2" style={{ color: '#DAA520' }}>
                                 {t(`tutorial.${step.id}_title`, { defaultValue: step.title })}
                             </h3>
-                            <p className="text-sm text-white/70 leading-relaxed whitespace-pre-line">
+                            <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#5D5D6E' }}>
                                 {t(`tutorial.${step.id}_msg`, { defaultValue: step.message })}
                             </p>
                         </div>
@@ -81,20 +91,20 @@ export default function TutorialOverlay() {
                         <div className="px-6 pb-5 pt-3">
                             {isWaitingForTap ? (
                                 <motion.button
-                                    whileTap={{ scale: 0.95 }}
+                                    whileTap={{ y: 4 }}
                                     onClick={nextStep}
-                                    className="
-                                        w-full py-3 rounded-2xl font-display text-sm font-bold
-                                        bg-gradient-to-r from-amber-400 to-amber-500
-                                        text-amber-900 cursor-pointer transition-all
-                                        shadow-[0_4px_20px_rgba(245,158,11,0.3)]
-                                    "
+                                    className="w-full py-3 rounded-2xl font-display text-sm font-bold cursor-pointer transition-all"
+                                    style={{
+                                        background: '#FFD700',
+                                        color: '#4A3800',
+                                        boxShadow: '0 5px 0 #B8860B, 0 8px 16px rgba(0,0,0,0.15)',
+                                    }}
                                 >
                                     {currentStepIndex === totalSteps - 1 ? t('tutorial.lets_go') : t('tutorial.got_it')}
                                 </motion.button>
                             ) : (
                                 <div className="text-center">
-                                    <p className="text-[11px] text-amber-300/50 font-medium animate-pulse">
+                                    <p className="text-[11px] font-medium animate-pulse" style={{ color: '#DAA520' }}>
                                         {step.waitFor === 'roll' && t('tutorial.wait_roll')}
                                         {step.waitFor === 'modal_close' && t('tutorial.wait_modal')}
                                         {step.waitFor === 'next_turn' && t('tutorial.wait_next')}
@@ -105,7 +115,8 @@ export default function TutorialOverlay() {
                             {/* Skip button */}
                             <button
                                 onClick={completeTutorial}
-                                className="mt-3 w-full text-center text-[10px] text-white/20 hover:text-white/40 transition-colors cursor-pointer"
+                                className="mt-3 w-full text-center text-[10px] transition-colors cursor-pointer"
+                                style={{ color: '#9E9EAF' }}
                             >
                                 {t('tutorial.skip')}
                             </button>

@@ -55,3 +55,10 @@ debug_*
 MEMORY.md
 ios_certs/
 MEMORY.md:Zone.Identifier
+
+# Windows metadata artifacts (WSL / NTFS)
+*:Zone.Identifier
+*:mshield
+
+# Claude Code local config
+.claude/

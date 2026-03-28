@@ -1,5 +1,7 @@
 import { useGameStore } from '../../store/gameStore';
+import { useUIStore } from '../../store/uiStore';
 import { getFreedomPercent } from '../../engine/WinCondition';
+import AvatarImage from '../ui/AvatarImage';
 import { useTranslation } from 'react-i18next';
 
 export default function Header() {
@@ -11,37 +13,55 @@ export default function Header() {
 
     if (!currentPlayer) return null;
 
-    const hasDebt = currentPlayer.debt > 0;
     const freedomPct = getFreedomPercent(currentPlayer);
 
-    return (
-        <div className="flex items-center justify-between px-3 md:px-6 lg:px-8 py-2 md:py-3 lg:py-4 safe-top">
-            {/* Month badge */}
-            <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1">
-                <span className="text-[10px] text-amber-200/70">{t('game.month')}</span>
-                <span className="font-display text-sm md:text-base lg:text-lg text-amber-300 font-bold">
-                    {month}
-                </span>
-            </div>
+    const handleBackToMenu = () => {
+        if (window.confirm(t('game.quit_confirm', { defaultValue: 'Return to main menu? Progress will be lost.' }))) {
+            useGameStore.getState().resetGame();
+            useUIStore.getState().setScreen('setup');
+        }
+    };
 
-            {/* Active player */}
+    return (
+        <div className="flex items-center justify-between px-3 md:px-6 lg:px-8 py-2 md:py-3 safe-top">
+            {/* Menu button */}
+            <button
+                onClick={handleBackToMenu}
+                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 cursor-pointer"
+                style={{ background: 'rgba(0,0,0,0.25)' }}
+                aria-label={t('game.menu', { defaultValue: 'Menu' })}
+            >
+                <span className="text-white text-sm font-bold">←</span>
+            </button>
+
+            {/* Center: Month + Player turn */}
             <div className="flex items-center gap-2">
-                <div className="w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-white/10 flex items-center justify-center text-base lg:text-lg">
-                    {currentPlayer.avatar}
+                <div
+                    className="flex items-center gap-1 rounded-full px-2.5 py-0.5"
+                    style={{ background: 'rgba(0,0,0,0.2)' }}
+                >
+                    <span className="text-[9px] font-bold uppercase" style={{ color: '#DAA520' }}>{t('game.month')}</span>
+                    <span className="font-display text-sm font-bold" style={{ color: '#FFD700' }}>{month}</span>
                 </div>
-                <span className="font-display text-sm md:text-base lg:text-lg text-white font-semibold">
-                    {t('game.turn', { name: currentPlayer.name })}
-                </span>
-                {hasDebt && (
-                    <span className="text-[8px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded-full font-bold animate-pulse">
-                        {t('game.debt')}
+                <div className="flex items-center gap-1.5">
+                    <div
+                        className="w-6 h-6 rounded-full flex items-center justify-center overflow-hidden"
+                        style={{ background: 'rgba(0,0,0,0.2)', border: '1.5px solid rgba(255,255,255,0.15)' }}
+                    >
+                        <AvatarImage avatar={currentPlayer.avatar} size={16} />
+                    </div>
+                    <span className="font-display text-xs md:text-sm text-white font-semibold truncate max-w-[120px]">
+                        {t('game.turn', { name: currentPlayer.name })}
                     </span>
-                )}
+                </div>
             </div>
 
             {/* Freedom % */}
-            <div className="bg-emerald-500/15 rounded-full px-3 py-1">
-                <span className="font-display text-sm md:text-base lg:text-lg text-emerald-400 font-bold">
+            <div
+                className="rounded-full px-2.5 py-0.5 shrink-0"
+                style={{ background: '#2E7D32' }}
+            >
+                <span className="font-display text-sm text-white font-bold">
                     {freedomPct}%
                 </span>
             </div>

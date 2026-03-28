@@ -1,43 +1,39 @@
 @import "tailwindcss";
 
 /* ============================================
-   KidCapital — Design System
-   "Paper & Gold" Aesthetic — Premium Mobile Game
+   KidCapital — Design System v2.0
+   "Penny's World" — Monopoly Go Inspired
    ============================================ */
 
 @theme {
-  /* Primary Colors */
-  --color-gold-50: #fffbeb;
-  --color-gold-100: #fef3c7;
-  --color-gold-200: #fde68a;
-  --color-gold-300: #fcd34d;
-  --color-gold-400: #fbbf24;
-  --color-gold-500: #f59e0b;
-  --color-gold-600: #d97706;
-  --color-gold-700: #b45309;
-  --color-gold-800: #92400e;
-  --color-gold-900: #78350f;
+  /* KidCapital Brand Colors */
+  --color-kc-gold: #FFD700;
+  --color-kc-gold-dark: #DAA520;
+  --color-kc-gold-shadow: #B8860B;
+  --color-kc-cash-green: #4CAF50;
+  --color-kc-penny-pink: #FF8FAB;
+  --color-kc-danger: #EF5350;
+  --color-kc-success: #66BB6A;
 
-  /* Semantic Colors */
-  --color-emerald-500: #10b981;
-  --color-rose-500: #f43f5e;
-  --color-indigo-500: #6366f1;
-  --color-purple-500: #8b5cf6;
-  --color-pink-500: #ec4899;
-  --color-cyan-500: #06b6d4;
+  /* Space Type Colors */
+  --color-kc-invest: #4CAF50;
+  --color-kc-payday: #FFD700;
+  --color-kc-life: #FF7043;
+  --color-kc-hustle: #AB47BC;
+  --color-kc-temptation: #EC407A;
+  --color-kc-quiz: #29B6F6;
+  --color-kc-bank: #5C6BC0;
 
-  /* Neutral */
-  --color-slate-50: #f8fafc;
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
+  /* UI Chrome */
+  --color-kc-surface: #FFFFFF;
+  --color-kc-surface-warm: #FFF8F0;
+  --color-kc-text: #1A1A2E;
+  --color-kc-text-secondary: #5D5D6E;
+  --color-kc-text-muted: #9E9EAF;
 
   /* Typography */
   --font-display: 'Baloo 2', cursive;
-  --font-body: system-ui, -apple-system, sans-serif;
+  --font-body: 'Nunito', 'Quicksand', system-ui, sans-serif;
 
   /* Border Radius */
   --radius-sm: 12px;
@@ -62,8 +58,8 @@
 
 html {
   font-family: var(--font-body);
-  color: var(--color-slate-800);
-  background: #1a1a2e;
+  color: var(--color-kc-text);
+  background: #2B6A4E;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -96,69 +92,34 @@ h6,
 }
 
 /* ============================================
-   Shadows & Effects
+   Shadows — 3D Depth, NOT Glow
    ============================================ */
 
 .shadow-card {
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .shadow-heavy {
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.shadow-glow-gold {
-  box-shadow:
-    0 4px 20px rgba(245, 158, 11, 0.3),
-    0 0 40px rgba(245, 158, 11, 0.1);
-}
-
-.glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-.glass-dark {
-  background: rgba(26, 26, 46, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.shadow-lg {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 /* ============================================
-   Game Background
+   Game Board Background
    ============================================ */
 
-.game-bg {
-  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+.kc-board-bg {
+  background: #2B6A4E;
 }
 
-.game-board-bg {
-  background: linear-gradient(180deg, rgba(255, 251, 235, 0.04) 0%, rgba(255, 251, 235, 0.02) 100%);
+.kc-sky {
+  background: linear-gradient(180deg, #87CEEB 0%, #5BA3C4 100%);
 }
 
-/* ============================================
-   Board Path
-   ============================================ */
-
-.board-path-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(245, 158, 11, 0.3) 10%,
-      rgba(245, 158, 11, 0.3) 90%,
-      transparent 100%);
-  transform: translateY(-50%);
-  z-index: 0;
-}
+/* board-path-line removed — grid layout replaces strip */
 
 /* ============================================
    Scrollbar hide
@@ -190,15 +151,15 @@ h6,
 
 @keyframes pulse-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
   }
 
   70% {
-    box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
+    box-shadow: 0 0 0 6px rgba(255, 215, 0, 0);
   }
 
   100% {
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
   }
 }
 
@@ -207,7 +168,7 @@ h6,
 }
 
 /* ============================================
-   Glow animation for active space
+   Brightness animation for active space
    ============================================ */
 
 @keyframes space-glow {
@@ -227,7 +188,7 @@ h6,
 }
 
 /* ============================================
-   Tablet Optimizations (≥1024px)
+   Tablet Optimizations (≥800px)
    ============================================ */
 
 @media (min-width: 800px) {

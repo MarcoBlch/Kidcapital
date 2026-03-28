@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { useUIStore } from '../store/uiStore';
 import { useTutorialStore } from '../store/tutorialStore';
@@ -6,11 +6,11 @@ import { executeHumanRoll, completeAction, nextTurn } from '../engine/TurnManage
 
 // HUD
 import Header from '../components/hud/Header';
-import PlayerRow from '../components/hud/PlayerRow';
 import ActionBar from '../components/hud/ActionBar';
+import PlayersOverlay from '../components/hud/PlayersOverlay';
 
 // Board
-import BoardStrip from '../components/board/BoardStrip';
+import BoardGrid from '../components/board/BoardGrid';
 
 // Modals
 import BottomSheet from '../components/modals/BottomSheet';
@@ -39,12 +39,14 @@ export default function GameScreen() {
     useAchievementTracker();
     const activeModal = useUIStore(s => s.activeModal);
     const modalSpaceColor = useUIStore(s => s.modalSpaceColor);
-    const turnLog = useUIStore(s => s.turnLog);
     const tutorialIsCompleted = useTutorialStore(s => s.isCompleted);
     const startTutorial = useTutorialStore(s => s.startTutorial);
     const signalEvent = useTutorialStore(s => s.signalEvent);
 
     const currentPlayer = players[currentPlayerIndex];
+
+    // Players overlay state
+    const [showPlayers, setShowPlayers] = useState(false);
 
     // Start tutorial on first game
     useEffect(() => {
@@ -62,9 +64,7 @@ export default function GameScreen() {
         prevModalRef.current = activeModal;
 
         if (wasOpen && nowClosed) {
-            // Signal tutorial
             signalEvent('modal_close');
-            // Bridge modal close → completeAction
             if (turnPhase === 'modal_open') {
                 completeAction();
             }
@@ -96,43 +96,22 @@ export default function GameScreen() {
     if (!currentPlayer) return null;
 
     return (
-        <div className="h-dvh game-bg flex flex-col overflow-hidden">
-            {/* Header */}
-            <Header />
-
-            {/* Player cards */}
-            <div className="px-2 md:px-6 lg:px-8 py-1 md:py-2 lg:py-3 space-y-1 md:space-y-2 flex-shrink-0">
-                {players.map(p => (
-                    <PlayerRow
-                        key={p.id}
-                        player={p}
-                        isActive={p.id === currentPlayer.id}
-                    />
-                ))}
+        <div className="h-dvh w-full flex flex-col overflow-hidden" style={{ background: '#2B6A4E' }}>
+            {/* Header — sky-tinted area */}
+            <div style={{ background: 'linear-gradient(180deg, #6DB8A0 0%, #2B6A4E 100%)' }}>
+                <Header />
             </div>
 
-            {/* Board — fills remaining space */}
-            <div className="flex-1 flex items-center min-h-0">
-                <div className="w-full">
-                    <BoardStrip />
-                </div>
+            {/* Board grid — fills remaining space, self-centers */}
+            <div className="flex-1 flex items-center justify-center min-h-0 py-2">
+                <BoardGrid onRoll={handleRoll} onNext={handleNext} />
             </div>
 
-            {/* Bot turn log */}
-            {turnLog.length > 0 && (
-                <div className="px-3 md:px-6 lg:px-8 py-1 flex-shrink-0">
-                    <div className="bg-white/5 rounded-xl px-3 py-1.5 max-h-14 overflow-y-auto no-scrollbar border border-white/5">
-                        {turnLog.slice(-3).map((log, i) => (
-                            <div key={i} className="text-[10px] lg:text-xs text-white/40 py-0.5">
-                                {log}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+            {/* Bottom nav */}
+            <ActionBar onOpenPlayers={() => setShowPlayers(true)} />
 
-            {/* Action bar */}
-            <ActionBar onRoll={handleRoll} onNext={handleNext} />
+            {/* Players overlay */}
+            <PlayersOverlay isOpen={showPlayers} onClose={() => setShowPlayers(false)} />
 
             {/* Penny overlay */}
             <PennyBubble />

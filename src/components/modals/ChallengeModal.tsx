@@ -52,28 +52,30 @@ export default function ChallengeModal() {
 
     return (
         <div>
-            <h2 className="font-display text-lg text-cyan-600 mb-1">
+            <h2 className="font-display text-lg mb-1" style={{ color: '#1E88E5' }}>
                 {t('modals.challenge.title')}
             </h2>
-            <p className="text-[10px] text-slate-400 mb-2">
+            <p className="text-[10px] mb-2" style={{ color: '#9E9EAF' }}>
                 {t('modals.challenge.subtitle', { reward: REWARD, penalty: Math.abs(PENALTY) })}
             </p>
 
-            <p className="text-sm font-medium text-slate-800 mb-4 leading-relaxed">
-                {challenge.question}
+            <p className="text-sm font-medium mb-4 leading-relaxed" style={{ color: '#1A1A2E' }}>
+                {t(`data.challenges.${challenge.id}_question`, { defaultValue: challenge.question })}
             </p>
 
             <div className="space-y-2 mb-4">
                 {challenge.options.map((option, i) => {
-                    let style = 'bg-white border-slate-200 text-slate-700';
+                    let bg = '#FFFFFF';
+                    let border = '#E0E0E0';
+                    let color = '#1A1A2E';
 
                     if (revealed) {
                         if (i === challenge.correctIndex) {
-                            style = 'bg-emerald-50 border-emerald-400 text-emerald-700';
+                            bg = '#E8F5E9'; border = '#4CAF50'; color = '#2E7D32';
                         } else if (i === selectedIndex) {
-                            style = 'bg-rose-50 border-rose-400 text-rose-700';
+                            bg = '#FFEBEE'; border = '#EF5350'; color = '#C62828';
                         } else {
-                            style = 'bg-slate-50 border-slate-100 text-slate-400';
+                            bg = '#FAFAFA'; border = '#F0F0F0'; color = '#9E9EAF';
                         }
                     }
 
@@ -82,14 +84,14 @@ export default function ChallengeModal() {
                             key={i}
                             onClick={() => handleSelect(i)}
                             disabled={revealed}
-                            className={`
-                w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-medium
-                transition-all duration-200 cursor-pointer
-                ${style}
-                ${!revealed ? 'hover:border-cyan-300 hover:bg-cyan-50 active:scale-[0.98]' : ''}
-              `}
+                            className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                            style={{
+                                background: bg,
+                                border: `2px solid ${border}`,
+                                color,
+                            }}
                         >
-                            {option}
+                            {t(`data.challenges.${challenge.id}_opt_${i}`, { defaultValue: option })}
                             {revealed && i === challenge.correctIndex && ' ✅'}
                             {revealed && i === selectedIndex && i !== challenge.correctIndex && ' ❌'}
                         </button>
@@ -99,14 +101,20 @@ export default function ChallengeModal() {
 
             {/* Result */}
             {revealed && (
-                <div className={`rounded-xl p-4 mb-4 ${isCorrect ? 'bg-emerald-50 border border-emerald-200' : 'bg-rose-50 border border-rose-200'}`}>
+                <div
+                    className="rounded-xl p-4 mb-4"
+                    style={{
+                        background: isCorrect ? '#E8F5E9' : '#FFEBEE',
+                        border: `2px solid ${isCorrect ? '#4CAF50' : '#EF5350'}`,
+                    }}
+                >
                     <div className="font-display text-sm font-bold mb-2">
                         {isCorrect
                             ? t('modals.challenge.correct', { reward: REWARD })
                             : t('modals.challenge.wrong', { penalty: Math.abs(PENALTY) })}
                     </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                        🐷 {challenge.pennyExplanation}
+                    <p className="text-xs leading-relaxed" style={{ color: '#5D5D6E' }}>
+                        {t(`data.challenges.${challenge.id}_explanation`, { defaultValue: challenge.pennyExplanation })}
                     </p>
                 </div>
             )}
