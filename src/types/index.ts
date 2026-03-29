@@ -153,6 +153,7 @@ export interface GameState {
     soundEnabled: boolean;
     pennyMuted: boolean;
     dailyBonus: number;
+    seenQuizIds: string[];
 }
 
 // --- Penny Messages ---

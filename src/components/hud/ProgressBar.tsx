@@ -17,12 +17,17 @@ export default function ProgressBar({ percent, player }: ProgressBarProps) {
     const quizCorrect = player.quizCorrect;
     const quizTotal = player.quizTotal;
     const debt = player.debt;
+    const passiveIncome = player.assets.reduce((sum, a) => sum + a.income, 0);
+    const totalExpenses = player.baseExpenses
+        + player.assets.reduce((sum, a) => sum + a.maint, 0)
+        + player.loanPayment;
 
     const milestones = [
         { label: '🏪', done: assetCount >= MIN_ASSETS_TO_WIN, tip: t('game.biz', { count: assetCount, target: MIN_ASSETS_TO_WIN }) },
         { label: '🏦', done: savings >= MIN_SAVINGS_TO_WIN, tip: `$${savings}/$${MIN_SAVINGS_TO_WIN}` },
         { label: '🧠', done: quizTotal > 0 && (quizCorrect / quizTotal) >= 0.5, tip: quizTotal > 0 ? `${Math.round(quizCorrect / quizTotal * 100)}%` : '0%' },
         { label: '💰', done: debt === 0, tip: debt > 0 ? t('game.debt_amount', { amount: debt }) : t('game.no_debt') },
+        { label: '📈', done: totalExpenses > 0 && passiveIncome >= totalExpenses, tip: `$${passiveIncome}/$${totalExpenses}` },
     ];
 
     return (

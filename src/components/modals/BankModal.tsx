@@ -10,40 +10,50 @@ export default function BankModal() {
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const playerDeposit = useGameStore(s => s.playerDeposit);
     const playerWithdraw = useGameStore(s => s.playerWithdraw);
+    const playerRepayDebt = useGameStore(s => s.playerRepayDebt);
     const closeModal = useUIStore(s => s.closeModal);
+    const confirmModalAction = useUIStore(s => s.confirmModalAction);
     const showCoin = useUIStore(s => s.showCoin);
 
     const player = players[currentPlayerIndex];
+    const hasDebt = player.debt > 0;
 
-    const [tab, setTab] = useState<'deposit' | 'withdraw'>('deposit');
+    const [tab, setTab] = useState<'deposit' | 'withdraw' | 'repay'>('deposit');
     const [amount, setAmount] = useState(0);
 
     const presets = [10, 25, 50];
     const maxDeposit = player.cash;
     const maxWithdraw = player.savings;
+    const maxRepay = Math.min(player.cash, player.debt);
 
     const handlePreset = (value: number) => {
-        const max = tab === 'deposit' ? maxDeposit : maxWithdraw;
+        const max = tab === 'deposit' ? maxDeposit : tab === 'withdraw' ? maxWithdraw : maxRepay;
         setAmount(Math.min(value, max));
     };
 
     const handleAll = () => {
-        setAmount(tab === 'deposit' ? maxDeposit : maxWithdraw);
+        setAmount(tab === 'deposit' ? maxDeposit : tab === 'withdraw' ? maxWithdraw : maxRepay);
     };
 
     const handleConfirm = () => {
         if (amount <= 0) return;
         if (tab === 'deposit') {
-            if (playerDeposit(player.id, amount)) {
-                showCoin(-amount);
-            }
+            if (playerDeposit(player.id, amount)) showCoin(-amount);
+        } else if (tab === 'withdraw') {
+            if (playerWithdraw(player.id, amount)) showCoin(amount);
         } else {
-            if (playerWithdraw(player.id, amount)) {
-                showCoin(amount);
-            }
+            if (playerRepayDebt(player.id, amount)) showCoin(-amount);
         }
+        confirmModalAction();
         closeModal();
     };
+
+    const handleSkip = () => {
+        confirmModalAction();
+        closeModal();
+    };
+
+    const tabActive = (t: typeof tab) => tab === t;
 
     return (
         <div>
@@ -68,6 +78,14 @@ export default function BankModal() {
                         ${player.savings}
                     </div>
                 </div>
+                {hasDebt && (
+                    <div className="flex-1 rounded-xl p-3 text-center" style={{ background: '#FFEBEE', border: '2px solid #EF5350' }}>
+                        <div className="text-[10px] mb-1" style={{ color: '#9E9EAF' }}>{t('modals.bank.debt')}</div>
+                        <div className="font-display text-lg font-bold" style={{ color: '#C62828' }}>
+                            ${player.debt}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Tab selector */}
@@ -76,8 +94,8 @@ export default function BankModal() {
                     onClick={() => { setTab('deposit'); setAmount(0); }}
                     className="flex-1 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer"
                     style={{
-                        background: tab === 'deposit' ? '#3949AB' : '#F0F0F0',
-                        color: tab === 'deposit' ? '#FFFFFF' : '#9E9EAF',
+                        background: tabActive('deposit') ? '#3949AB' : '#F0F0F0',
+                        color: tabActive('deposit') ? '#FFFFFF' : '#9E9EAF',
                     }}
                 >
                     {t('modals.bank.deposit')}
@@ -86,12 +104,24 @@ export default function BankModal() {
                     onClick={() => { setTab('withdraw'); setAmount(0); }}
                     className="flex-1 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer"
                     style={{
-                        background: tab === 'withdraw' ? '#DAA520' : '#F0F0F0',
-                        color: tab === 'withdraw' ? '#FFFFFF' : '#9E9EAF',
+                        background: tabActive('withdraw') ? '#DAA520' : '#F0F0F0',
+                        color: tabActive('withdraw') ? '#FFFFFF' : '#9E9EAF',
                     }}
                 >
                     {t('modals.bank.withdraw')}
                 </button>
+                {hasDebt && (
+                    <button
+                        onClick={() => { setTab('repay'); setAmount(0); }}
+                        className="flex-1 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                        style={{
+                            background: tabActive('repay') ? '#EF5350' : '#F0F0F0',
+                            color: tabActive('repay') ? '#FFFFFF' : '#9E9EAF',
+                        }}
+                    >
+                        {t('modals.bank.repay')}
+                    </button>
+                )}
             </div>
 
             {/* Amount presets */}
@@ -123,15 +153,23 @@ export default function BankModal() {
                     ${amount}
                 </div>
                 <div className="text-xs" style={{ color: '#9E9EAF' }}>
-                    {tab === 'deposit' ? t('modals.bank.cash_to_savings') : t('modals.bank.savings_to_cash')}
+                    {tab === 'deposit'
+                        ? t('modals.bank.cash_to_savings')
+                        : tab === 'withdraw'
+                            ? t('modals.bank.savings_to_cash')
+                            : t('modals.bank.cash_to_debt')}
                 </div>
             </div>
 
             <div className="flex gap-3">
                 <Button fullWidth onClick={handleConfirm} disabled={amount <= 0}>
-                    {tab === 'deposit' ? t('modals.bank.deposit_btn') : t('modals.bank.withdraw_btn')}
+                    {tab === 'deposit'
+                        ? t('modals.bank.deposit_btn')
+                        : tab === 'withdraw'
+                            ? t('modals.bank.withdraw_btn')
+                            : t('modals.bank.repay_btn')}
                 </Button>
-                <Button variant="ghost" onClick={closeModal}>
+                <Button variant="ghost" onClick={handleSkip}>
                     {t('modals.skip')}
                 </Button>
             </div>

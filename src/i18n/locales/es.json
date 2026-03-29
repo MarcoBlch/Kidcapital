@@ -127,7 +127,11 @@
             "savings_to_cash": "Ahorros → Efectivo",
             "all": "Todo",
             "deposit_btn": "💰 Depositar",
-            "withdraw_btn": "💵 Retirar"
+            "withdraw_btn": "💵 Retirar",
+            "repay": "💳 Pagar Deuda",
+            "repay_btn": "💳 Pagar",
+            "debt": "Deuda",
+            "cash_to_debt": "Efectivo → Deuda"
         },
         "portfolio": {
             "title": "💼 Tu Portafolio",

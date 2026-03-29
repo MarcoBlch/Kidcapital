@@ -33,8 +33,10 @@ interface UIStore {
     // Modal
     activeModal: ModalType;
     modalSpaceColor: string;
+    modalActionConfirmed: boolean;
     showModal: (type: SpaceType) => void;
     closeModal: () => void;
+    confirmModalAction: () => void;
 
     // Penny
     pennyMessage: string | null;
@@ -92,12 +94,15 @@ export const useUIStore = create<UIStore>((set) => ({
     // Modal
     activeModal: null,
     modalSpaceColor: '#f59e0b',
+    modalActionConfirmed: false,
     showModal: (spaceType) =>
         set({
             activeModal: SPACE_TYPE_TO_MODAL[spaceType] ?? null,
             modalSpaceColor: SPACE_TYPE_TO_COLOR[spaceType] ?? '#f59e0b',
+            modalActionConfirmed: false,
         }),
     closeModal: () => set({ activeModal: null }),
+    confirmModalAction: () => set({ modalActionConfirmed: true }),
 
     // Penny
     pennyMessage: null,

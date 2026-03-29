@@ -11,6 +11,7 @@ import {
     applyHustle,
     buyTemptation,
     skipTemptation,
+    repayDebt,
     applyGoBonus,
     createDefaultPlayer,
 } from '../engine/FinancialEngine';
@@ -44,12 +45,14 @@ interface GameStore extends GameState {
     playerBuyAssetLoan: (playerId: number, asset: Asset) => boolean;
     playerDeposit: (playerId: number, amount: number) => boolean;
     playerWithdraw: (playerId: number, amount: number) => boolean;
+    playerRepayDebt: (playerId: number, amount: number) => boolean;
     playerApplyLifeEvent: (playerId: number, amount: number) => void;
     playerApplyHustle: (playerId: number, amount: number) => void;
     playerBuyTemptation: (playerId: number, cost: number) => boolean;
-    playerSkipTemptation: (playerId: number) => void;
+    playerSkipTemptation: (playerId: number, cost: number) => void;
     playerPayday: (playerId: number) => ReturnType<typeof calculatePayday>;
     playerQuizResult: (playerId: number, correct: boolean, reward: number) => void;
+    addSeenQuizId: (id: string) => void;
 
     // --- Turn Management ---
     advanceTurn: () => void;
@@ -74,6 +77,7 @@ const initialState: GameState = {
     soundEnabled: true,
     pennyMuted: false,
     dailyBonus: 0,
+    seenQuizIds: [],
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -133,7 +137,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
         set({
             players,
-            month: passedGo && playerId === 0 ? state.month + 1 : state.month,
+            month: passedGo ? state.month + 1 : state.month,
         });
     },
 
@@ -170,6 +174,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return true;
     },
 
+    playerRepayDebt: (playerId, amount) => {
+        const player = get().getPlayer(playerId);
+        const updated = repayDebt(player, amount);
+        if (!updated) return false;
+        get().updatePlayer(playerId, updated);
+        return true;
+    },
+
     playerApplyLifeEvent: (playerId, amount) => {
         const player = get().getPlayer(playerId);
         const updated = applyLifeEvent(player, amount);
@@ -190,9 +202,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return true;
     },
 
-    playerSkipTemptation: (playerId) => {
+    playerSkipTemptation: (playerId, cost) => {
         const player = get().getPlayer(playerId);
-        const updated = skipTemptation(player);
+        const updated = skipTemptation(player, cost);
         get().updatePlayer(playerId, updated);
     },
 
@@ -214,6 +226,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
             updates.cash = player.cash + reward;
         }
         get().updatePlayer(playerId, updates);
+    },
+
+    addSeenQuizId: (id) => {
+        set(state => ({ seenQuizIds: [...state.seenQuizIds, id] }));
     },
 
     // --- Turn Management ---

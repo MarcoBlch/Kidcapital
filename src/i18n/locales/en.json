@@ -127,7 +127,11 @@
             "savings_to_cash": "Savings → Cash",
             "all": "All",
             "deposit_btn": "💰 Deposit",
-            "withdraw_btn": "💵 Withdraw"
+            "withdraw_btn": "💵 Withdraw",
+            "repay": "💳 Repay Debt",
+            "repay_btn": "💳 Repay",
+            "debt": "Debt",
+            "cash_to_debt": "Cash → Debt"
         },
         "portfolio": {
             "title": "💼 Your Portfolio",

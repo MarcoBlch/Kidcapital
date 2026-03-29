@@ -46,7 +46,9 @@ export function checkFreedom(player: Player): boolean {
  * Get the Freedom Progress percentage (0–100, clamped).
  * Weighted across all 4 win dimensions.
  */
-export function getFreedomPercent(player: Player): number {
+export function getFreedomPercent(player: Player | null | undefined): number {
+    if (!player || !player.assets) return 0;
+
     // 40% weight: passive income vs expenses
     const passiveIncome = player.assets.reduce((sum, a) => sum + a.income, 0);
     const totalExpenses =

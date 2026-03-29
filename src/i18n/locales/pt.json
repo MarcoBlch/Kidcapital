@@ -127,7 +127,11 @@
             "savings_to_cash": "Poupança → Dinheiro",
             "all": "Tudo",
             "deposit_btn": "💰 Depositar",
-            "withdraw_btn": "💵 Sacar"
+            "withdraw_btn": "💵 Sacar",
+            "repay": "💳 Pagar Dívida",
+            "repay_btn": "💳 Pagar",
+            "debt": "Dívida",
+            "cash_to_debt": "Dinheiro → Dívida"
         },
         "portfolio": {
             "title": "💼 Seu Portfólio",

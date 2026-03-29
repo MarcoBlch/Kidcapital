@@ -50,7 +50,10 @@ export async function executeHumanRoll(): Promise<void> {
 
     if (passedGo) {
         ui.showCoin(GO_BONUS);
-        ui.showPenny(`You passed GO! +$${GO_BONUS} allowance 💰`);
+        // Auto-payday: apply monthly income/expenses when lapping the board
+        const paydayReport = game.playerPayday(player.id);
+        const netSign = paydayReport.net >= 0 ? '+' : '';
+        ui.showPenny(`You passed GO! +$${GO_BONUS} allowance 💰\nPayday! ${netSign}$${paydayReport.net} net income.`);
         await sleep(1500);
     }
 
@@ -146,7 +149,9 @@ async function executeBotTurn(): Promise<void> {
 
         game.movePlayerTo(bot.id, newPos, passedGo);
         if (passedGo) {
+            const botPayday = game.playerPayday(bot.id);
             ui.addLog(i18n.t('bot.passed_go', { avatar: bot.avatar, bonus: GO_BONUS }));
+            ui.addLog(i18n.t('bot.payday_net', { avatar: bot.avatar, net: botPayday.net }));
         }
 
         await sleep(TIMING.BOT_STEP_PAUSE);
@@ -273,18 +278,22 @@ async function resolveBotSpace(
         }
         case 'temptation': {
             const temptation = getRandomTemptation();
-            if (personality === 'aggressive' && Math.random() < 0.3 && bot.cash >= temptation.cost) {
+            // Chloe: never buys. Sam: 15% chance. Ben: 55% chance.
+            const temptBuyChance = personality === 'aggressive' ? 0.55 : personality === 'balanced' ? 0.15 : 0;
+            if (temptBuyChance > 0 && Math.random() < temptBuyChance && bot.cash >= temptation.cost) {
                 game.playerBuyTemptation(botId, temptation.cost);
                 ui.addLog(i18n.t('bot.bought_temptation', { avatar: bot.avatar, name: i18n.t(`data.temptations.${temptation.id}_name`, { defaultValue: temptation.name }) }));
                 ui.showCoin(-temptation.cost);
             } else {
-                game.playerSkipTemptation(botId);
+                game.playerSkipTemptation(botId, temptation.cost);
                 ui.addLog(i18n.t('bot.skipped_temptation', { avatar: bot.avatar, name: i18n.t(`data.temptations.${temptation.id}_name`, { defaultValue: temptation.name }) }));
             }
             break;
         }
         case 'challenge': {
-            const correct = Math.random() < 0.55;
+            // Chloe: 65% accuracy. Sam: 55%. Ben: 40%.
+            const quizAccuracy = personality === 'conservative' ? 0.65 : personality === 'balanced' ? 0.55 : 0.40;
+            const correct = Math.random() < quizAccuracy;
             const reward = correct ? 10 : 0;
             const penalty = correct ? 0 : -5;
             game.playerQuizResult(botId, correct, reward);
@@ -297,10 +306,10 @@ async function resolveBotSpace(
             break;
         }
         case 'bank': {
-            if (personality === 'conservative' || personality === 'balanced') {
-                const saveAmount = personality === 'balanced'
-                    ? Math.floor(bot.cash * 0.3)
-                    : Math.floor(bot.cash * 0.5);
+            // Chloe: saves 60%. Sam: saves 30%. Ben: skips saving.
+            const saveRate = personality === 'conservative' ? 0.60 : personality === 'balanced' ? 0.30 : 0;
+            if (saveRate > 0) {
+                const saveAmount = Math.floor(bot.cash * saveRate);
                 if (saveAmount > 0) {
                     game.playerDeposit(botId, saveAmount);
                     ui.addLog(i18n.t('bot.saved', { avatar: bot.avatar, amount: saveAmount }));

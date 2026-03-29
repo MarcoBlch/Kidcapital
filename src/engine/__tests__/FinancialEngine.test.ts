@@ -330,11 +330,17 @@ describe('buyTemptation', () => {
 });
 
 describe('skipTemptation', () => {
-    it('should increment wantsSkipped', () => {
+    it('should increment wantsSkipped and reward 25% of cost', () => {
         const player = makePlayer({ wantsSkipped: 2, savings: 10 });
-        const updated = skipTemptation(player);
+        const updated = skipTemptation(player, 40);
         expect(updated.wantsSkipped).toBe(3);
-        expect(updated.savings).toBe(15); // +$5 discipline reward
+        expect(updated.savings).toBe(20); // +$10 (25% of $40)
+    });
+
+    it('should round reward correctly for small costs', () => {
+        const player = makePlayer({ savings: 0 });
+        const updated = skipTemptation(player, 8);
+        expect(updated.savings).toBe(2); // round(8 * 0.25) = 2
     });
 });
 

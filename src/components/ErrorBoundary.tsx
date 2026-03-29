@@ -1,4 +1,6 @@
 import { Component, type ReactNode, type ErrorInfo } from 'react';
+import { useGameStore } from '../store/gameStore';
+import { useUIStore } from '../store/uiStore';
 
 interface Props {
     children: ReactNode;
@@ -27,6 +29,8 @@ export default class ErrorBoundary extends Component<Props, State> {
     }
 
     handleRestart = () => {
+        useGameStore.getState().resetGame();
+        useUIStore.getState().setScreen('setup');
         this.setState({ hasError: false });
     };
 

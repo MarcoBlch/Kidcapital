@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
 import { useAchievementStore } from '../../store/achievementStore';
@@ -20,6 +21,7 @@ export default function TemptationModal() {
     const canAfford = player.cash >= temptation.cost;
     const [decided, setDecided] = useState(false);
     const [choice, setChoice] = useState<'buy' | 'skip' | null>(null);
+    const skipReward = Math.round(temptation.cost * 0.25);
 
     const handleBuy = () => {
         if (!canAfford || decided) return;
@@ -36,8 +38,8 @@ export default function TemptationModal() {
         if (decided) return;
         setDecided(true);
         setChoice('skip');
-        playerSkipTemptation(player.id);
-        showCoin(5); // savings reward!
+        playerSkipTemptation(player.id, temptation.cost);
+        showCoin(skipReward);
         if (player.isHuman) {
             useAchievementStore.getState().recordTemptationSkip();
         }
@@ -59,7 +61,14 @@ export default function TemptationModal() {
                 className="rounded-2xl p-4 mb-4 text-center"
                 style={{ background: '#FFF0F3', border: '2px solid #FF8FAB' }}
             >
-                <span className="text-4xl block mb-2">{temptation.icon}</span>
+                {/* Animated icon — bounces on buy */}
+                <motion.span
+                    className="text-4xl block mb-2"
+                    animate={choice === 'buy' ? { scale: [1, 1.4, 1.2, 0], opacity: [1, 1, 1, 0] } : {}}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                >
+                    {temptation.icon}
+                </motion.span>
                 <h3 className="font-display text-base font-bold" style={{ color: '#1A1A2E' }}>
                     {t(`data.temptations.${temptation.id}_name`, { defaultValue: temptation.name })}
                 </h3>
@@ -101,7 +110,9 @@ export default function TemptationModal() {
                     className="rounded-xl p-3 mb-4"
                     style={{ background: '#E8F5E9', border: '2px solid #4CAF50' }}
                 >
-                    <p className="text-sm font-bold mb-1" style={{ color: '#2E7D32' }}>{t('modals.temptation.skip_title')}</p>
+                    <p className="text-sm font-bold mb-1" style={{ color: '#2E7D32' }}>
+                        {t('modals.temptation.skip_title')} +${skipReward} 🏦
+                    </p>
                     <p className="text-xs" style={{ color: '#5D5D6E' }}>
                         {t('modals.temptation.skip_text')}
                     </p>
