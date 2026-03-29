@@ -72,7 +72,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
         title: '📊 Track Your Progress',
         message: 'See those icons at the top? 🏪🏦🧠💰 — they show what you still need to win. Fill them all up!',
         spotlightSelector: null,
-        bubblePosition: 'center',
+        bubblePosition: 'below',
         waitFor: 'tap',
     },
     {

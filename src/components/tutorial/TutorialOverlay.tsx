@@ -18,6 +18,12 @@ export default function TutorialOverlay() {
     const isWaitingForTap = step.waitFor === 'tap';
     const totalSteps = 8; // TUTORIAL_STEPS.length
 
+    const cardPosition = !isWaitingForTap || step.bubblePosition === 'below'
+        ? 'items-end pb-24'
+        : step.bubblePosition === 'above'
+            ? 'items-start pt-24'
+            : 'items-center';
+
     return (
         <AnimatePresence mode="wait">
             <motion.div
@@ -26,7 +32,7 @@ export default function TutorialOverlay() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`fixed inset-0 z-[100] flex items-center justify-center ${!isWaitingForTap ? 'pointer-events-none' : ''}`}
+                className={`fixed inset-0 z-100 flex justify-center ${cardPosition} ${!isWaitingForTap ? 'pointer-events-none' : ''}`}
                 onClick={isWaitingForTap ? nextStep : undefined}
             >
                 {/* Dark overlay */}
