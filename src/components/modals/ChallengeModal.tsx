@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { audioManager } from '../../audio/AudioManager';
 import { useAchievementStore } from '../../store/achievementStore';
 import { getRandomChallenge } from '../../data/challenges';
 import Button from '../ui/Button';
@@ -52,6 +53,7 @@ export default function ChallengeModal() {
 
         const correct = index === shuffledCorrectIndex;
         playerQuizResult(player.id, correct, correct ? REWARD : 0);
+        audioManager.play(correct ? 'quiz_correct' : 'quiz_wrong');
 
         if (player.isHuman) {
             useAchievementStore.getState().recordQuizResult(correct);

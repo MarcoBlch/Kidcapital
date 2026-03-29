@@ -142,7 +142,7 @@ export default function LeaderboardModal() {
                                                 {p.username}
                                                 {isMe && (
                                                     <span
-                                                        className="text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wider"
+                                                        className="text-[10px] px-1.5 py-0.5 rounded-full uppercase tracking-wider"
                                                         style={{ background: '#FFD700', color: '#4A3800' }}
                                                     >
                                                         {t('modals.leaderboard.you')}

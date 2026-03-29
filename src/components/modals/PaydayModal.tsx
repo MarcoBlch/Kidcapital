@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
 import { calculatePayday } from '../../engine/FinancialEngine';
+import { audioManager } from '../../audio/AudioManager';
 import Button from '../ui/Button';
 import { useTranslation } from 'react-i18next';
 
@@ -18,6 +19,7 @@ export default function PaydayModal() {
     const report = useMemo(() => calculatePayday(player), [player]);
 
     const handleCollect = () => {
+        audioManager.play('payday');
         playerPayday(player.id);
         showCoin(report.net);
         closeModal();
@@ -107,12 +109,12 @@ function Row({
     bold?: boolean;
 }) {
     return (
-        <div className="flex justify-between items-center py-0.5">
-            <span className={`text-xs ${bold ? 'font-bold' : ''}`} style={{ color: '#5D5D6E' }}>
+        <div className="flex justify-between items-center gap-2 py-0.5">
+            <span className={`text-xs min-w-0 truncate ${bold ? 'font-bold' : ''}`} style={{ color: '#5D5D6E' }}>
                 {label}
             </span>
             <span
-                className={`text-xs ${bold ? 'font-bold' : ''}`}
+                className={`text-xs shrink-0 whitespace-nowrap ${bold ? 'font-bold' : ''}`}
                 style={{ color: positive ? '#4CAF50' : '#EF5350' }}
             >
                 {value >= 0 ? '+' : ''}${value}

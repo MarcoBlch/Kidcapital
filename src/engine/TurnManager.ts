@@ -1,5 +1,6 @@
 import { useGameStore } from '../store/gameStore';
 import { useUIStore } from '../store/uiStore';
+import { audioManager } from '../audio/AudioManager';
 import { BOARD } from '../data/board';
 import { BOARD_SIZE } from '../data/board';
 import { getPennyPhrase } from '../data/penny-phrases';
@@ -31,6 +32,7 @@ export async function executeHumanRoll(): Promise<void> {
     const diceResult = rollDice();
     game.setDiceResult(diceResult);
     game.setTurnPhase('rolling');
+    audioManager.play('dice');
 
     await sleep(TIMING.DICE_ROLL);
 

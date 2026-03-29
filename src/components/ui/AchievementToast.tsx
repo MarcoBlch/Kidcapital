@@ -48,7 +48,7 @@ export default function AchievementToast() {
 
                                 {/* Text */}
                                 <div className="flex-1 min-w-0">
-                                    <div className="text-[9px] font-bold uppercase tracking-wider" style={{ color: '#78350f' }}>
+                                    <div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#78350f' }}>
                                         {t('achievements.unlocked')}
                                     </div>
                                     <div className="text-sm font-bold truncate" style={{ color: '#4A3800' }}>

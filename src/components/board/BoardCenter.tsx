@@ -51,7 +51,7 @@ export default function BoardCenter({ onRoll, onNext }: BoardCenterProps) {
                 </div>
                 {/* Turn badge */}
                 <div
-                    className="absolute -top-1 -right-6 md:-right-8 px-2 py-0.5 rounded-full text-[8px] md:text-[9px] font-black uppercase tracking-widest whitespace-nowrap"
+                    className="absolute -top-1 -right-6 md:-right-8 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap"
                     style={{ background: '#FFD700', color: '#4A3800', boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}
                 >
                     {t('game.turn_badge_short', { defaultValue: currentPlayer.name })}

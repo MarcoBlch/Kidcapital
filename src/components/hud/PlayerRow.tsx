@@ -61,7 +61,7 @@ export default function PlayerRow({ player, isActive }: PlayerRowProps) {
                         </span>
                         {isActive && (
                             <span
-                                className="text-[7px] px-1.5 py-0.5 rounded-full font-bold leading-none uppercase tracking-wider"
+                                className="text-[10px] px-1.5 py-0.5 rounded-full font-bold leading-none uppercase tracking-wider"
                                 style={{ background: 'rgba(255,215,0,0.25)', color: '#FFD700' }}
                             >
                                 {t('game.turn_badge')}

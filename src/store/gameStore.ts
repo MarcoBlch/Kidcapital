@@ -1,5 +1,7 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { Player, Asset, TurnPhase, Difficulty, GameState } from '../types';
+import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 import {
     calculatePayday,
     applyPayday,
@@ -31,6 +33,7 @@ interface GameStore extends GameState {
     ) => void;
     restartCurrentGame: () => void;
     resetGame: () => void;
+    setSoundEnabled: (enabled: boolean) => void;
 
     // --- Turn Flow ---
     setTurnPhase: (phase: TurnPhase) => void;
@@ -80,7 +83,19 @@ const initialState: GameState = {
     seenQuizIds: [],
 };
 
-export const useGameStore = create<GameStore>((set, get) => ({
+const safeStorage = {
+    getItem: (name: string) => safeGetItem(name),
+    setItem: (name: string, value: string) => safeSetItem(name, value),
+    removeItem: (name: string) => {
+        try {
+            if (typeof window !== 'undefined' && window.localStorage) {
+                localStorage.removeItem(name);
+            }
+        } catch { /* ignore */ }
+    },
+};
+
+export const useGameStore = create<GameStore>()(persist((set, get) => ({
     ...initialState,
     turnLocked: false,
 
@@ -118,6 +133,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     resetGame: () => set(initialState),
+    setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
 
     // --- Turn Flow ---
     setTurnPhase: (phase) => set({ turnPhase: phase }),
@@ -277,4 +293,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ),
         }));
     },
+}), {
+    name: 'kidcapital_game_state',
+    storage: safeStorage,
+    partialize: (state) => ({
+        players: state.players,
+        currentPlayerIndex: state.currentPlayerIndex,
+        month: state.month,
+        turnPhase: state.turnPhase,
+        isGameOver: state.isGameOver,
+        winnerId: state.winnerId,
+        difficulty: state.difficulty,
+        seenQuizIds: state.seenQuizIds,
+    }),
 }));

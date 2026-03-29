@@ -3,7 +3,9 @@
         "title": "KidCapital",
         "subtitle": "El Simulador Financiero Definitivo",
         "start": "Toca para empezar",
-        "loading": "Cargando..."
+        "loading": "Cargando...",
+        "continue": "Continuar partida",
+        "new_game": "Nueva partida"
     },
     "setup": {
         "title": "Nueva Partida",
@@ -41,7 +43,7 @@
         "leaderboard": "Clasificación",
         "freedom": "Libertad",
         "menu": "Menú",
-        "quit_confirm": "¿Volver al menú principal? Se perderá el progreso."
+        "quit_confirm": "¿Volver al menú principal? Tu partida se guardará."
     },
     "bot": {
         "turn": "{{avatar}} Turno de {{name}}...",

@@ -35,7 +35,7 @@ export default function ProgressBar({ percent, player }: ProgressBarProps) {
             {/* Progress bar */}
             <div
                 className="h-2 rounded-full overflow-hidden"
-                style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.08)' }}
+                style={{ background: 'rgba(0,0,0,0.2)', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.08)' }}
             >
                 <motion.div
                     className="h-full rounded-full"
@@ -58,7 +58,7 @@ export default function ProgressBar({ percent, player }: ProgressBarProps) {
                             {m.label}
                         </span>
                         <span
-                            className="text-[7px] md:text-[8px] font-bold"
+                            className="text-[10px] font-bold"
                             style={{ color: m.done ? '#66BB6A' : 'rgba(255,255,255,0.35)' }}
                         >
                             {m.tip}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { audioManager } from '../../audio/AudioManager';
 import Button from '../ui/Button';
 import { useTranslation } from 'react-i18next';
 
@@ -44,6 +45,7 @@ export default function BankModal() {
         } else {
             if (playerRepayDebt(player.id, amount)) showCoin(-amount);
         }
+        audioManager.play('bank');
         confirmModalAction();
         closeModal();
     };

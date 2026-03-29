@@ -27,7 +27,7 @@ export default function ActionBar({ onOpenPlayers }: ActionBarProps) {
                         className="flex flex-col items-center gap-0.5 px-4 py-1 min-h-11 min-w-11 justify-center cursor-pointer transition-colors"
                     >
                         <span className="text-lg">💼</span>
-                        <span className="font-display font-bold text-[9px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                        <span className="font-display font-bold text-[10px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
                             {t('game.portfolio', { defaultValue: 'Portfolio' })}
                         </span>
                     </button>
@@ -39,7 +39,7 @@ export default function ActionBar({ onOpenPlayers }: ActionBarProps) {
                     className="flex flex-col items-center gap-0.5 px-4 py-1 min-h-11 min-w-11 justify-center cursor-pointer transition-colors"
                 >
                     <span className="text-lg">👥</span>
-                    <span className="font-display font-bold text-[9px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    <span className="font-display font-bold text-[10px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
                         {t('game.players', { defaultValue: 'Players' })}
                     </span>
                 </button>
@@ -50,7 +50,7 @@ export default function ActionBar({ onOpenPlayers }: ActionBarProps) {
                     className="flex flex-col items-center gap-0.5 px-4 py-1 min-h-11 min-w-11 justify-center cursor-pointer transition-colors"
                 >
                     <span className="text-lg">🏆</span>
-                    <span className="font-display font-bold text-[9px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    <span className="font-display font-bold text-[10px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
                         {t('game.leaderboard', { defaultValue: 'Ranking' })}
                     </span>
                 </button>
