@@ -88,7 +88,7 @@ export default function BoardCenter({ onRoll, onNext }: BoardCenterProps) {
                     whileTap={{ y: 4 }}
                     onClick={onRoll}
                     data-tutorial="roll-btn"
-                    className="px-8 md:px-10 py-3 md:py-4 rounded-2xl font-display text-sm md:text-base font-bold cursor-pointer transition-all"
+                    className="px-8 md:px-10 py-3 md:py-4 min-h-11 rounded-2xl font-display text-sm md:text-base font-bold cursor-pointer transition-all"
                     style={{
                         background: '#FFD700',
                         color: '#4A3800',
@@ -106,7 +106,7 @@ export default function BoardCenter({ onRoll, onNext }: BoardCenterProps) {
                     animate={{ opacity: 1, y: 0 }}
                     whileTap={{ y: 3 }}
                     onClick={onNext}
-                    className="px-6 md:px-8 py-2.5 md:py-3 rounded-2xl font-display text-sm md:text-base font-bold cursor-pointer transition-all"
+                    className="px-6 md:px-8 py-2.5 md:py-3 min-h-11 rounded-2xl font-display text-sm md:text-base font-bold cursor-pointer transition-all"
                     style={{
                         background: 'rgba(255,255,255,0.15)',
                         border: '2px solid rgba(255,255,255,0.2)',

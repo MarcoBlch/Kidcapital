@@ -15,11 +15,17 @@ export default function BoardGrid({ onRoll, onNext }: BoardGridProps) {
     const currentPlayer = players[currentPlayerIndex];
 
     return (
-        <div className="flex items-center justify-center w-full px-2 md:px-4">
+        <div
+            className="flex items-center justify-center w-full px-3 md:px-4"
+            style={{
+                paddingLeft: 'max(12px, env(safe-area-inset-left))',
+                paddingRight: 'max(12px, env(safe-area-inset-right))',
+            }}
+        >
             <div
                 className="relative w-full"
                 style={{
-                    maxWidth: 'min(100vw - 24px, 500px)',
+                    maxWidth: 'min(100vw - 32px, 500px)',
                     aspectRatio: '1',
                     display: 'grid',
                     gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,

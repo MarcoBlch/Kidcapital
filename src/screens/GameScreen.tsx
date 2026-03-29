@@ -96,7 +96,7 @@ export default function GameScreen() {
     if (!currentPlayer) return null;
 
     return (
-        <div className="h-dvh w-full flex flex-col overflow-hidden" style={{ background: '#2B6A4E' }}>
+        <div className="h-dvh w-full flex flex-col overflow-visible" style={{ background: '#2B6A4E' }}>
             {/* Header — sky-tinted area */}
             <div style={{ background: 'linear-gradient(180deg, #6DB8A0 0%, #2B6A4E 100%)' }}>
                 <Header />
