@@ -182,13 +182,29 @@ export function buyTemptation(player: Player, cost: number): Player | null {
 }
 
 /**
- * Record skipping a temptation. Rewards discipline with a small savings bonus.
+ * Record skipping a temptation. Rewards discipline with a proportional savings bonus.
+ * Reward = 25% of the temptation cost (e.g. skip $40 item → +$10 savings).
  */
-export function skipTemptation(player: Player): Player {
+export function skipTemptation(player: Player, cost: number): Player {
     return {
         ...player,
         wantsSkipped: player.wantsSkipped + 1,
-        savings: player.savings + 5,  // Discipline reward!
+        savings: player.savings + Math.round(cost * 0.25),
+    };
+}
+
+/**
+ * Repay debt directly from cash. Returns null if invalid.
+ */
+export function repayDebt(player: Player, amount: number): Player | null {
+    if (amount <= 0 || player.debt <= 0 || player.cash < amount) return null;
+    const repaid = Math.min(amount, player.debt);
+    const newDebt = player.debt - repaid;
+    return {
+        ...player,
+        cash: player.cash - repaid,
+        debt: newDebt,
+        loanPayment: newDebt <= 0 ? 0 : player.loanPayment,
     };
 }
 

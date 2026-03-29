@@ -127,7 +127,11 @@
             "savings_to_cash": "Ersparnisse → Bargeld",
             "all": "Alles",
             "deposit_btn": "💰 Einzahlen",
-            "withdraw_btn": "💵 Abheben"
+            "withdraw_btn": "💵 Abheben",
+            "repay": "💳 Schulden tilgen",
+            "repay_btn": "💳 Tilgen",
+            "debt": "Schulden",
+            "cash_to_debt": "Bargeld → Schulden"
         },
         "portfolio": {
             "title": "💼 Dein Portfolio",

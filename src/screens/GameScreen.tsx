@@ -56,20 +56,29 @@ export default function GameScreen() {
         }
     }, []);
 
-    // Signal tutorial events
+    // Signal tutorial events + handle modal close
     const prevModalRef = useRef(activeModal);
+    const modalActionConfirmed = useUIStore(s => s.modalActionConfirmed);
+    const showModal = useUIStore(s => s.showModal);
     useEffect(() => {
-        const wasOpen = prevModalRef.current !== null;
+        const prevModal = prevModalRef.current;
+        const wasOpen = prevModal !== null;
         const nowClosed = activeModal === null;
         prevModalRef.current = activeModal;
 
         if (wasOpen && nowClosed) {
             signalEvent('modal_close');
             if (turnPhase === 'modal_open') {
-                completeAction();
+                // For bank modal: only advance if player explicitly confirmed (Skip or action).
+                // Otherwise re-open so player doesn't lose their bank turn accidentally.
+                if (prevModal === 'bank' && !modalActionConfirmed) {
+                    showModal('bank');
+                } else {
+                    completeAction();
+                }
             }
         }
-    }, [activeModal, turnPhase, signalEvent]);
+    }, [activeModal, turnPhase, signalEvent, modalActionConfirmed, showModal]);
 
     const handleRoll = useCallback(() => {
         signalEvent('roll');
@@ -80,6 +89,13 @@ export default function GameScreen() {
         signalEvent('next_turn');
         nextTurn();
     }, [signalEvent]);
+
+    // Auto-advance after 3s at turn_end (human only) — player can still click Next to skip wait
+    useEffect(() => {
+        if (turnPhase !== 'turn_end' || !currentPlayer?.isHuman) return;
+        const timer = setTimeout(handleNext, 3000);
+        return () => clearTimeout(timer);
+    }, [turnPhase, currentPlayer?.id]);
 
     const handleModalClose = useCallback(() => {
         useUIStore.getState().closeModal();
@@ -96,7 +112,7 @@ export default function GameScreen() {
     if (!currentPlayer) return null;
 
     return (
-        <div className="h-dvh w-full flex flex-col overflow-hidden" style={{ background: '#2B6A4E' }}>
+        <div className="h-dvh w-full flex flex-col overflow-visible" style={{ background: '#2B6A4E' }}>
             {/* Header — sky-tinted area */}
             <div style={{ background: 'linear-gradient(180deg, #6DB8A0 0%, #2B6A4E 100%)' }}>
                 <Header />

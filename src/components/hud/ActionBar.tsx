@@ -24,7 +24,7 @@ export default function ActionBar({ onOpenPlayers }: ActionBarProps) {
                 {currentPlayer?.isHuman && (
                     <button
                         onClick={() => showModal('portfolio' as any)}
-                        className="flex flex-col items-center gap-0.5 px-4 py-1 cursor-pointer transition-colors"
+                        className="flex flex-col items-center gap-0.5 px-4 py-1 min-h-11 min-w-11 justify-center cursor-pointer transition-colors"
                     >
                         <span className="text-lg">💼</span>
                         <span className="font-display font-bold text-[9px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
@@ -36,7 +36,7 @@ export default function ActionBar({ onOpenPlayers }: ActionBarProps) {
                 {/* Players */}
                 <button
                     onClick={onOpenPlayers}
-                    className="flex flex-col items-center gap-0.5 px-4 py-1 cursor-pointer transition-colors"
+                    className="flex flex-col items-center gap-0.5 px-4 py-1 min-h-11 min-w-11 justify-center cursor-pointer transition-colors"
                 >
                     <span className="text-lg">👥</span>
                     <span className="font-display font-bold text-[9px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>
@@ -47,7 +47,7 @@ export default function ActionBar({ onOpenPlayers }: ActionBarProps) {
                 {/* Leaderboard */}
                 <button
                     onClick={() => showModal('leaderboard' as any)}
-                    className="flex flex-col items-center gap-0.5 px-4 py-1 cursor-pointer transition-colors"
+                    className="flex flex-col items-center gap-0.5 px-4 py-1 min-h-11 min-w-11 justify-center cursor-pointer transition-colors"
                 >
                     <span className="text-lg">🏆</span>
                     <span className="font-display font-bold text-[9px] uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.6)' }}>

@@ -127,7 +127,11 @@
             "savings_to_cash": "Épargne → Cash",
             "all": "Tout",
             "deposit_btn": "💰 Déposer",
-            "withdraw_btn": "💵 Retirer"
+            "withdraw_btn": "💵 Retirer",
+            "repay": "💳 Rembourser",
+            "repay_btn": "💳 Rembourser",
+            "debt": "Dette",
+            "cash_to_debt": "Cash → Dette"
         },
         "portfolio": {
             "title": "💼 Ton Portfolio",

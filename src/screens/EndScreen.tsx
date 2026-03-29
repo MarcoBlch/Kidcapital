@@ -17,39 +17,45 @@ export default function EndScreen() {
     const resetGame = useGameStore(s => s.resetGame);
     const setScreen = useUIStore(s => s.setScreen);
 
+    // All hooks MUST be called before any conditional return (React rules)
+    const recordedRef = useRef(false);
+    const xp = useAchievementStore(s => s.xp);
+
     const winner = players.find(p => p.id === winnerId);
     const humanPlayer = players.find(p => p.isHuman);
 
-    if (!winner || !humanPlayer) return null;
+    const netWorth = humanPlayer
+        ? humanPlayer.cash +
+          humanPlayer.savings +
+          humanPlayer.assets.reduce((s, a) => s + a.cost, 0) -
+          humanPlayer.debt
+        : 0;
 
-    const netWorth =
-        humanPlayer.cash +
-        humanPlayer.savings +
-        humanPlayer.assets.reduce((s, a) => s + a.cost, 0) -
-        humanPlayer.debt;
+    const passiveIncome = humanPlayer
+        ? humanPlayer.assets.reduce((s, a) => s + a.income, 0)
+        : 0;
 
-    const passiveIncome = humanPlayer.assets.reduce((s, a) => s + a.income, 0);
-    const impulseTotal = humanPlayer.wantsSpent + humanPlayer.wantsSkipped;
+    const impulseTotal = humanPlayer
+        ? humanPlayer.wantsSpent + humanPlayer.wantsSkipped
+        : 0;
     const impulseScore =
-        impulseTotal > 0
+        impulseTotal > 0 && humanPlayer
             ? Math.round((humanPlayer.wantsSkipped / impulseTotal) * 100)
             : 100;
 
     const quizAccuracy =
-        humanPlayer.quizTotal > 0
+        humanPlayer && humanPlayer.quizTotal > 0
             ? Math.round((humanPlayer.quizCorrect / humanPlayer.quizTotal) * 100)
             : 0;
 
-    const isHumanWinner = winner.id === humanPlayer.id;
+    const isHumanWinner = winner && humanPlayer ? winner.id === humanPlayer.id : false;
 
-    // Record game end for achievements (once)
-    const recordedRef = useRef(false);
-    const xp = useAchievementStore(s => s.xp);
     const level = getLevelForXP(xp);
     const xpProgress = getXPToNextLevel(xp);
 
+    // Record game end for achievements (once)
     useEffect(() => {
-        if (recordedRef.current) return;
+        if (recordedRef.current || !humanPlayer) return;
         recordedRef.current = true;
 
         useAchievementStore.getState().recordGameEnd(isHumanWinner, month);
@@ -65,6 +71,8 @@ export default function EndScreen() {
             net_worth: netWorth
         });
     }, []);
+
+    if (!winner || !humanPlayer) return null;
 
     const handlePlayAgain = () => {
         useAchievementStore.getState().resetSession();
