@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useUIStore } from '../store/uiStore';
+import { useGameStore } from '../store/gameStore';
 import { useTranslation } from 'react-i18next';
 import PennyAvatar from '../components/ui/PennyAvatar';
 import { uiCoin } from '../assets/game';
@@ -9,10 +10,19 @@ export default function SplashScreen() {
     const setScreen = useUIStore(s => s.setScreen);
     const { t } = useTranslation();
 
+    const players = useGameStore(s => s.players);
+    const isGameOver = useGameStore(s => s.isGameOver);
+    const resetGame = useGameStore(s => s.resetGame);
+    const hasSavedGame = players.length > 0 && !isGameOver;
+
     useEffect(() => {
+        if (hasSavedGame) return;
         const timer = setTimeout(() => setScreen('setup'), 2500);
         return () => clearTimeout(timer);
-    }, [setScreen]);
+    }, [hasSavedGame, setScreen]);
+
+    const handleContinue = () => setScreen('game');
+    const handleNewGame = () => { resetGame(); setScreen('setup'); };
 
     return (
         <motion.div
@@ -55,26 +65,47 @@ export default function SplashScreen() {
                 </p>
             </motion.div>
 
-            {/* Loading — bouncing gold coins */}
+            {/* Bottom action area */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
-                className="mt-12 flex gap-3 relative z-10"
+                className="mt-12 flex flex-col items-center gap-3 relative z-10 w-full"
             >
-                {[0, 1, 2].map(i => (
-                    <motion.img
-                        key={i}
-                        src={uiCoin}
-                        alt="coin"
-                        width={24}
-                        height={24}
-                        animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                        className="object-contain"
-                        draggable={false}
-                    />
-                ))}
+                {hasSavedGame ? (
+                    <>
+                        <button
+                            onClick={handleContinue}
+                            className="w-full max-w-xs py-3 rounded-2xl font-display font-bold text-base tracking-wide"
+                            style={{ background: '#FFD700', color: '#4A3800' }}
+                        >
+                            {t('splash.continue')}
+                        </button>
+                        <button
+                            onClick={handleNewGame}
+                            className="w-full max-w-xs py-3 rounded-2xl font-display font-bold text-base tracking-wide"
+                            style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)' }}
+                        >
+                            {t('splash.new_game')}
+                        </button>
+                    </>
+                ) : (
+                    <div className="flex gap-3">
+                        {[0, 1, 2].map(i => (
+                            <motion.img
+                                key={i}
+                                src={uiCoin}
+                                alt="coin"
+                                width={24}
+                                height={24}
+                                animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
+                                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
+                                className="object-contain"
+                                draggable={false}
+                            />
+                        ))}
+                    </div>
+                )}
             </motion.div>
         </motion.div>
     );

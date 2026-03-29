@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { audioManager } from '../../audio/AudioManager';
 import { useAchievementStore } from '../../store/achievementStore';
 import { getRandomTemptation } from '../../data/temptations';
 import Button from '../ui/Button';
@@ -27,6 +28,7 @@ export default function TemptationModal() {
         if (!canAfford || decided) return;
         setDecided(true);
         setChoice('buy');
+        audioManager.play('temptation_buy');
         playerBuyTemptation(player.id, temptation.cost);
         showCoin(-temptation.cost);
         if (player.isHuman) {
@@ -38,6 +40,7 @@ export default function TemptationModal() {
         if (decided) return;
         setDecided(true);
         setChoice('skip');
+        audioManager.play('temptation_skip');
         playerSkipTemptation(player.id, temptation.cost);
         showCoin(skipReward);
         if (player.isHuman) {

@@ -3,7 +3,9 @@
         "title": "KidCapital",
         "subtitle": "Der ultimative Finanzsimulator",
         "start": "Tippe zum Starten",
-        "loading": "Lädt..."
+        "loading": "Lädt...",
+        "continue": "Spiel fortsetzen",
+        "new_game": "Neues Spiel"
     },
     "setup": {
         "title": "Neues Spiel",
@@ -41,7 +43,7 @@
         "leaderboard": "Rangliste",
         "freedom": "Freiheit",
         "menu": "Menü",
-        "quit_confirm": "Zurück zum Hauptmenü? Der Fortschritt geht verloren."
+        "quit_confirm": "Zurück zum Hauptmenü? Dein Spiel wird gespeichert."
     },
     "bot": {
         "turn": "{{avatar}} {{name}} ist dran...",

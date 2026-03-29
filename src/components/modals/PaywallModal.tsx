@@ -169,7 +169,7 @@ function FeatureItem({ icon, title, isComingSoon = false, soonLabel }: { icon: s
                 {title}
                 {isComingSoon && (
                     <span
-                        className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full"
+                        className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-full"
                         style={{ background: '#FFEBEE', color: '#EF5350', border: '1px solid #EF5350' }}
                     >
                         {soonLabel || 'Soon'}

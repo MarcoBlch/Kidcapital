@@ -195,7 +195,7 @@ export default function EndScreen() {
                             {level.icon}
                         </div>
                         <div className="flex-1">
-                            <div className="text-[9px] uppercase tracking-wider font-bold" style={{ color: '#DAA520' }}>
+                            <div className="text-[10px] uppercase tracking-wider font-bold" style={{ color: '#DAA520' }}>
                                 {t('end.level', { level: level.level })}
                             </div>
                             <div className="font-display text-base font-bold" style={{ color: '#4A3800' }}>{level.title}</div>
@@ -213,8 +213,8 @@ export default function EndScreen() {
                         />
                     </div>
                     <div className="flex justify-between mt-1">
-                        <span className="text-[9px]" style={{ color: '#9E9EAF' }}>{xpProgress.current} XP</span>
-                        <span className="text-[9px]" style={{ color: '#9E9EAF' }}>{xpProgress.next} XP</span>
+                        <span className="text-[10px]" style={{ color: '#9E9EAF' }}>{xpProgress.current} XP</span>
+                        <span className="text-[10px]" style={{ color: '#9E9EAF' }}>{xpProgress.next} XP</span>
                     </div>
                 </motion.div>
 

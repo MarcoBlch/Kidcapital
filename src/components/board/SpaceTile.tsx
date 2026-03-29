@@ -46,7 +46,7 @@ export default function SpaceTile({ space, isActive, playersOnSpace, style }: Sp
                 {space.icon}
             </span>
             <span
-                className="text-[7px] md:text-[8px] font-bold uppercase tracking-tight leading-none mt-0.5 text-center px-0.5"
+                className="text-[10px] font-bold uppercase tracking-tight leading-none mt-0.5 text-center px-0.5"
                 style={{ color: colors.text }}
             >
                 {t(`board.${space.type}`, { defaultValue: space.label })}

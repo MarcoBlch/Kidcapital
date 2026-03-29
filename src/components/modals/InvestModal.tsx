@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useUIStore } from '../../store/uiStore';
+import { audioManager } from '../../audio/AudioManager';
 import { useAchievementStore } from '../../store/achievementStore';
 import { getAvailableAssets, getAssetImage } from '../../data/assets';
 import { canBuyAsset } from '../../engine/FinancialEngine';
@@ -26,6 +27,7 @@ export default function InvestModal() {
 
     const handleBuyCash = (asset: Asset) => {
         if (playerBuyAssetCash(player.id, asset)) {
+            audioManager.play('buy_asset');
             showCoin(-asset.cost);
             if (player.isHuman) {
                 useAchievementStore.getState().incrementStat('totalAssetsEverBought');
@@ -37,6 +39,7 @@ export default function InvestModal() {
     const handleBuyLoan = (asset: Asset) => {
         const down = Math.ceil(asset.cost * 0.40);
         if (playerBuyAssetLoan(player.id, asset)) {
+            audioManager.play('buy_asset');
             showCoin(-down);
             if (player.isHuman) {
                 useAchievementStore.getState().incrementStat('totalAssetsEverBought');

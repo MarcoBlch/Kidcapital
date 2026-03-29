@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { SpaceType } from '../types';
+import { audioManager } from '../audio/AudioManager';
 
 export type Screen = 'splash' | 'setup' | 'game' | 'end';
 
@@ -107,12 +108,16 @@ export const useUIStore = create<UIStore>((set) => ({
     // Penny
     pennyMessage: null,
     pennyVisible: false,
-    showPenny: (message) => set({ pennyMessage: message, pennyVisible: true }),
+    showPenny: (message) => {
+        audioManager.play('oink');
+        set({ pennyMessage: message, pennyVisible: true });
+    },
     dismissPenny: () => set({ pennyVisible: false, pennyMessage: null }),
 
     // Coin Animation
     coinAnimations: [],
     showCoin: (amount) => {
+        audioManager.play(amount >= 0 ? 'coin_gain' : 'coin_loss');
         const id = ++coinIdCounter;
         set(state => ({
             coinAnimations: [...state.coinAnimations, { amount, id }],

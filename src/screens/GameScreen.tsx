@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { useUIStore } from '../store/uiStore';
+import { audioManager } from '../audio/AudioManager';
 import { useTutorialStore } from '../store/tutorialStore';
 import { executeHumanRoll, completeAction, nextTurn } from '../engine/TurnManager';
 
@@ -34,9 +35,24 @@ export default function GameScreen() {
     const players = useGameStore(s => s.players);
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const turnPhase = useGameStore(s => s.turnPhase);
+    const isGameOver = useGameStore(s => s.isGameOver);
 
     // Achievement tracker
     useAchievementTracker();
+
+    // Background music: start on mount, stop on unmount
+    useEffect(() => {
+        audioManager.startMusic();
+        return () => audioManager.stopMusic();
+    }, []);
+
+    // Victory: stop music, play fanfare
+    useEffect(() => {
+        if (isGameOver) {
+            audioManager.stopMusic();
+            audioManager.play('victory');
+        }
+    }, [isGameOver]);
     const activeModal = useUIStore(s => s.activeModal);
     const modalSpaceColor = useUIStore(s => s.modalSpaceColor);
     const tutorialIsCompleted = useTutorialStore(s => s.isCompleted);
