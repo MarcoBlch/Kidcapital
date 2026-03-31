@@ -29,9 +29,6 @@ export default function MultiplayerScreen() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Store invite code in store for lobby to read
-    const [createdInviteCode, setCreatedInviteCode] = useState<string | null>(null);
-
     if (!session) return null;
 
     const handleCreate = async () => {
@@ -39,8 +36,6 @@ export default function MultiplayerScreen() {
         setError(null);
         try {
             const inviteCode = await createMultiplayerGame(difficulty, username, avatar);
-            setCreatedInviteCode(inviteCode);
-            // Navigate to lobby — pass code via local state embedded in uiStore or just go
             useUIStore.getState().setMultiplayerLobbyCode(inviteCode);
             setScreen('multiplayer_lobby');
         } catch {
