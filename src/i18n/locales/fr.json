@@ -24,7 +24,8 @@
         "bot_singular": "Bot",
         "bot_plural": "Bots",
         "start_game": "🎲 C'est parti !",
-        "get_premium": "Obtenir KidCapital+ 👑"
+        "get_premium": "Obtenir KidCapital+ 👑",
+        "multiplayer": "Multijoueur 🌐"
     },
     "game": {
         "month": "Mois",
@@ -308,6 +309,35 @@
         "generic_0": "Continue ! Chaque tour est un pas vers la liberté ! 🚶",
         "generic_1": "Rappelle-toi : le revenu passif est l'objectif ! 🎯",
         "generic_2": "Tu apprends de vraies compétences financières ! 📚"
+    },
+    "multiplayer": {
+        "title": "Multijoueur en ligne",
+        "tab_create": "Créer une partie",
+        "tab_join": "Rejoindre",
+        "difficulty_label": "Difficulté",
+        "create_btn": "Créer & obtenir le code",
+        "creating": "Création...",
+        "join_placeholder": "Entre le code à 6 chiffres...",
+        "join_btn": "Rejoindre",
+        "joining": "Connexion...",
+        "game_not_found": "Partie introuvable ou déjà commencée.",
+        "lobby_title": "Salle d'attente",
+        "invite_label": "Code d'invitation",
+        "copy_code": "Copier",
+        "copied": "Copié !",
+        "players_label": "Joueurs ({{count}}/4)",
+        "waiting_players": "En attente de joueurs...",
+        "start_btn": "Démarrer !",
+        "start_need_2": "Il faut au moins 2 joueurs",
+        "waiting_title": "Tour terminé !",
+        "waiting_msg": "En attente de {{name}}...",
+        "waiting_close": "Fermer l'app",
+        "your_turn": "À toi ! ({{count}})",
+        "resume_game": "Reprendre le multi",
+        "error_create": "Impossible de créer la partie. Réessaie.",
+        "error_join": "Impossible de rejoindre la partie. Réessaie.",
+        "back": "← Retour",
+        "you": "(Toi)"
     },
     "board": {
         "start": "DÉPART",

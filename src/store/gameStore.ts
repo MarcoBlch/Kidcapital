@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { Player, Asset, TurnPhase, Difficulty, GameState } from '../types';
+import type { Player, Asset, TurnPhase, Difficulty, GameState, MultiplayerGamePlayer } from '../types';
 import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 import {
     calculatePayday,
@@ -31,6 +31,12 @@ interface GameStore extends GameState {
         difficulty: Difficulty,
         dailyBonus?: number,
     ) => void;
+    initMultiplayerLocalGame: (
+        players: MultiplayerGamePlayer[],
+        difficulty: Difficulty,
+        gameId: string,
+    ) => void;
+    hydrateFromMultiplayer: (gameState: GameState) => void;
     restartCurrentGame: () => void;
     resetGame: () => void;
     setSoundEnabled: (enabled: boolean) => void;
@@ -81,11 +87,14 @@ const initialState: GameState = {
     pennyMuted: false,
     dailyBonus: 0,
     seenQuizIds: [],
+    multiplayerId: null,
+    multiplayerUserMap: {},
 };
 
 type PersistedState = Pick<GameState,
     'players' | 'currentPlayerIndex' | 'month' | 'turnPhase' |
-    'isGameOver' | 'winnerId' | 'difficulty' | 'seenQuizIds'
+    'isGameOver' | 'winnerId' | 'difficulty' | 'seenQuizIds' |
+    'multiplayerId' | 'multiplayerUserMap'
 >;
 
 const jsonStorage = createJSONStorage<PersistedState>(() => ({
@@ -121,6 +130,26 @@ export const useGameStore = create<GameStore>()(persist<GameStore, [], [], Persi
             dailyBonus: dailyBonus ?? 0,
             turnPhase: 'idle',
         });
+    },
+
+    initMultiplayerLocalGame: (players, difficulty, gameId) => {
+        const gamePlayers: Player[] = players
+            .sort((a, b) => a.player_index - b.player_index)
+            .map(p => createDefaultPlayer(p.player_index, p.username, p.avatar, true, difficulty));
+        const userMap: Record<number, string> = {};
+        players.forEach(p => { userMap[p.player_index] = p.user_id; });
+        set({
+            ...initialState,
+            players: gamePlayers,
+            difficulty,
+            multiplayerId: gameId,
+            multiplayerUserMap: userMap,
+            turnPhase: 'idle',
+        });
+    },
+
+    hydrateFromMultiplayer: (gameState) => {
+        set({ ...gameState });
     },
 
     restartCurrentGame: () => {
@@ -310,5 +339,7 @@ export const useGameStore = create<GameStore>()(persist<GameStore, [], [], Persi
         winnerId: state.winnerId,
         difficulty: state.difficulty,
         seenQuizIds: state.seenQuizIds,
+        multiplayerId: state.multiplayerId,
+        multiplayerUserMap: state.multiplayerUserMap,
     }),
 }));

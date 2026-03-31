@@ -154,6 +154,30 @@ export interface GameState {
     pennyMuted: boolean;
     dailyBonus: number;
     seenQuizIds: string[];
+    // Multiplayer
+    multiplayerId: string | null;
+    multiplayerUserMap: Record<number, string>; // player_index → supabase user_id
+}
+
+// --- Multiplayer ---
+
+export interface MultiplayerGame {
+    id: string;
+    invite_code: string;
+    status: 'waiting' | 'active' | 'finished';
+    difficulty: Difficulty;
+    current_player_user_id: string | null;
+    game_state: GameState | null;
+    winner_user_id: string | null;
+    created_by: string;
+    players: MultiplayerGamePlayer[];
+}
+
+export interface MultiplayerGamePlayer {
+    user_id: string;
+    player_index: number;
+    username: string;
+    avatar: string;
 }
 
 // --- Penny Messages ---

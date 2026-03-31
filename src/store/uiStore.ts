@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { SpaceType } from '../types';
 import { audioManager } from '../audio/AudioManager';
 
-export type Screen = 'splash' | 'setup' | 'game' | 'end';
+export type Screen = 'splash' | 'setup' | 'game' | 'end' | 'multiplayer' | 'multiplayer_lobby';
 
 export type ModalType =
     | 'invest'
@@ -54,6 +54,10 @@ interface UIStore {
     turnLog: string[];
     addLog: (message: string) => void;
     clearLog: () => void;
+
+    // Multiplayer lobby routing
+    multiplayerLobbyCode: string | null;
+    setMultiplayerLobbyCode: (code: string | null) => void;
 }
 
 const SPACE_TYPE_TO_MODAL: Record<string, ModalType> = {
@@ -133,4 +137,8 @@ export const useUIStore = create<UIStore>((set) => ({
     addLog: (message) =>
         set(state => ({ turnLog: [...state.turnLog.slice(-9), message] })),
     clearLog: () => set({ turnLog: [] }),
+
+    // Multiplayer lobby routing
+    multiplayerLobbyCode: null,
+    setMultiplayerLobbyCode: (code) => set({ multiplayerLobbyCode: code }),
 }));
