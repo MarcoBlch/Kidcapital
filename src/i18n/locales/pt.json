@@ -24,7 +24,8 @@
         "bot_singular": "Bot",
         "bot_plural": "Bots",
         "start_game": "🎲 Começar a Jogar!",
-        "get_premium": "Obter KidCapital+ 👑"
+        "get_premium": "Obter KidCapital+ 👑",
+        "multiplayer": "Multijogador 🌐"
     },
     "game": {
         "month": "Mês",
@@ -308,6 +309,35 @@
         "generic_0": "Continue! Cada turno é um passo rumo à liberdade! 🚶",
         "generic_1": "Lembre-se: renda passiva é o objetivo! 🎯",
         "generic_2": "Você está aprendendo habilidades reais de dinheiro! 📚"
+    },
+    "multiplayer": {
+        "title": "Multijogador Online",
+        "tab_create": "Criar partida",
+        "tab_join": "Entrar",
+        "difficulty_label": "Dificuldade",
+        "create_btn": "Criar e obter código",
+        "creating": "Criando...",
+        "join_placeholder": "Digite o código de 6 caracteres...",
+        "join_btn": "Entrar",
+        "joining": "Entrando...",
+        "game_not_found": "Partida não encontrada ou já iniciada.",
+        "lobby_title": "Sala de espera",
+        "invite_label": "Código de convite",
+        "copy_code": "Copiar",
+        "copied": "Copiado!",
+        "players_label": "Jogadores ({{count}}/4)",
+        "waiting_players": "Aguardando jogadores...",
+        "start_btn": "Iniciar!",
+        "start_need_2": "Precisa de pelo menos 2 jogadores",
+        "waiting_title": "Turno concluído!",
+        "waiting_msg": "Aguardando {{name}}...",
+        "waiting_close": "Fechar app",
+        "your_turn": "Sua vez! ({{count}})",
+        "resume_game": "Retomar multijogador",
+        "error_create": "Erro ao criar partida. Tente novamente.",
+        "error_join": "Erro ao entrar. Tente novamente.",
+        "back": "← Voltar",
+        "you": "(Você)"
     },
     "board": {
         "start": "INÍCIO",

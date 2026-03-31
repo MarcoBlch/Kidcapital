@@ -24,7 +24,8 @@
         "bot_singular": "Bot",
         "bot_plural": "Bots",
         "start_game": "🎲 Los geht's!",
-        "get_premium": "Hol dir KidCapital+ 👑"
+        "get_premium": "Hol dir KidCapital+ 👑",
+        "multiplayer": "Mehrspieler 🌐"
     },
     "game": {
         "month": "Monat",
@@ -308,6 +309,35 @@
         "generic_0": "Weitermachen! Jede Runde ist ein Schritt Richtung Freiheit! 🚶",
         "generic_1": "Denk dran: Passives Einkommen ist das Ziel! 🎯",
         "generic_2": "Du lernst echte Geld-Fähigkeiten! 📚"
+    },
+    "multiplayer": {
+        "title": "Online-Mehrspieler",
+        "tab_create": "Spiel erstellen",
+        "tab_join": "Beitreten",
+        "difficulty_label": "Schwierigkeit",
+        "create_btn": "Erstellen & Code erhalten",
+        "creating": "Erstellen...",
+        "join_placeholder": "6-stelligen Code eingeben...",
+        "join_btn": "Beitreten",
+        "joining": "Beitrete...",
+        "game_not_found": "Spiel nicht gefunden oder bereits gestartet.",
+        "lobby_title": "Spiellobby",
+        "invite_label": "Einladungscode",
+        "copy_code": "Kopieren",
+        "copied": "Kopiert!",
+        "players_label": "Spieler ({{count}}/4)",
+        "waiting_players": "Warte auf Spieler...",
+        "start_btn": "Spiel starten!",
+        "start_need_2": "Mindestens 2 Spieler erforderlich",
+        "waiting_title": "Zug beendet!",
+        "waiting_msg": "Warte auf {{name}}...",
+        "waiting_close": "App schließen",
+        "your_turn": "Du bist dran! ({{count}})",
+        "resume_game": "Mehrspieler fortsetzen",
+        "error_create": "Spiel konnte nicht erstellt werden. Versuche es erneut.",
+        "error_join": "Beitreten fehlgeschlagen. Versuche es erneut.",
+        "back": "← Zurück",
+        "you": "(Du)"
     },
     "board": {
         "start": "LOS",

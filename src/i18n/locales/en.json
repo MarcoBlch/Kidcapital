@@ -24,7 +24,8 @@
         "bot_singular": "Bot",
         "bot_plural": "Bots",
         "start_game": "🎲 Start Playing!",
-        "get_premium": "Get KidCapital+ 👑"
+        "get_premium": "Get KidCapital+ 👑",
+        "multiplayer": "Multiplayer 🌐"
     },
     "game": {
         "month": "Month",
@@ -308,6 +309,35 @@
         "generic_0": "Keep going! Every turn is a step toward freedom! 🚶",
         "generic_1": "Remember: passive income is the goal! 🎯",
         "generic_2": "You're learning real money skills! 📚"
+    },
+    "multiplayer": {
+        "title": "Online Multiplayer",
+        "tab_create": "Create Game",
+        "tab_join": "Join Game",
+        "difficulty_label": "Difficulty",
+        "create_btn": "Create & Get Code",
+        "creating": "Creating...",
+        "join_placeholder": "Enter 6-char code...",
+        "join_btn": "Join Game",
+        "joining": "Joining...",
+        "game_not_found": "Game not found or already started.",
+        "lobby_title": "Game Lobby",
+        "invite_label": "Invite Code",
+        "copy_code": "Copy",
+        "copied": "Copied!",
+        "players_label": "Players ({{count}}/4)",
+        "waiting_players": "Waiting for players to join...",
+        "start_btn": "Start Game!",
+        "start_need_2": "Need at least 2 players",
+        "waiting_title": "Turn done!",
+        "waiting_msg": "Waiting for {{name}}...",
+        "waiting_close": "Close App",
+        "your_turn": "Your Turn! ({{count}})",
+        "resume_game": "Resume Multiplayer",
+        "error_create": "Failed to create game. Try again.",
+        "error_join": "Failed to join game. Try again.",
+        "back": "← Back",
+        "you": "(You)"
     },
     "board": {
         "start": "GO",

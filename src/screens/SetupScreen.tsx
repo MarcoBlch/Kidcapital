@@ -298,6 +298,20 @@ export default function SetupScreen() {
                 >
                     {t('setup.start_game')}
                 </motion.button>
+
+                {/* Multiplayer button */}
+                <motion.button
+                    whileTap={{ y: 3 }}
+                    onClick={() => setScreen('multiplayer')}
+                    className="w-full mt-3 py-3 rounded-2xl font-display text-base font-bold cursor-pointer"
+                    style={{
+                        background: 'rgba(16, 185, 129, 0.12)',
+                        color: '#059669',
+                        border: '2px solid rgba(16, 185, 129, 0.3)',
+                    }}
+                >
+                    {t('setup.multiplayer')}
+                </motion.button>
             </div>
 
             <LeaderboardModal />

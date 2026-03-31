@@ -7,6 +7,8 @@ import SplashScreen from './screens/SplashScreen';
 import SetupScreen from './screens/SetupScreen';
 import GameScreen from './screens/GameScreen';
 import EndScreen from './screens/EndScreen';
+import MultiplayerScreen from './screens/MultiplayerScreen';
+import MultiplayerLobbyScreen from './screens/MultiplayerLobbyScreen';
 
 function App() {
   const currentScreen = useUIStore((s) => s.currentScreen);
@@ -24,6 +26,8 @@ function App() {
       {currentScreen === 'setup' && <SetupScreen key="setup" />}
       {currentScreen === 'game' && <GameScreen key="game" />}
       {currentScreen === 'end' && <EndScreen key="end" />}
+      {currentScreen === 'multiplayer' && <MultiplayerScreen key="multiplayer" />}
+      {currentScreen === 'multiplayer_lobby' && <MultiplayerLobbyScreen key="multiplayer_lobby" />}
     </AnimatePresence>
   );
 }

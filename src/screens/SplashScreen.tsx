@@ -1,28 +1,52 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUIStore } from '../store/uiStore';
 import { useGameStore } from '../store/gameStore';
+import { useSupabaseStore } from '../store/supabaseStore';
 import { useTranslation } from 'react-i18next';
 import PennyAvatar from '../components/ui/PennyAvatar';
 import { uiCoin } from '../assets/game';
+import type { MultiplayerGame } from '../types';
 
 export default function SplashScreen() {
     const setScreen = useUIStore(s => s.setScreen);
+    const setMultiplayerLobbyCode = useUIStore(s => s.setMultiplayerLobbyCode);
     const { t } = useTranslation();
 
     const players = useGameStore(s => s.players);
     const isGameOver = useGameStore(s => s.isGameOver);
     const resetGame = useGameStore(s => s.resetGame);
+    const hydrateFromMultiplayer = useGameStore(s => s.hydrateFromMultiplayer);
     const hasSavedGame = players.length > 0 && !isGameOver;
 
+    const fetchMyPendingGames = useSupabaseStore(s => s.fetchMyPendingGames);
+    const loadMultiplayerGame = useSupabaseStore(s => s.loadMultiplayerGame);
+    const [pendingGames, setPendingGames] = useState<MultiplayerGame[]>([]);
+
     useEffect(() => {
-        if (hasSavedGame) return;
+        fetchMyPendingGames().then(setPendingGames);
+    }, [fetchMyPendingGames]);
+
+    useEffect(() => {
+        if (hasSavedGame || pendingGames.length > 0) return;
         const timer = setTimeout(() => setScreen('setup'), 2500);
         return () => clearTimeout(timer);
-    }, [hasSavedGame, setScreen]);
+    }, [hasSavedGame, pendingGames.length, setScreen]);
 
     const handleContinue = () => setScreen('game');
     const handleNewGame = () => { resetGame(); setScreen('setup'); };
+
+    const handleResumeMp = async (game: MultiplayerGame) => {
+        const state = await loadMultiplayerGame(game.id);
+        if (state) {
+            hydrateFromMultiplayer(state);
+            setScreen('game');
+        } else {
+            // Game state not yet uploaded — go to lobby
+            setMultiplayerLobbyCode(game.invite_code);
+            setScreen('multiplayer_lobby');
+        }
+    };
 
     return (
         <motion.div
@@ -81,6 +105,36 @@ export default function SplashScreen() {
                         >
                             {t('splash.continue')}
                         </button>
+                        {pendingGames.length > 0 && pendingGames.map(game => (
+                            <button
+                                key={game.id}
+                                onClick={() => handleResumeMp(game)}
+                                className="w-full max-w-xs py-3 rounded-2xl font-display font-bold text-base tracking-wide"
+                                style={{ background: '#10b981', color: '#FFFFFF', boxShadow: '0 3px 0 #059669' }}
+                            >
+                                🌐 {t('multiplayer.your_turn', { count: pendingGames.length })}
+                            </button>
+                        ))}
+                        <button
+                            onClick={handleNewGame}
+                            className="w-full max-w-xs py-3 rounded-2xl font-display font-bold text-base tracking-wide"
+                            style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)' }}
+                        >
+                            {t('splash.new_game')}
+                        </button>
+                    </>
+                ) : pendingGames.length > 0 ? (
+                    <>
+                        {pendingGames.map(game => (
+                            <button
+                                key={game.id}
+                                onClick={() => handleResumeMp(game)}
+                                className="w-full max-w-xs py-3 rounded-2xl font-display font-bold text-base tracking-wide"
+                                style={{ background: '#10b981', color: '#FFFFFF', boxShadow: '0 3px 0 #059669' }}
+                            >
+                                🌐 {t('multiplayer.your_turn', { count: pendingGames.length })}
+                            </button>
+                        ))}
                         <button
                             onClick={handleNewGame}
                             className="w-full max-w-xs py-3 rounded-2xl font-display font-bold text-base tracking-wide"

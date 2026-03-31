@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { useUIStore } from '../store/uiStore';
+import { useSupabaseStore } from '../store/supabaseStore';
 import { audioManager } from '../audio/AudioManager';
 import { useTutorialStore } from '../store/tutorialStore';
 import { executeHumanRoll, completeAction, nextTurn } from '../engine/TurnManager';
+import WaitingForPlayerOverlay from '../components/game/WaitingForPlayerOverlay';
 
 // HUD
 import Header from '../components/hud/Header';
@@ -36,6 +38,15 @@ export default function GameScreen() {
     const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
     const turnPhase = useGameStore(s => s.turnPhase);
     const isGameOver = useGameStore(s => s.isGameOver);
+    const multiplayerId = useGameStore(s => s.multiplayerId);
+    const multiplayerUserMap = useGameStore(s => s.multiplayerUserMap);
+    const syncTurnToCloud = useSupabaseStore(s => s.syncTurnToCloud);
+    const finishMultiplayerGame = useSupabaseStore(s => s.finishMultiplayerGame);
+    const myUserId = useSupabaseStore(s => s.session?.user.id);
+    const isMultiplayer = multiplayerId !== null;
+
+    const [showWaiting, setShowWaiting] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false);
 
     // Achievement tracker
     useAchievementTracker();
@@ -106,8 +117,44 @@ export default function GameScreen() {
         nextTurn();
     }, [signalEvent]);
 
-    // Auto-advance after 3s at turn_end (human only) — player can still click Next to skip wait
+    // Multiplayer: sync state at turn_end, then show waiting overlay
     useEffect(() => {
+        if (!isMultiplayer || turnPhase !== 'turn_end' || !currentPlayer?.isHuman) return;
+        if (showWaiting) return; // already showing
+
+        const run = async () => {
+            setIsSyncing(true);
+            setShowWaiting(true);
+            try {
+                // Advance turn first so currentPlayerIndex points to the NEXT player
+                const game = useGameStore.getState();
+                const nextIndex = (currentPlayerIndex + 1) % players.length;
+                const nextUserId = multiplayerUserMap[nextIndex] ?? '';
+                await syncTurnToCloud(multiplayerId!, game, nextUserId);
+            } catch (err) {
+                console.error('Multiplayer sync failed:', err);
+            } finally {
+                setIsSyncing(false);
+            }
+        };
+
+        run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [turnPhase, isMultiplayer, currentPlayer?.id]);
+
+    // Multiplayer: on win, mark game finished in DB
+    useEffect(() => {
+        if (!isMultiplayer || !isGameOver || !multiplayerId || !myUserId) return;
+        const winnerId = useGameStore.getState().winnerId;
+        if (winnerId === null) return;
+        const winnerUserId = multiplayerUserMap[winnerId] ?? myUserId;
+        finishMultiplayerGame(multiplayerId, winnerUserId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isGameOver, isMultiplayer]);
+
+    // Auto-advance after 3s at turn_end (human only, solo mode only) — player can still click Next to skip wait
+    useEffect(() => {
+        if (isMultiplayer) return; // multiplayer handles its own turn transition
         if (turnPhase !== 'turn_end' || !currentPlayer?.isHuman) return;
         const timer = setTimeout(handleNext, 3000);
         return () => clearTimeout(timer);
@@ -128,7 +175,7 @@ export default function GameScreen() {
     if (!currentPlayer) return null;
 
     return (
-        <div className="h-dvh w-full flex flex-col overflow-visible" style={{ background: '#2B6A4E' }}>
+        <div className="relative h-dvh w-full flex flex-col overflow-visible" style={{ background: '#2B6A4E' }}>
             {/* Header — sky-tinted area */}
             <div style={{ background: 'linear-gradient(180deg, #6DB8A0 0%, #2B6A4E 100%)' }}>
                 <Header />
@@ -156,6 +203,11 @@ export default function GameScreen() {
 
             {/* Tutorial overlay */}
             <TutorialOverlay />
+
+            {/* Multiplayer: waiting for next player overlay */}
+            {isMultiplayer && showWaiting && (
+                <WaitingForPlayerOverlay isSyncing={isSyncing} />
+            )}
 
             {/* Modal system */}
             <BottomSheet
