@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Player, Asset, TurnPhase, Difficulty, GameState } from '../types';
 import { safeGetItem, safeSetItem } from '../utils/safeStorage';
 import {
@@ -83,9 +83,14 @@ const initialState: GameState = {
     seenQuizIds: [],
 };
 
-const safeStorage = {
-    getItem: (name: string) => safeGetItem(name),
-    setItem: (name: string, value: string) => safeSetItem(name, value),
+type PersistedState = Pick<GameState,
+    'players' | 'currentPlayerIndex' | 'month' | 'turnPhase' |
+    'isGameOver' | 'winnerId' | 'difficulty' | 'seenQuizIds'
+>;
+
+const jsonStorage = createJSONStorage<PersistedState>(() => ({
+    getItem: safeGetItem,
+    setItem: safeSetItem,
     removeItem: (name: string) => {
         try {
             if (typeof window !== 'undefined' && window.localStorage) {
@@ -93,9 +98,9 @@ const safeStorage = {
             }
         } catch { /* ignore */ }
     },
-};
+}));
 
-export const useGameStore = create<GameStore>()(persist((set, get) => ({
+export const useGameStore = create<GameStore>()(persist<GameStore, [], [], PersistedState>((set, get) => ({
     ...initialState,
     turnLocked: false,
 
@@ -295,8 +300,8 @@ export const useGameStore = create<GameStore>()(persist((set, get) => ({
     },
 }), {
     name: 'kidcapital_game_state',
-    storage: safeStorage,
-    partialize: (state) => ({
+    storage: jsonStorage,
+    partialize: (state): PersistedState => ({
         players: state.players,
         currentPlayerIndex: state.currentPlayerIndex,
         month: state.month,
